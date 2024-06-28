@@ -1,9 +1,9 @@
 --------------------初始化--------------------------------
-function script_path()
-   local str = debug.getinfo(1, "S").source:sub(2)   
+local function script_path()
+   local str = debug.getinfo(1, "S").source:sub(2)
    return str:match("(.*[/ \\])")--删除后面的文件，只保留路径
  end
-path = script_path().."?.lua"
+local path = script_path().."?.lua"
 package.path = package.path..";"..path ..";..\\?.lua;"
 -----------------自動配置程序依赖------------------------------
 --lazy.nvim
@@ -22,10 +22,10 @@ vim.opt.rtp:prepend(lazypath)
 ----------------- 其他配置 ------------------------------
 ----插件
 require("lazy").setup({
-{ 
-	"catppuccin/nvim", 
-	name = "catppuccin", 
-	priority = 1000 
+{
+	"catppuccin/nvim",
+	name = "catppuccin",
+	priority = 1000
 },
 {
 	"neoclide/coc.nvim",
@@ -86,9 +86,9 @@ require("lazy").setup({
    }
 },
 "nvim-telescope/telescope.nvim",
-{ 
-	"folke/neodev.nvim", 
-	opts = {} 
+{
+	"folke/neodev.nvim",
+	opts = {}
 },
 "voldikss/vim-floaterm",
 'rafcamlet/nvim-luapad',
@@ -126,7 +126,6 @@ require("lazy").setup({
   requires = {
     'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope.nvim',
-    -- OR 'ibhagwan/fzf-lua',
     'nvim-tree/nvim-web-devicons',
   },
   "neovim/nvim-lspconfig"
@@ -176,21 +175,13 @@ vim.cmd([[
   " 设置状态栏
 
 	let g:rainbow_active = 1
-
 	let g:airline#extensions#tabline#enabled = 1
-	
 	let g:airline#extensions#tabline#left_alt_sep = '|'
-
 	let g:airline#extensions#tabline#buffer_nr_show = 1
-
 	let g:airline#extensions#tabline#formatter = 'default'
-
 	let g:airline_theme = 'catppuccin'  " 主题
-
 	let g:airline#extensions#keymap#enabled = 1
-
 	let g:airline#extensions#tabline#buffer_idx_mode = 1
-
 	let g:airline#extensions#tabline#buffer_idx_format = {
          \ '0': '0 ',
          \ '1': '1 ',
@@ -203,27 +194,15 @@ vim.cmd([[
          \ '8': '8 ',
          \ '9': '9 ',
          \}
-	" 设置切换tab的快捷键 <\> + <q> 退出当前的 tab
-
-
-	" 修改了一些个人不喜欢的字符
-
 	if !exists('g:airline_symbols')
 		let g:airline_symbols = {}
 	endif
-
 	let g:airline_symbols.linenr = "CL" " current line
-
 	let g:airline_symbols.whitespace = '|'
-
 	let g:airline_symbols.maxlinenr = 'Ml' "maxline
-
 	let g:airline_symbols.branch = 'BR'
-
 	let g:airline_symbols.readonly = "RO"
-
 	let g:airline_symbols.dirty = "DT"
-
 	let g:airline_symbols.crypt = "CR"
 ]])
 
