@@ -1,37 +1,36 @@
-local opt = {
-	noremap = true,
-	silent = true,
+local opt = {noremap = true, silent = true}
+local keymap = vim.api.nvim_set_keymap
+
+local normal_keymaps = {
+    ["<C-p>"] = "<Cmd>Telescope find_files<CR>",
+    ["<leader>1"] = "<Cmd>BufferLineGoToBuffer 1<CR>",
+    ["<leader>2"] = "<Cmd>BufferLineGoToBuffer 2<CR>",
+    ["<leader>3"] = "<Cmd>BufferLineGoToBuffer 3<CR>",
+    ["<leader>4"] = "<Cmd>BufferLineGoToBuffer 4<CR>",
+    ["<leader>5"] = "<Cmd>BufferLineGoToBuffer 5<CR>",
+    ["<leader>6"] = "<Cmd>BufferLineGoToBuffer 6<CR>",
+    ["<leader>7"] = "<Cmd>BufferLineGoToBuffer 7<CR>",
+    ["<leader>8"] = "<Cmd>BufferLineGoToBuffer 8<CR>",
+    ["<leader>9"] = "<Cmd>BufferLineGoToBuffer 9<CR>",
+    ["<leader>-"] = "<Cmd>BufferLineCycleNext<CR>",
+    ["<leader>="] = "<Cmd>BufferLineCyclePrev<CR>",
+    ["<leader>q"] = ":bp<cr>:bd #<CR>",
+    ["<F3>"] = "<Cmd>TagbarToggle<CR>",
+    ["<F4>"] = "<Cmd>NvimTreeToggle<CR>",
+    ["<F9>"] = "<Cmd>DapContinue<CR>",
+    ["<C-b>"] = "<Cmd>lua require'dap'.toggle_breakpoint()<CR>",
+    ["<C-r_>"] = "<Plug>coc-refactor",
+    ["<C-n>"] = "<Cmd>lua vim.lsp.buf.hover()<CR>",
+    ["<C-]>"] = "<Cmd> IcDefine<CR>"
 }
 
-vim.api.nvim_set_keymap("n","<C-p>","<Cmd>Telescope find_files<CR>",opt)
-----映射<\> + 數字鍵切換到對應標簽
-vim.api.nvim_set_keymap("n","<leader>1","<Cmd>BufferLineGoToBuffer 1<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>2","<Cmd>BufferLineGoToBuffer 2<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>3","<Cmd>BufferLineGoToBuffer 3<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>4","<Cmd>BufferLineGoToBuffer 4<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>5","<Cmd>BufferLineGoToBuffer 5<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>6","<Cmd>BufferLineGoToBuffer 6<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>7","<Cmd>BufferLineGoToBuffer 7<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>8","<Cmd>BufferLineGoToBuffer 8<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>9","<Cmd>BufferLineGoToBuffer 9<CR>",opt)
-----映射<\> + <+/-> 切換到前一個或者後一個標簽
-vim.api.nvim_set_keymap("n","<leader>-","<Cmd>BufferLineCycleNext<CR>",opt)
-vim.api.nvim_set_keymap("n","<leader>=","<Cmd>BufferLineCyclePrev<CR>",opt)
-----映射<\> + <q> 推出當前tab
-vim.api.nvim_set_keymap("n","<leader>q",":bp<cr>:bd #<CR>",opt)
+local edit_keymaps = {["jj"] = "<esc>"}
 
-vim.api.nvim_set_keymap("n","<F3>","<Cmd>TagbarToggle<CR>",opt)
-vim.api.nvim_set_keymap("n","<F4>","<Cmd>NvimTreeToggle<CR>",opt)
-vim.api.nvim_set_keymap("n","<F9>","<Cmd>DapContinue<CR>",opt)
-vim.api.nvim_set_keymap("n","<C-b>","<Cmd>lua require'dap'.toggle_breakpoint()<CR>",opt)
+for key, mapping in pairs(normal_keymaps) do keymap("n", key, mapping, opt) end
 
-vim.api.nvim_set_keymap("n","<C-r>","<Plug>coc-refactor",opt)
+for key, mapping in pairs(edit_keymaps) do keymap("i", key, mapping, opt) end
 
 vim.api.nvim_command('command! IcRename lua vim.lsp.buf.rename()')
 vim.api.nvim_command('command! IcUseage lua vim.lsp.buf.incoming_calls()')
 vim.api.nvim_command('command! IcDefine lua vim.lsp.buf.definition()')
-
-vim.api.nvim_set_keymap("n","<C-]>","<Cmd> IcDefine<CR>",opt)
-
-vim.api.nvim_set_keymap("n","<C-n>","<Cmd>lua vim.lsp.buf.hover()<CR>",opt)
 

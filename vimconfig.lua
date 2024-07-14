@@ -69,4 +69,5 @@ vim.o.pumheight = 10
 vim.o.clipboard = "unnamedplus"
 vim.cmd.colorscheme("catppuccin") -- 设置主题
 
+vim.g.rainbow_active = 1
 

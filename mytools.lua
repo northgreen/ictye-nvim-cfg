@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
             if status == 0 then
                 find_cargo_and_tags_in_parents(vim.fn.expand('%:p:h'))
             else
-                run_ctags(vim.fn.expand('%:p:h'))
+                -- run_ctags(vim.fn.expand('%:p:h'))
             end
         end
     })
@@ -80,5 +80,4 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
         end,
     })
 
-	{{{{{}}}}}
 

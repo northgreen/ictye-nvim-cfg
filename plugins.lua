@@ -1,16 +1,8 @@
 local lspconfig = require'lspconfig'
-local neodev = require("neodev")
 local lspkind = require("lspkind")
 local dap = require("dap")
 local dapui = require("dapui")
 
-neodev.setup({
-  library = {
-	  plugins = {
-		  "nvim-dap-ui"
-	  },
-  types = true },
-})
 dapui.setup({})
 lspconfig.phan.setup{}
 ------------ tagbar --------------
@@ -31,8 +23,6 @@ vim.cmd(
     \}
 ]]
 )
-
-
 
 ----- neodev --------
 
@@ -131,4 +121,7 @@ end
 dap.listeners.before.event_exited.dapui_config = function()
   dapui.close()
 end
+
+
+
 
