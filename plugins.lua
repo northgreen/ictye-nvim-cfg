@@ -1,5 +1,4 @@
 local lspconfig = require'lspconfig'
-local lspkind = require("lspkind")
 local dap = require("dap")
 local dapui = require("dapui")
 
@@ -24,41 +23,6 @@ vim.cmd(
     \}
 ]]
 )
-
------ neodev --------
-
--- lsp/kind.lua
-lspkind.init({
-	mode = "symbol_text",
-	preset = "codicons",
-	symbol_map = {
-		Text = "󰉿",
-		Method = "󰆧",
-		Function = "󰊕",
-		Constructor = "",
-		Field = "󰜢",
-		Variable = "󰀫",
-		Class = "󰠱",
-		Interface = "",
-		Module = "",
-		Property = "󰜢",
-		Unit = "󰑭",
-		Value = "󰎠",
-		Enum = "",
-		Keyword = "󰌋",
-		Snippet = "",
-		Color = "󰏘",
-		File = "󰈙",
-		Reference = "󰈇",
-		Folder = "󰉋",
-		EnumMember = "",
-		Constant = "󰏿",
-		Struct = "󰙅",
-		Event = "",
-		Operator = "󰆕",
-		TypeParameter = ""
-	},
-})
 
 ------dap----------
 ---adapters
@@ -106,7 +70,6 @@ dap.configurations.rust = {
   },
 }
 
-----neodev---
 
 
 -----dapui------
