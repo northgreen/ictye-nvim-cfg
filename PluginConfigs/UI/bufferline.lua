@@ -1,17 +1,17 @@
 local bufferline = require('bufferline')
 bufferline.setup({
 	options = {
-		numbers = "original",
+		numbers = "raise",
 		offsets = {
 			{
 				filetype = "NvimTree",
 				text = "File Explorer"
 			}
 		},
-		hover = {
-			enabled = true,
-			delay = 200,
-			reveal = {'close'}
-		}
-    }
+		diagnostics = "coc",
+		color_icons = false,
+    },
+	highlights = require("catppuccin.groups.integrations.bufferline").get({
+	})
 })
+

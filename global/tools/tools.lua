@@ -79,5 +79,3 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
             vim.fn.execute("silent! write")
         end,
     })
-
-

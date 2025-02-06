@@ -16,19 +16,30 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
+
 ----------------- 其他配置 ------------------------------
 ----插件
 local function InitPlugin()
-    require('lazy').setup(require("PluginConfigs.plugins"))
+    require('lazy').setup({
+        git = {
+            url_format = "git@github.com:%s.git" -- 使用ssh克隆倉庫
+        },
+        spec = require("PluginConfigs.plugins"),
+        ui = {
+            border = "rounded",
+            tittle = "Plugin Manager",
+            tittle_pos = "center"
+        }
+    })
 end
-InitPlugin()
 
+InitPlugin()
 vim.opt.termguicolors = true
 
--- require("bufferline").setup {}
-require("language")
+require("PluginConfigs.Language.language")
 require("keymap")
-require("plugins")
 require("vimconfig")
-require("mytools")
+require("global.tools.tools")
+
+-- require('Test.test_init')
 

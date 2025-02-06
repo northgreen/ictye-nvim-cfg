@@ -4,3 +4,4 @@ local function script_path()
 end
 
 return script_path()
+

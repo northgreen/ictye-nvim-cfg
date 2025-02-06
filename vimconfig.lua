@@ -68,7 +68,7 @@ vim.o.shortmess = vim.o.shortmess .. "c"
 vim.o.pumheight = 10
 vim.o.clipboard = "unnamedplus"
 
+vim.opt.updatetime = 200
 
 vim.cmd.colorscheme("catppuccin") -- 设置主题
-
 

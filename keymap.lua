@@ -30,7 +30,22 @@ for key, mapping in pairs(normal_keymaps) do keymap("n", key, mapping, opt) end
 
 for key, mapping in pairs(edit_keymaps) do keymap("i", key, mapping, opt) end
 
-vim.api.nvim_command('command! IcRename lua vim.lsp.buf.rename()')
-vim.api.nvim_command('command! IcUseage lua vim.lsp.buf.incoming_calls()')
-vim.api.nvim_command('command! IcDefine lua vim.lsp.buf.definition()')
+
+vim.api.nvim_create_user_command("IcRename",
+function()
+	vim.lsp.buf.rename()
+end,
+{})
+
+vim.api.nvim_create_user_command("IcUseage",
+function ()
+	vim.buf.incoming_calls()
+end,
+{})
+
+vim.api.nvim_create_user_command("IcDefine",
+function()
+	vim.buf.definition()
+end,
+{})
 

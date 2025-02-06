@@ -8,14 +8,15 @@ return {
         end
     },
     {
-		'neoclide/coc.nvim', branch = 'release'
+		'neoclide/coc.nvim',
+		branch = 'release'
     },
     {
         "nvim-tree/nvim-tree.lua",
         version = "*",
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function() require("nvim-tree").setup({}) end
-    }, 
+    },
     'nvim-tree/nvim-web-devicons',
     "Yggdroot/indentLine",
     'SHougo/context_filetype.vim',
@@ -26,18 +27,25 @@ return {
     'mfussenegger/nvim-dap',
     'sbdchd/neoformat',
     'jiangmiao/auto-pairs',
-    {
-        "luochen1990/rainbow",
-        priority = 100
-    },
     "tpope/vim-surround",
     "theHamsta/nvim-dap-virtual-text",
     {
         'mrcjkb/rustaceanvim',
         version = '^4', -- Recommended
         lazy = false    -- This plugin is already lazy
-    },
-    {
+    },{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},{
         "kdheepak/lazygit.nvim",
         cmd = {
             "LazyGit", "LazyGitConfig", "LazyGitCurrentFile",
@@ -85,7 +93,9 @@ return {
         'nvimdev/dashboard-nvim',
         event = 'VimEnter',
         config = require('PluginConfigs.UI.dashboard').cfg,
-        dependencies = { { 'nvim-tree/nvim-web-devicons' } }
+        dependencies = {
+			{ 'nvim-tree/nvim-web-devicons' }
+		}
     },
     'terryma/vim-multiple-cursors',
     {
@@ -111,7 +121,6 @@ return {
         'stevearc/dressing.nvim',
         opts = {}
     },
-    "hrsh7th/nvim-cmp",
     {
         "rcarriga/nvim-dap-ui",
         dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
@@ -121,14 +130,20 @@ return {
 	},
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    'neovim/nvim-lspconfig',
     'hrsh7th/cmp-nvim-lsp',
+	'hrsh7th/vim-vsnip',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
+	'hrsh7th/cmp-nvim-lua',
+    'hrsh7th/cmp-vsnip',
+	'hrsh7th/vim-vsnip-integ',
+	'jbyuki/one-small-step-for-vimkind',
     'hrsh7th/cmp-cmdline',
     {
         'luozhiya/fittencode.nvim',
-        config = function() require('fittencode').setup() end
+		config = function() require('fittencode').setup({
+			completion_mode="source"
+		}) end
     },{
         'nvim-lualine/lualine.nvim',
         config = require('PluginConfigs.UI.lualine_cfg').cfg
@@ -137,5 +152,12 @@ return {
         config=function ()
 			require('PluginConfigs.UI.bufferline')
         end
-    }
+    },{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		config = function ()
+			require('PluginConfigs.Language.treesitter')
+		end
+	},
+	"HiPhish/rainbow-delimiters.nvim"
 }
