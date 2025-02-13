@@ -1,5 +1,5 @@
 {
-	"suggest.autoTrigger":"none",
+	"$schema":"https://raw.githubusercontent.com/neoclide/coc.nvim/89cd1a2333e6eac2cc173e117d354d1b02b74057/data/schema.json",
 	"languageserver": {
 		"clangd": {
 			"command": "clangd",

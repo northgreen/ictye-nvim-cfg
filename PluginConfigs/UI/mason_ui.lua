@@ -1,3 +1,0 @@
-return {
-	border = "single"
-}
