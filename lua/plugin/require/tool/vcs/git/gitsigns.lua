@@ -1,7 +1,7 @@
 --- @return LazyPluginSpec
 return {
     'lewis6991/gitsigns.nvim',
-	enabled = false,
+	-- enabled = false,
     config = function() require('gitsigns').setup() end
 }
 

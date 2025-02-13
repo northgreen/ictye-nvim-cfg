@@ -3,30 +3,12 @@ local Menu = require("nui.menu")
 local event = require("nui.utils.autocmd").event
 
 local trouble = require("trouble")
-
-local function bind(func, ...)
-	local arg = {...}
-	return function ()
-		func(unpack(arg))
-	end
-end
-
-local menu_opts = {
-	{
-		["Search"] = require 'telescope.builtin'.builtin,
-		["Questions"] = bind(trouble.open, "questions"),
-		["Find and Replace"] = bind(vim.cmd, "GrugFar"),
-		["Find in Files"] = bind(vim.cmd, "RipSubstitute"),
-		["Terminal"] = bind(vim.cmd, "FloatermNew powershell"),
-		["Git"] = bind(vim.cmd, "LazyGit"),
-		["Debug"] = bind(vim.cmd, "DapNew"),
-	}
-}
+local bind = require 'util.functions'.bind
 
 --- @return NuiTree.Node
-local function get_line()
+local function get_line(menu)
     local lines = {}
-    for _,line in ipairs(menu_opts) do
+    for _,line in ipairs(menu) do
         if type(line) == "string" then
             table.insert(lines, Menu.separator(line, {
                 char = "-",
@@ -41,8 +23,21 @@ local function get_line()
     return lines
 end
 
-local l = get_line()
+local menu_opts = {
+	{
+		["Search"] = require 'telescope.builtin'.builtin,
+		["Questions"] = bind(trouble.open, "questions"),
+		["Find and Replace"] = bind(vim.cmd, "GrugFar"),
+		["Find in Files"] = bind(vim.cmd, "RipSubstitute"),
+		["Terminal"] = bind(vim.cmd, "FloatermNew powershell"),
+		["Git"] = bind(vim.cmd, "LazyGit"),
+		["Debug"] = bind(vim.cmd, "DapNew"),
+	}
+}
 
+
+
+local l = get_line(menu_opts)
 local menu = Menu({
     position = "50%",
     size = {width = 25, height = 5},

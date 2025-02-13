@@ -55,6 +55,7 @@ return {
 	require 'plugin.require.tool.hydra',
 	require 'plugin.require.language.toolchain.debug.mason_nvim_dap',
 	require 'plugin.require.tool.im-select',
+	-- require 'plugin.require.tool.ai.avante',
 --------others
 	require 'plugin.require.tool.firenvim',
 	'MunifTanjim/nui.nvim',
