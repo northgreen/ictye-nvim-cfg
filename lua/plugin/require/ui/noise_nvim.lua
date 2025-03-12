@@ -1,34 +1,63 @@
---- @return LazyPluginSpec
 return {
-	-- enabled = not vim.g.started_by_firenvim,
-	enabled = false,
+    enabled = (not vim.g.started_by_firenvim) and options.ui.ui_options.noise,
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {},
-    dependencies = {
-        -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-        "MunifTanjim/nui.nvim", -- OPTIONAL:
-        --   `nvim-notify` is only needed, if you want to use the notification view.
-        --   If not available, we use `mini` as the fallback
-        "rcarriga/nvim-notify"
-    },
-    config = function()
-        require("noice").setup({
-            lsp = {
-                override = {
-                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                    ["vim.lsp.util.stylize_markdown"] = true,
-                    ["cmp.entry.get_documentation"] = true
-                }
+    opts = {
+        lsp = {
+            override = {
+                ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                ["vim.lsp.util.stylize_markdown"] = true,
+                ["cmp.entry.get_documentation"] = true
             },
-            -- you can enable a preset for easier configuration
-            presets = {
-                bottom_search = true, -- use a classic bottom cmdline for search
-                command_palette = false, -- position the cmdline and popupmenu together
-                long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = true -- add a border to hover docs and signature help
+            documentation = {
+                view = "hover",
+                opts = {
+                    lang = "markdown",
+                    replace = true,
+                    render = "plain",
+                    format = {"{message}"},
+                    win_options = {concealcursor = "n", conceallevel = 3}
+                }
             }
-        })
-    end
+        },
+        presets = {
+            bottom_search = false,
+            command_palette = false,
+            long_message_to_split = true,
+            inc_rename = false,
+            lsp_doc_border = true
+        },
+        popupmenu = {
+            enabled = true,
+            backend = "nui",
+            kind_icons = {}
+        },
+        redirect = {view = "popup", filter = {event = "msg_show"}},
+        views = {
+            notify = {
+                render = 'compact',
+                stages = 'slide_out',
+                timeout = 500,
+                top_down = false
+            },
+			cmdline_popup = {
+				position = {
+					row = -3,
+					col = -1,
+				},
+			},
+		},
+        commands = {},
+        routes = {
+            {
+                filter = {event = "msg_show", kind = "", find = "written"},
+                opts = {skip = true}
+            },
+            {
+                filter = {event = "msg_show", kind = "search_count"},
+                opts = {skip = true}
+            }
+        }
+    },
+    dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"}
 }

@@ -1,32 +1,4 @@
-local function isDiskRootDirectory(path)
--- 检查路径是否以磁盘符号开头，并且后面只包含路径分隔符
-return string.match(path, '^%a:$') ~= nil or string.match(path,'^%a:\\$') ~=nil
-end
-
-local function getDirectoryFromFilePath(filePath)
-    local pathSeparator = package.config:sub(1,1) -- 获取路径分隔符，不同操作系统可能不同
-    return filePath:match('(.*' .. pathSeparator .. ')')
-end
-
-local function fileExists(filePath)
-    local file = io.open(filePath, 'r')
-    if file then
-        io.close(file)
-        return true
-    else
-        return false
-    end
-end
-
-local function getParentDirectory(filePath)
-    local pathSeparator = package.config:sub(1,1) -- 获取路径分隔符，不同操作系统可能不同
-    local parentDirectory = filePath:match('^(.*' .. pathSeparator .. ')')
-    return parentDirectory
-end
-
-
 local uv = vim.loop -- 使用 Neovim 的内置库
-
 
 local function find_cargo_and_tags_in_parents(n_path)
     local root_path = n_path:match('^([a-zA-Z]:[/\\])') -- 获取 Windows 根目录，例如 C:\

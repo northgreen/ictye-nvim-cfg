@@ -1,11 +1,4 @@
---- load plugins using lazy.nvim
 
-local function script_path()
-    local str = debug.getinfo(1, 'S').source:sub(2)
-    return str:match('(.*[/ \\])')
-end
-local path = script_path() .. '?.lua'
-package.path = package.path .. ';' .. path .. ';..\\?.lua;'
 
 --- load or install lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
@@ -28,7 +21,9 @@ local function init_plugin()
             border = 'rounded',
             tittle = 'Plugin Manager',
             tittle_pos = 'center'
-        }
+        },
+        dev = {path = require('util.local_require')('')},
+        install = {colorscheme = {'catppuccin'}}
     })
 end
 

@@ -1,2 +1,4 @@
---- @return LazyPluginSpec
-return {'anuvyklack/hydra.nvim'}
+return {
+	'anuvyklack/hydra.nvim',
+	lazy = true
+}

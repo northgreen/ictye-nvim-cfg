@@ -1,25 +1,38 @@
---- @return LazyPluginState
 return {
     'hrsh7th/nvim-cmp',
     opts = function(_, opts)
         opts.sources = opts.sources or {}
         table.insert(opts.sources, {name = 'lazydev', group_index = 0})
     end,
+    events = {'BufReadPre'},
+    lazy = true,
     config = function()
         local cmp = require 'cmp'
         local lspkind = require 'lspkind'
 
         cmp.setup({
             formatting = {
-                format = lspkind.cmp_format({
-                    with_text = true,
-                    maxwidth = 50,
-                    before = function(entry, vim_item)
-                        vim_item.menu =
-                            '[' .. string.upper(entry.source.name) .. ']'
-                        return vim_item
+                expandable_indicator = true,
+                fields = {'abbr', 'kind', 'menu'},
+                format = function(entry, item)
+                    local color_item = require("nvim-highlight-colors").format(
+                                           entry, {kind = item.kind})
+                    item = lspkind.cmp_format({
+                        mode = 'symbol_text',
+                        symbol_map = options.ui.symbal_map,
+                        before = function(rentry, vim_item)
+                            vim_item.menu = '[' ..
+                                                string.upper(rentry.source.name) ..
+                                                ']'
+                            return vim_item
+                        end
+                    })(entry, item)
+                    if color_item.abbr_hl_group then
+                        item.kind_hl_group = color_item.abbr_hl_group
+                        item.kind = color_item.abbr
                     end
-                })
+                    return item
+                end
             },
             snippet = {
                 expand = function(args)
@@ -68,7 +81,10 @@ return {
     end,
     dependencies = {
         'onsails/lspkind.nvim', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
-        'hrsh7th/cmp-nvim-lua', 'hrsh7th/cmp-nvim-lsp',
-        {'hrsh7th/cmp-vsnip', dependencies = {'hrsh7th/vim-vsnip'}}
+        'hrsh7th/cmp-nvim-lua',
+        {'hrsh7th/cmp-nvim-lsp', events = {'BufReadPre'}}, {
+            'hrsh7th/cmp-vsnip',
+            dependencies = {'hrsh7th/vim-vsnip-integ', 'hrsh7th/vim-vsnip'}
+        }
     }
 }

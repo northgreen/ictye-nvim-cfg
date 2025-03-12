@@ -1,40 +1,12 @@
---- @return LazyPluginSpec
 return {
     'SmiteshP/nvim-navic',
     depedencies = {'neovim/nvim-lspconfig'},
-    config = function()
-        require('nvim-navic').setup {
-            icons = {
-                File = "󰈙 ",
-                Module = " ",
-                Namespace = "󰌗 ",
-                Package = " ",
-                Class = "󰌗 ",
-                Method = "󰆧 ",
-                Property = " ",
-                Field = " ",
-                Constructor = " ",
-                Enum = "󰕘",
-                Interface = "󰕘",
-                Function = "󰊕 ",
-                Variable = "󰆧 ",
-                Constant = "󰏿 ",
-                String = "󰀬 ",
-                Number = "󰎠 ",
-                Boolean = "◩ ",
-                Array = "󰅪 ",
-                Object = "󰅩 ",
-                Key = "󰌋 ",
-                Null = "󰟢 ",
-                EnumMember = " ",
-                Struct = "󰌗 ",
-                Event = " ",
-                Operator = "󰆕 ",
-                TypeParameter = "󰊄 "
-            },
+	lazy = true,
+	opts = {
+            icons = options.ui.symbal_map,
             lsp = {auto_attach = false, preference = nil},
-            highlight = false,
-            separator = " > ",
+            highlight = true,
+            separator = options.ui.nav_option.sparator,
             depth_limit = 0,
             depth_limit_indicator = "..",
             safe_output = true,
@@ -42,5 +14,4 @@ return {
             click = false,
             format_text = function(text) return text end
         }
-    end
 }

@@ -1,7 +1,51 @@
 --- @return LazyPluginSpec
 return {
     "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {
+        modes = {
+            questions = {
+                mode = "diagnostics",
+                desc = "Trouble Diagnostics",
+                relative = "editor",
+                preview = {
+                    type = "split",
+                    relative = "win",
+                    position = "right",
+                    size = 0.3
+                }
+            }
+        },
+        icons = {
+            kinds = {
+                File = ' ',
+                Module = ' ',
+                Namespace = ' ',
+                Package = ' ',
+                Class = ' ',
+                Method = ' ',
+                Property = ' ',
+                Field = ' ',
+                Constructor = ' ',
+                Enum = ' ',
+                Interface = ' ',
+                Function = ' ',
+                Variable = ' ',
+                Constant = ' ',
+                String = ' ',
+                Number = ' ',
+                Boolean = ' ',
+                Array = ' ',
+                Object = ' ',
+                Key = ' ',
+                Null = ' ',
+                EnumMember = ' ',
+                Struct = ' ',
+                Event = ' ',
+                Operator = ' ',
+                TypeParameter = ' '
+            }
+        }
+    },
     cmd = "Trouble",
     keys = {
         {
@@ -29,20 +73,5 @@ return {
             "<cmd>Trouble qflist toggle<cr>",
             desc = "Quickfix List (Trouble)"
         }
-    },
-    config = function()
-        require("trouble").setup {
-            modes = {
-                questions = {
-                    mode = "diagnostics",
-                    preview = {
-                        type = "split",
-                        relative = "win",
-                        position = "right",
-                        size = 0.3
-                    }
-                }
-            }
-        }
-    end
+    }
 }

@@ -2,7 +2,6 @@
 return {
 	'chrisgrieser/nvim-rip-substitute',
 	cmd = 'RipSubstitute',
-	event = 'BufRead',
 	opts = {},
 	keys = {
 		{

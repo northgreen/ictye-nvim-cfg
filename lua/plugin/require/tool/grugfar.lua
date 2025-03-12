@@ -1,9 +1,6 @@
 --- @return LazyPluginSpec
 return {
     'MagicDuck/grug-far.nvim',
-	event = 'BufRead',
-    config = function()
-        require('grug-far').setup({
-        });
-    end
+	cmd = 'GrugFar',
+	opts = {}
 }
