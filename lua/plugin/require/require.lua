@@ -59,6 +59,7 @@ return {
 	require 'plugin.require.language.language_tool.cmp_rime',
 	require 'plugin.require.language.language_tool.lsp-signature',
 	require 'plugin.require.ui.telescope_select_ui',
+	require 'plugin.require.tool.telescope_fzf',
 
 --------others
 	require 'plugin.require.tool.firenvim',

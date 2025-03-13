@@ -22,6 +22,7 @@ ploadmodule 'plugin_config'
 -- configs
 ploadmodule 'config_init'
 ploadmodule 'core.autocommand_set'
+ploadmodule 'core.highlights'
 
 -- some test code
 ploadmodule 'test.test_init'

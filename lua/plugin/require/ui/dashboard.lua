@@ -23,16 +23,22 @@ return {
 			disable_move = true,
 			shortcut = {
 				{
-					desc = 'Update',
+					desc = '󰚰 Update',
 					group = '@property',
 					action = 'Lazy update',
 					key = 'u'
 				},
 				{
-					desc = 'Lazy',
+					desc = ' Lazy',
 					group = '@property',
 					action = 'Lazy',
 					key = 'l'
+				},
+				{
+					desc = ' Search',
+					group = '@property',
+					action = 'Telescope',
+					key = 's'
 				}
 			},
 			hide = {tabline = true, statusline = true, winbar = true}

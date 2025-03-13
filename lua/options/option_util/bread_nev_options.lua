@@ -23,9 +23,7 @@ return {
         end
     end,
     navic = function()
-        local navic = require("nvim-navic")
-        return function() return navic.get_location() end,
-               function() return navic.is_available() end
+        return 'navic',nil
     end,
     disabled = function() return function() end, function() end end
 }

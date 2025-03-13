@@ -1,19 +1,15 @@
---- @return LazyPluginSpec
 local opsympal = options.ui.symbal_map
 return {
     "hedyhli/outline.nvim",
-	cmd = {
-		'Outline',
-		'OutlineOpen',
-		'OutlineClose',
-		'OutlineFocus',
-		'OutlineFollow',
-		'OutlineStatus',
-		'OutlineRefresh',
-		'OutlineFocusCode',
-		'OutlineFocusOutline'
-	},
+    cmd = {
+        'Outline', 'OutlineOpen', 'OutlineClose', 'OutlineFocus',
+        'OutlineFollow', 'OutlineStatus', 'OutlineRefresh', 'OutlineFocusCode',
+        'OutlineFocusOutline'
+    },
     opts = {
+        providers = {
+            priority = { 'lsp', 'coc', 'markdown', 'norg', 'treesitter', 'man', 'jax' },
+        },
         symbols = {
             icons = {
                 File = {icon = opsympal.File, hl = 'Identifier'},
@@ -41,7 +37,10 @@ return {
                 Struct = {icon = opsympal.Struct, hl = 'Structure'},
                 Event = {icon = opsympal.Event, hl = 'Type'},
                 Operator = {icon = opsympal.Operator, hl = 'Identifier'},
-                TypeParameter = {icon = opsympal.TypeParameter, hl = 'Identifier'},
+                TypeParameter = {
+                    icon = opsympal.TypeParameter,
+                    hl = 'Identifier'
+                },
                 Component = {icon = '󰅴', hl = 'Function'},
                 Fragment = {icon = '󰅴', hl = 'Constant'},
                 TypeAlias = {icon = ' ', hl = 'Type'},
@@ -50,5 +49,8 @@ return {
                 Macro = {icon = ' ', hl = 'Function'}
             }
         }
+    },
+	dependencies = {
+      'epheien/outline-treesitter-provider.nvim'
     }
 }

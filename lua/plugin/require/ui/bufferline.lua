@@ -1,15 +1,4 @@
 --- use https://github.com/akinsho/bufferline.nvim to show bufferline in nvim
-local h = {}
-setmetatable(h, {
-    __index = function(t, k)
-        local _h = require'catppuccin.groups.integrations.bufferline'.get({
-            styles = {'boid',"italic"}
-        })
-        rawset(t, k, _h)
-		return _h
-    end
-})
-
 return {
     'akinsho/bufferline.nvim',
     version = '*',
@@ -38,16 +27,33 @@ return {
     dependencies = {'catppuccin/nvim', 'nvim-tree/nvim-web-devicons'},
     opts = {
         options = {
-            numbers = 'both',
-            offsets = {{filetype = 'NvimTree', text = '󰙅  File Explorer'}},
+			themeable = true,
+            numbers = function(opts)
+                return string.format('%s.%s', opts.ordinal, opts.raise(opts.id))
+            end,
+            offsets = {
+				{filetype = 'NvimTree', text = '󰙅  File Explorer'},
+				{filetype = 'Outline', text = '  Outline'},
+				{filetype = 'Dashboard', text = '  Dashboard'}
+			},
             diagnostics = 'nvim_lsp',
+            indicator = {icon = '▎'},
             color_icons = false
-        },
-        highlights = h
+        }
     },
     config = function(_, opts)
-        require("bufferline").setup(opts)
-        vim.api.nvim_create_autocmd({"BufAdd", "BufDelete"},{
+        local frappe = require("catppuccin.palettes").get_palette('frappe')
+        local _h = require'catppuccin.groups.integrations.bufferline'.get({
+            styles = {'boid', "italic"},
+            custom = {frappe = {fill = {bg = frappe.crust}}}
+        })
+
+        local bufferline = require('bufferline')
+        opts.highlights = _h
+
+        bufferline.setup(opts)
+        vim.api.nvim_create_autocmd({"BufAdd", "BufDelete"},
+                                    {
             callback = function()
                 vim.schedule(function() pcall(nvim_bufferline) end)
             end

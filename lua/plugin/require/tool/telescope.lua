@@ -8,19 +8,23 @@ return {
         telescope.setup {
             defaults = {
                 mappings = {
-                    i = {
-                        ["<C-h>"] = "which_key"
-                    },
+                    i = {["<C-h>"] = "which_key"},
                     n = {['q'] = require('telescope.actions').close}
                 }
             },
-            pickers = {
-            },
+            pickers = {},
             extensions = {
+                fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = true,
+                    override_file_sorter = true,
+                    case_mode = "smart_case"
+                }
             }
         }
 
         pcall(telescope.load_extension, 'project_dir_cfg')
         pcall(telescope.load_extension, "noice")
+        pcall(telescope.load_extension, "fzf")
     end
 }

@@ -41,13 +41,9 @@ local attach_lsp_to_existing_buffers = vim.schedule_wrap(function()
     end
 end)
 
-Autocmd('BufReadPre',{callback = function ()
-        if not initd then init() end
-end})
-
-Autocmd('BufEnter', {
+Autocmd('BufRead', {
     callback = function(arg)
-
+        if not initd then init() end
         local ft = vim.bo[arg.buf].filetype
         local i = init_table[ft]
         if i then

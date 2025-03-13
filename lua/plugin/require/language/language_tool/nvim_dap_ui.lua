@@ -2,6 +2,7 @@ return {
     'rcarriga/nvim-dap-ui',
     lazy = true,
 	cmd = {'DapNew'},
+	opts = {},
     config = function(_, opts)
         require("dapui").setup(opts)
         if options.ui.dapui.autoopen then
