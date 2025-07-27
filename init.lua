@@ -1,6 +1,6 @@
 --- @author Ictye
 --- Configuration file for Neovim
---- CopyUp(x) by Ictye(northgreen)
+--- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 do
     --- Config paths
     local data_dir = vim.fn.stdpath('data') --[[@as string]]

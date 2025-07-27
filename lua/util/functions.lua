@@ -50,9 +50,9 @@ local c2 = {}
 ---@param func_desc string[]
 ---@return function
 function M.lazy_function_call(module, func_desc)
-    local twc = M.three_way_compare
+    local t = M.three_way_compare
     return function(...)
-        module = twc(type(module) == "string",
+        module = t(type(module) == "string",
                      function() return require(module --[[@as string]]) end,
                      function() return module end)()
         local signature = tostring(module) .. table.concat(func_desc, "")
