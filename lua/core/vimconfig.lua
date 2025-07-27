@@ -71,5 +71,13 @@ vim.o.clipboard = 'unnamedplus'
 vim.opt.updatetime = 200
 vim.opt.termguicolors = true
 
+-- tab
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.softtabstop = 4
+
+vim.g.langmenu = 'zh'
+
 vim.cmd.colorscheme('catppuccin') -- 设置主题
 

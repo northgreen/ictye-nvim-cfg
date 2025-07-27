@@ -15,8 +15,8 @@ return {
                 expandable_indicator = true,
                 fields = {'abbr', 'kind', 'menu'},
                 format = function(entry, item)
-                    local color_item = require("nvim-highlight-colors").format(
-                                           entry, {kind = item.kind})
+                    local color_item = require("nvim-highlight-colors")
+                                      .format(entry, {kind = item.kind})
                     item = lspkind.cmp_format({
                         mode = 'symbol_text',
                         symbol_map = options.ui.symbal_map,
@@ -40,8 +40,8 @@ return {
                 end
             },
             window = {
-                completion = cmp.config.window.bordered(),
-                documentation = cmp.config.window.bordered()
+                completion = cmp.config.window.bordered({zindex = 40}),
+                documentation = cmp.config.window.bordered({zindex = 40})
             },
             mapping = cmp.mapping.preset.insert({
                 ['<Tab>'] = cmp.mapping(function(fallback)
@@ -57,12 +57,14 @@ return {
                     else
                         fallback()
                     end
-                end, {'i', 's', 'c'})
+                end, {'i', 's', 'c'}),
+                ['<C-j>'] = cmp.mapping.select_next_item({'i', 's', 'c'}),
+                ['<C-k>'] = cmp.mapping.select_prev_item({'i', 's', 'c'})
             }),
             sources = cmp.config.sources({
                 {name = 'nvim_lsp'}, {name = 'vsnip'}, {name = 'path'},
                 {name = 'coc'}, {name = 'buffer'},
-                {name = 'fittencode', group_index = 1}
+                {name = 'fittencode', group_index = 1},{name = 'avante'}
             })
         })
 

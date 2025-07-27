@@ -1,7 +1,9 @@
---- @return LazyPluginSpec
 return {
     'catppuccin/nvim',
+	-- transparent_background = true,
     name = 'catppuccin',
     priority = 1000,
-    config = function() require('catppuccin').setup({flavour = 'frappe'}) end
+	opts = {
+		flavour = 'frappe',
+	},
 }

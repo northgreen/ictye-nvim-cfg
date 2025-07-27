@@ -1,4 +1,3 @@
---- @return LazyPluginSpec
 return {
     'ray-x/navigator.lua',
 	enabled = false,

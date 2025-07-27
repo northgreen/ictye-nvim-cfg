@@ -25,14 +25,20 @@ return {
                 'dapui_scopes',
                 'dapui_console',
                 'dashboard',
+                'Avante',
+                'AvanteInput',
+                'AvanteSelectedFiles',
                 winbar = {'NvimTree', 'Outline', 'trouble'}
             }
         },
         sections = {
             lualine_a = {},
             lualine_b = {
-                {'branch', separator = {left = '',right = ''}, right_padding = 2},
-                'diff', 'diagnostics'
+                {
+                    'branch',
+                    separator = {left = '', right = ''},
+                    right_padding = 2
+                }, 'diff', 'diagnostics'
             },
             lualine_c = {},
             lualine_x = {'encoding', 'fileformat', 'filetype'},
@@ -73,14 +79,47 @@ return {
         }
     },
     config = function(_, opts)
-        opts.winbar.lualine_x = {
-            {
-                --- @diagnostic disable-next-line undefined-field
-                require("noice").api.status.message.get_hl,
-                --- @diagnostic disable-next-line undefined-field
-                cond = require("noice").api.status.message.has
+        local theme = require 'catppuccin.utils.lualine'()
+        local catppuccin = require'catppuccin.palettes'.get_palette()
+
+        opts.options.theme = theme
+        theme.normal.c.bg = catppuccin.base
+        theme.inactive.a.bg = catppuccin.base
+        theme.inactive.b.bg = catppuccin.base
+        theme.inactive.c.bg = catppuccin.base
+
+        local ok, noice = pcall(require, 'noice')
+        if ok then
+            opts.winbar.lualine_x = {
+                {
+                    --- @diagnostic disable-next-line undefined-field
+                    noice.api.status.message.get_hl,
+                    --- @diagnostic disable-next-line undefined-field
+                    cond = noice.api.status.message.has
+                }
             }
-        }
+            opts.sections.lualine_c = {
+                {
+                    --- @diagnostic disable-next-line undefined-field
+                    noice.api.status.mode.get,
+                    --- @diagnostic disable-next-line undefined-field
+                    cond = noice.api.status.mode.has,
+                    color = {fg = "#ff9e64"}
+                }, {
+                    --- @diagnostic disable-next-line undefined-field
+                    noice.api.status.command.get,
+                    --- @diagnostic disable-next-line undefined-field
+                    cond = noice.api.status.command.has,
+                    color = {fg = "#ff9e64"}
+                }, {
+                    --- @diagnostic disable-next-line undefined-field
+                    noice.api.status.search.get,
+                    --- @diagnostic disable-next-line undefined-field
+                    cond = noice.api.status.search.has,
+                    color = {fg = "#ff9e64"}
+                }
+            }
+        end
 
         opts.winbar.lualine_y = {
             {
@@ -92,28 +131,6 @@ return {
             }
         }
 
-		-- TODO: process when noice is not installed
-        opts.sections.lualine_c = {
-            {
-                --- @diagnostic disable-next-line undefined-field
-                require("noice").api.status.mode.get,
-                --- @diagnostic disable-next-line undefined-field
-                cond = require("noice").api.status.mode.has,
-                color = {fg = "#ff9e64"}
-            }, {
-                --- @diagnostic disable-next-line undefined-field
-                require("noice").api.status.command.get,
-                --- @diagnostic disable-next-line undefined-field
-                cond = require("noice").api.status.command.has,
-                color = {fg = "#ff9e64"}
-            }, {
-                --- @diagnostic disable-next-line undefined-field
-                require("noice").api.status.search.get,
-                --- @diagnostic disable-next-line undefined-field
-                cond = require("noice").api.status.search.has,
-                color = {fg = "#ff9e64"}
-            }
-        }
         require('lualine').setup(opts)
     end,
     depedencies = {'nvim-treesitter/nvim-treesitter'}

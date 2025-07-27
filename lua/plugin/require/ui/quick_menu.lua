@@ -1,4 +1,3 @@
---- @return LazyPluginSpec
 local bind = require'util.functions'.bind
 local lazy_call = require'util.functions'.lazy_call
 

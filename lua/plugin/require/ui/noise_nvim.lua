@@ -36,7 +36,7 @@ return {
         views = {
             notify = {
                 render = 'compact',
-                stages = 'slide_out',
+                animate = false,
                 timeout = 500,
                 top_down = false
             },

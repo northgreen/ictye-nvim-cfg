@@ -1,0 +1,12 @@
+{
+	"$schema": "https://raw.githubusercontent.com/luals/vscode-lua/master/setting/schema-zh-cn.json",
+	"completion.autoRequire": false,
+	"hint.arrayIndex":"Enable",
+    "workspace": {
+        "library": [
+            "C:\\Users\\north\\AppData\\Local\\nvim\\lua_docs\\luvit-meta",
+            "C:\\Program Files\\Neovim\\share\\nvim\\runtime\\lua",
+            "C:\\Users\\north\\AppData\\Local\\nvim-data\\lazy"
+        ]
+    }
+}

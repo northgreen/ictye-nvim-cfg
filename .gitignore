@@ -1,3 +1,4 @@
 ./ctags
 .spl
 ./lazy-lock.json
+./lua_docs/

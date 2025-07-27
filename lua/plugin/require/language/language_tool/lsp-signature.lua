@@ -1,5 +1,5 @@
 return {
-	'ray-x/lsp_signature.nvim',
-	lazy = true,
-	opts = {}
+    'ray-x/lsp_signature.nvim',
+    lazy = true,
+    opts = {}
 }

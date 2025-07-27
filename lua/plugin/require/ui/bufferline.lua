@@ -1,4 +1,6 @@
 --- use https://github.com/akinsho/bufferline.nvim to show bufferline in nvim
+local lfc = require 'util.functions'.lazy_function_call
+local bind = require 'util.functions'.bind
 return {
     'akinsho/bufferline.nvim',
     version = '*',
@@ -38,8 +40,8 @@ return {
 			},
             diagnostics = 'nvim_lsp',
             indicator = {icon = '▎'},
-            color_icons = false
-        }
+            color_icons = false,
+        },
     },
     config = function(_, opts)
         local frappe = require("catppuccin.palettes").get_palette('frappe')

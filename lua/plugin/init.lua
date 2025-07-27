@@ -1,0 +1,22 @@
+local t = require('util.functions').three_way_compare
+
+local function init_plugin()
+    require('lazy').setup({
+        git = {
+            url_format = t(options.git.use_ssh,
+                                'git@github.com:%s.git',
+                                'https://github.com/%s.git')
+        },
+        spec = require('plugin.require.require'),
+        ui = {
+            border = 'rounded',
+            tittle = 'Plugin Manager',
+            tittle_pos = 'center'
+        },
+        dev = {path = require('util.local_require')('')},
+        install = {colorscheme = {'catppuccin'}}
+    })
+end
+
+local b, r = pcall(init_plugin)
+if not b then print('Error: Failed to initialize lazy.nvim!!!' .. '\n' .. r) end

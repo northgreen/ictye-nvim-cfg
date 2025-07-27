@@ -1,4 +1,3 @@
---- @return LazyPluginSpec
 return {
     'nvim-treesitter/nvim-treesitter-context',
     event = {'BufReadPre'},

@@ -1,4 +1,3 @@
---- @return LazyPluginSpec
 return {
 	'chrisgrieser/nvim-rip-substitute',
 	cmd = 'RipSubstitute',
