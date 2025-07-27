@@ -1,4 +1,4 @@
-# Prisional Config For Neovim
+# Personal Config For Neovim
 This repo is my prisional config for neovim.
 CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
