@@ -2,7 +2,6 @@
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
-
 if vim.g.ori_mode then
     return
 end

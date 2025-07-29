@@ -15,11 +15,17 @@ CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 - **Slow Startup Time**: It is a bit slow between other configuration,But way you want both ultimate experience and speed?
 - **Complex Configuration**: Maybe this configuration is more complex than other editors...But it is not a big deal.
 
+> By the way,because some fucking problem under windows,the start up time will be **VERY SLOW**,I don't know why.
+> I make a `lite mode` for faster start up time,but although I disable any plugin,but it is not perfect on windows,I don't know how windows make it.
+
 ## Dependencies
 - `neovim`
 - `tree-sitter`
+- `git`
+- `lazygit`(the gui manager for git,it is really eazy for use)
+- `rp`(ripgrep)
 - your favorite LSP
-- maybe,you need` node.js` for `coc.nvim`
+- maybe,you need` node.js` for `coc.nvim`(it is disabled here)
 
 ## Installation
 1. Fock and clone this repo to your neovim config directory and install some software necessary
