@@ -2,9 +2,7 @@
 return  {
         'luozhiya/fittencode.nvim',
 		event = 'BufReadPre',
-		config = function()
-			require('fittencode').setup({
+        opts = {
 				completion_mode='source'
-			})
-		end
-    }
+        }
+}

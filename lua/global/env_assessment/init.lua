@@ -22,7 +22,9 @@ ret.required = {
 	end,
 	required = {
 		'git',
-		twc(ret.os.linux,'make',nil)
+        'lazygit',
+        'rg',
+		twc(ret.os.linux == 0,'make',nil)
 	}
 }
 

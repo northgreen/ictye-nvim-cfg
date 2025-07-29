@@ -1,34 +1,28 @@
 --- @author Ictye
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
+
+
+if vim.g.ori_mode then
+    return
+end
+
 do
     --- Config paths
     local data_dir = vim.fn.stdpath('data') --[[@as string]]
     local cfg_dir = vim.fn.stdpath('config') --[[@as string]]
     local lazypath = vim.fs.joinpath(data_dir, "lazy", "lazy.nvim")
 
-    local rocks_config = {
-        rocks_path = vim.fs.normalize(vim.fs.joinpath(data_dir, "rocks"))
-    }
-    vim.g.rocks_nvim = rocks_config
-
     local lua_path = {
-        vim.fs.joinpath(rocks_config.rocks_path, "share", "lua", "5.1", "?.lua"),
-        vim.fs.joinpath(rocks_config.rocks_path, "share", "lua", "5.1", "?", "init.lua"),
         vim.fs.joinpath(cfg_dir, "?.lua"),
         vim.fs.joinpath(cfg_dir, "lua", "?.lua"),
         vim.fs.joinpath(cfg_dir, "?", "init.lua")
     }
     local lua_cpath = {
-        vim.fs.joinpath(rocks_config.rocks_path, "lib", "lua", "5.1", "?.dll"),
-        vim.fs.joinpath(rocks_config.rocks_path, "lib64", "lua", "5.1", "?.dll")
     }
 
     package.path = package.path .. ";" .. table.concat(lua_path, ";")
     package.cpath = package.cpath .. ";" .. table.concat(lua_cpath, ";")
-    vim.opt.rtp:prepend(vim.fs.joinpath(rocks_config.rocks_path, "lib",
-        "luarocks", "rocks-5.1",
-        "rocks.nvim", "*"))
 
     vim.opt.rtp:prepend(lazypath)
 
@@ -54,15 +48,14 @@ end
 
 ploadmodule 'options'
 if not options.env.required:chack() then
-    print('Some required binarray is not found,please chack it')
+    print('Some required binarray is not found,and something will not work properly,please chack it')
 end
 
--- load modules
-ploadmodule 'plugin'
+if vim.g.lite_mode then
+    ploadmodule 'lite_init'
+else
+    ploadmodule 'full_init'
+end
 
--- configs
-ploadmodule 'configs'
 
--- some test code
-ploadmodule 'test'
 
