@@ -9,7 +9,8 @@ CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 - **Plugin Ecosystem**: Compatible with popular plugins like `coc.nvim` (requires `node.js`).  
 - **Better UI Experience**: Includes `lualine.nvim` and more plugin for a better UI experience.  
 - **Test Integration**: Use Neotest for testing support 
-- **Debug Integration**: Use `nvim-dap` and `dap-ui` for debugging support.  
+- **Debug Integration**: Use `nvim-dap` and `dap-ui` for debugging support.
+- **Lite Mode**: A lite mode for faster start up time but with basic factures,use `nvim --cmd "let g:lite_mode=v:true"` to start it.
 
 ## Disadvantages
 - **Slow Startup Time**: It is a bit slow between other configuration,But way you want both ultimate experience and speed?

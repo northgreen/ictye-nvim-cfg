@@ -5,3 +5,7 @@ ploadmodule 'core.vimconfig'
 ploadmodule 'core.autocommand_set'
 ploadmodule 'core.highlights'
 ploadmodule 'core.lsp_project'
+
+if vim.g.neovide then
+    ploadmodule 'core.neovide'
+end

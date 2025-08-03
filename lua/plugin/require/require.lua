@@ -67,6 +67,10 @@ return {
     -- require 'plugin.require.editor.orgmode',
     -- require 'plugin.require.editor.neorg',
     require 'plugin.require.tool.yazi',
+    -- require 'plugin.require.ui.neoscrool',
+    require 'plugin.require.ui.flash',
+    require 'plugin.require.ui.smear-cursor',
+    require 'plugin.require.ui.vim-smoothie',
 
 --------others
 	require 'plugin.require.tool.firenvim',

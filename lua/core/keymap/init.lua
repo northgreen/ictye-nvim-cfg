@@ -1,15 +1,19 @@
+if vim.g.neovide then
+    require 'core.keymap.neovide'
+end
+
 local Hydra = require('hydra')
 local Keymap = vim.keymap.set
 local Command = vim.api.nvim_create_user_command
 local Menu = require("util.quickmenu")
 
 local bind = require 'util.functions'.bind
-local lazy_call = require 'util.functions'.lazy_call
 local lazy_require = require 'util.functions'.lazy_require
 
 local neotest = lazy_require("neotest")
+local telescope_builtin = lazy_require("telescope.builtin")
 
-
+-- Test Menu
 local TestMenu = Menu({
     {
         ["Watch Test"] = function() neotest.watch.toggle() end,
@@ -31,6 +35,7 @@ Command('IcDAP', function() require "osv".launch({ port = 8086 }) end, {})
 Command("IcDAPUIOpen", function() require("dapui").open() end, {})
 Command("IcDAPUIClose", function() require("dapui").close() end, {})
 Command("IcDAPUIToggle", function() require("dapui").toggle() end, {})
+Command("Lsbf",function () telescope_builtin.buffers()end,{})
 
 Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
 
@@ -76,6 +81,8 @@ Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, de
 Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
 Keymap("n", "<C-x>a", require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
 Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+
 
 Keymap('n', '<A-x>', ":", { desc = "Command line" })
 
@@ -140,9 +147,6 @@ Hydra({
         { 'k', '<Cmd>BufferLineCycleNext<CR>', { description = 'Move to next tab' } }
     }
 })
-
-
-
 
 
 

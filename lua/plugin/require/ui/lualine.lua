@@ -130,7 +130,7 @@ return {
                 right_padding = 2
             }
         }
-
+        --- @diagnostic disable-next-line undefined-field
         require('lualine').setup(opts)
     end,
     depedencies = {'nvim-treesitter/nvim-treesitter'}
