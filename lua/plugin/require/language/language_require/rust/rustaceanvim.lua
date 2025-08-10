@@ -1,11 +1,9 @@
 vim.g.rustaceanvim = {
     tools = {
-        Opts = {
-            enable_clippy = true,
-        }
-    }
+        enable_clippy = true,
+    },
 }
 
 
 --- @return LazyPluginSpec
-return {'mrcjkb/rustaceanvim', version = '^4', ft = 'rust', lazy = false}
+return {'mrcjkb/rustaceanvim', version = '^6',ft = "rust", lazy = false}

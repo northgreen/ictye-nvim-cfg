@@ -17,7 +17,7 @@ local function open_nvim_tree(data)
     require("nvim-tree.api").tree.open()
 end
 
-Autocmd({"VimEnter"}, {callback = open_nvim_tree})
+-- Autocmd({"VimEnter"}, {callback = open_nvim_tree})
 
 -- Fix the bug for saving shada file when leaving nvim
 Autocmd("VimLeave", {

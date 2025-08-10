@@ -1,6 +1,7 @@
 --- @return LazyPluginSpec
 return {
     "sphamba/smear-cursor.nvim",
+    enabled = not vim.g.GUI,
     opts = {},
     config = function()
         _G.smear_cursor = require("smear_cursor")

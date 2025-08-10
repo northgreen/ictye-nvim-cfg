@@ -42,7 +42,7 @@ Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
 local keymap_opt = { noremap = true, silent = true }
 local normal_keymaps = {
     ['<F3>']   = '<Cmd>Outline<CR>',
-    ['<F4>']   = '<Cmd>NvimTreeToggle<CR>',
+    ['<F4>']   = '<Cmd>Neotree toggle<CR>',
 
     ['<F9>']   = '<Cmd>DapContinue<CR>',
     ['<F10>']  = '<Cmd>DapStepOver<CR>',
@@ -152,3 +152,5 @@ Hydra({
 
 -- auto set some keymaps
 for key, mapping in pairs(normal_keymaps) do Keymap('n', key, mapping, keymap_opt) end
+
+require 'core.keymap.cfg_edit'

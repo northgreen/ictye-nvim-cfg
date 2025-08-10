@@ -35,6 +35,7 @@ return {
             end,
             offsets = {
 				{filetype = 'NvimTree', text = '󰙅  File Explorer'},
+                {filetype = 'neo-tree',},
 				{filetype = 'Outline', text = '  Outline'},
 				{filetype = 'Dashboard', text = '  Dashboard'}
 			},

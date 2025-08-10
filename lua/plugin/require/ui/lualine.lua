@@ -15,7 +15,7 @@ return {
             component_separators = '',
             section_separators = {left = '', right = ''},
             disabled_filetypes = {
-                statusline = {'NvimTree', 'Outline'},
+                statusline = {'NvimTree', 'Outline', 'neo-tree', 'neotest-summary'},
                 'trouble',
                 'dap-repl',
                 'dapui_watches',
@@ -28,7 +28,7 @@ return {
                 'Avante',
                 'AvanteInput',
                 'AvanteSelectedFiles',
-                winbar = {'NvimTree', 'Outline', 'trouble'}
+                winbar = {'NvimTree', 'Outline', 'trouble', 'neo-tree', 'neotest-summary'}
             }
         },
         sections = {

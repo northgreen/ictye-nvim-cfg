@@ -5,13 +5,17 @@ return {
     version = false,
     opts = {
         provider = "openai",
+        providers = {
         openai = {
-            endpoint = "https://api.openai-proxy.org/v1",
-            model = "deepseek-chat",
-            timeout = 30000,
-            temperature = 0,
-            max_tokens = 4096
-        }
+                endpoint = "https://api.openai-proxy.org/v1",
+                model = "deepseek-chat",
+                timeout = 30000,
+                max_tokens = 4096,
+                extra_request_body = {
+                    temperature = 0,
+                }
+            }
+        },
     },
     build = twc(options.env.os.win,
                 "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",

@@ -45,7 +45,7 @@ return {
 	require 'plugin.require.ui.noise_nvim',
 	require 'plugin.require.editor.trouble',
 	require 'plugin.require.tool.hydra',
-	-- require 'plugin.require.tool.im-select',
+	require 'plugin.require.tool.im-select',
 	require 'plugin.require.tool.ai.avante',
 	require 'plugin.require.ui.quick_menu',
 	-- require 'plugin.require.editor.project_dir_cfg',
@@ -71,6 +71,11 @@ return {
     require 'plugin.require.ui.flash',
     require 'plugin.require.ui.smear-cursor',
     require 'plugin.require.ui.vim-smoothie',
+    require 'plugin.require.language.language_require.sonicpi',
+    require 'plugin.require.tool.carbon-now',
+    require 'plugin.require.tool.snacks',
+    require 'plugin.require.ui.neotree',
+    require 'plugin.require.ui.edgy',
 
 --------others
 	require 'plugin.require.tool.firenvim',

@@ -64,7 +64,8 @@ return {
             sources = cmp.config.sources({
                 {name = 'nvim_lsp'}, {name = 'vsnip'}, {name = 'path'},
                 {name = 'coc'}, {name = 'buffer'},
-                {name = 'fittencode', group_index = 1},{name = 'avante'}
+                {name = 'fittencode', group_index = 1},{name = 'avante'},
+                {name = "sonicpi"}
             })
         })
 

@@ -7,3 +7,5 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 
+vim.g.GUI = vim.g.neovide
+
