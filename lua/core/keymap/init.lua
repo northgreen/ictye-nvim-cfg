@@ -9,6 +9,7 @@ local Menu = require("util.quickmenu")
 
 local bind = require 'util.functions'.bind
 local lazy_require = require 'util.functions'.lazy_require
+local lazy_call = require'util.functions'.lazy_call
 
 local neotest = lazy_require("neotest")
 local telescope_builtin = lazy_require("telescope.builtin")
@@ -26,6 +27,20 @@ local TestMenu = Menu({
     }
 })
 
+local QuickMenu = Menu({
+    {
+        ["Search"] = lazy_call('telescope.builtin', 'builtin'),
+        ["Questions"] = bind(lazy_call("trouble", "open"), "questions"),
+        ["Find and Replace"] = bind(vim.cmd, "GrugFar"),
+        ["Find in Files"] = bind(vim.cmd, "RipSubstitute"),
+        ["Terminal"] = bind(vim.cmd, "FloatermNew powershell"),
+        ["Git"] = bind(vim.cmd, "LazyGit"),
+        ["Debug"] = bind(vim.cmd, "DapNew"),
+        ["Todo"] = bind(vim.cmd, "Trouble todo"),
+        ["Tasks"] = bind(vim.cmd, "terminal hours")
+    }
+})
+
 
 Command("IcFormat", function() vim.lsp.buf.format() end, {})
 Command('IcRename', function() vim.lsp.buf.rename() end, {})
@@ -35,9 +50,11 @@ Command('IcDAP', function() require "osv".launch({ port = 8086 }) end, {})
 Command("IcDAPUIOpen", function() require("dapui").open() end, {})
 Command("IcDAPUIClose", function() require("dapui").close() end, {})
 Command("IcDAPUIToggle", function() require("dapui").toggle() end, {})
-Command("Lsbf",function () telescope_builtin.buffers()end,{})
+Command("Lsbf", function() telescope_builtin.buffers() end, {})
 
 Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
+Command("QuickMenu", bind(QuickMenu.mount, QuickMenu), {})
+
 
 local keymap_opt = { noremap = true, silent = true }
 local normal_keymaps = {
@@ -86,8 +103,8 @@ Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = 
 
 Keymap('n', '<A-x>', ":", { desc = "Command line" })
 
-Keymap('n', '<leader>mpt', require("mini.map").toggle, { noremap = true, silent = true, desc = "toggle minimap" })
-Keymap('n', '<leader>mps', require("mini.map").toggle_side, { noremap = true, silent = true, desc = "toggle minimap" })
+-- Keymap('n', '<leader>mpt', require("mini.map").toggle, { noremap = true, silent = true, desc = "toggle minimap" })
+-- Keymap('n', '<leader>mps', require("mini.map").toggle_side, { noremap = true, silent = true, desc = "toggle minimap" })
 
 
 

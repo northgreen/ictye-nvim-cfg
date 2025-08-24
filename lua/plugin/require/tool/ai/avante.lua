@@ -8,11 +8,11 @@ return {
         providers = {
         openai = {
                 endpoint = "https://api.openai-proxy.org/v1",
-                model = "deepseek-chat",
+                model = "gpt-5",
                 timeout = 30000,
-                max_tokens = 4096,
                 extra_request_body = {
-                    temperature = 0,
+                    temperature = 1,
+                    max_completion_tokens = 12287,
                 }
             }
         },

@@ -48,7 +48,7 @@ return {
 	require 'plugin.require.tool.im-select',
 	require 'plugin.require.tool.ai.avante',
 	require 'plugin.require.ui.quick_menu',
-	-- require 'plugin.require.editor.project_dir_cfg',
+	require 'plugin.require.editor.project_dir_cfg',
 	require 'plugin.require.language.language_tool.ostf_vimkind',
 	require 'plugin.require.editor.render_markdown',
 	require 'plugin.require.ui.nvim_buffer_form',
@@ -76,6 +76,9 @@ return {
     require 'plugin.require.tool.snacks',
     require 'plugin.require.ui.neotree',
     require 'plugin.require.ui.edgy',
+    require 'plugin.require.ui.codewindow',
+    -- require 'plugin.require.language.language_require.csharp',
+    require 'plugin.require.tool.mcp',
 
 --------others
 	require 'plugin.require.tool.firenvim',

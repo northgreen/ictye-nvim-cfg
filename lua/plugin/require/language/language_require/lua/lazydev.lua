@@ -1,3 +1,4 @@
+--- NOTICE:it is no need for this project
 return {
     'folke/lazydev.nvim',
     ft = 'lua', -- only load on lua files

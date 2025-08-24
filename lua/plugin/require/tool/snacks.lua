@@ -1,3 +1,4 @@
+--- @return LazyPluginSpec
 return {
     "folke/snacks.nvim",
     opts = {
@@ -10,9 +11,6 @@ return {
         big_file = {
             enable = true,
         },
-        notify = {
-            enable = false,
-        }
     },
     keys = {
       { "<leader>ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" },

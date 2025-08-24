@@ -36,3 +36,72 @@ CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 ## keymaps
 See `lua\core\keymaps.lua`
 
+
+| Purpose | How to use | Modes | Notes |
+|---|---|---|---|
+| Buffer-local keymaps (which-key) | Press `<leader>?` to open buffer-local which-key | Normal | Requires `folke/which-key.nvim`; shows available prefixes and mappings for current buffer |
+| List mappings by mode | `:map`, `:nmap`, `:imap`, `:xmap`, `:tmap`, `:omap` | All | Use ``:map <leader>`` to filter Leader mappings |
+| Trace mapping source | ``:verbose map <lhs>`` (e.g., ``:verbose nmap <leader>f``) | All | Shows which file/plugin defined a mapping; helpful for diagnosing conflicts |
+| Telescope keymaps browser | `:Telescope keymaps` | Normal | Interactive keymap browser; requires `telescope.nvim` |
+| Adjust key-chord timing | `:set timeoutlen=500` | N/A | Lower values make multi-key sequences register faster; tune to preference |
+| Translate key notation | ``:echo keytrans("<C-x>t")`` | N/A | Converts raw sequences into readable notation; see `:help key-notation` |
+
+## Deployment
+
+Prerequisites
+- Neovim 0.9+ (recommended 0.10+)
+- Git (required), LazyGit (optional but recommended)
+- Ripgrep (rg) for search
+- Tree-sitter compilers: on Windows install Clang or MSVC Build Tools; on Linux/macOS install gcc/clang and make
+- Node.js (required)
+- Language toolchains as needed: rustup for Rust, MSVC/LLVM for C/C++, GHCup + HLS for Haskell, etc.
+
+Windows installation steps
+1) Backup existing config (if any): move %LOCALAPPDATA%\nvim to a backup folder.
+2) Clone this repo into Neovim config directory:
+   - git clone <your-repo-url> "%LOCALAPPDATA%/nvim"
+   - If you don’t have SSH keys set up, edit lua/options/gitpull_cfg.lua and set use_ssh=false before first run to use HTTPS for plugin clones.
+3) First run
+   - Start Neovim: nvim
+   - lazy.nvim will bootstrap automatically and install plugins.
+   - If Tree-sitter parsers fail to compile, ensure you have a working C/C++ compiler toolchain (MSVC or LLVM/Clang) in PATH.
+4) Optional: Lite mode for faster startup
+   - nvim --cmd "let g:lite_mode=v:true"
+5) Install external tools via Mason when needed
+   - :Mason to open the UI and install language servers, formatters and DAP adapters.
+   - On Windows, this config auto-adds Mason’s bin to PATH for this Neovim session.
+6) Fonts and icons
+   - Install a Nerd Font (e.g. FiraCode Nerd Font) and configure your terminal to use it, for proper icons in UI plugins.
+
+Linux/macOS installation steps
+1) Clone into your config directory:
+   - git clone <your-repo-url> ~/.config/nvim
+2) Ensure build tools are installed:
+   - gcc/clang and make for Tree-sitter; ripgrep for search.
+3) First run
+   - nvim
+   - If parsers or native deps fail to compile, install required toolchains and retry :TSUpdate.
+4) Optional: Lite mode
+   - nvim --cmd "let g:lite_mode=v:true"
+
+Language-specific notes
+- Haskell: Install GHCup and Haskell Language Server (HLS). haskell-tools.nvim will integrate automatically.
+- C/C++: codelldb for DAP. You can install via Mason; :Mason shows adapters.
+- Rust: Install rustup and rust-analyzer; neotest integrates with rustaceanvim for testing.
+- C#: csharp.nvim is available but commented out in plugin list; enable it if needed and ensure omnisharp is installed (Mason can handle it).
+
+AI/Avante setup
+- Check lua/plugin/require/tool/ai/avante.lua for provider settings.
+- If building dependencies fails on Windows due to PowerShell policy, you may need:
+  - Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+- Adjust endpoint/model/token according to your provider.
+
+Troubleshooting
+- lazy.nvim clone fails over SSH: set use_ssh=false in lua/options/gitpull_cfg.lua and retry.
+- Tree-sitter compile errors: install a C/C++ compiler and ensure it’s in PATH.
+- Missing tools: run :checkhealth and use :Mason to install missing language servers and debug adapters.
+- Very slow startup on Windows: try Lite mode, and ensure antivirus exclusions for your Neovim config/data directories.
+
+
+
+

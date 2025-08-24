@@ -24,6 +24,7 @@ ret.required = {
 		'git',
         'lazygit',
         'rg',
+        'node',
 		twc(ret.os.linux == 0,'make',nil)
 	}
 }

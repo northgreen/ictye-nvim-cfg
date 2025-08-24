@@ -20,6 +20,12 @@ return {
                 }
             }
         },
+        notify = {
+            enabled = true,
+        },
+        messages = {
+            enabled = true,
+        },
         presets = {
             bottom_search = false,
             command_palette = false,
@@ -36,9 +42,10 @@ return {
         views = {
             notify = {
                 render = 'compact',
-                animate = false,
                 timeout = 500,
-                top_down = false
+                top_down = false,
+                stages = "slide",
+                animate = false,
             },
 			cmdline_popup = {
 				position = {
@@ -47,6 +54,9 @@ return {
 				},
 			},
 		},
+        health = {
+            checker = false, -- conflicts with snacks
+        },
         commands = {},
         routes = {
             {
