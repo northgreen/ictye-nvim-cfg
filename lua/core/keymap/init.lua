@@ -27,6 +27,7 @@ local TestMenu = Menu({
     }
 })
 
+-- QuickMenu
 local QuickMenu = Menu({
     {
         ["Search"] = lazy_call('telescope.builtin', 'builtin'),

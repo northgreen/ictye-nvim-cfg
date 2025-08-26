@@ -28,11 +28,6 @@ CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 - your favorite LSP
 - maybe,you need` node.js` for `coc.nvim`(it is disabled here)
 
-## Installation
-1. Fock and clone this repo to your neovim config directory and install some software necessary
-2. Run `nvim`
-3. Done
-
 ## keymaps
 See `lua\core\keymaps.lua`
 
@@ -40,11 +35,11 @@ See `lua\core\keymaps.lua`
 | Purpose | How to use | Modes | Notes |
 |---|---|---|---|
 | Buffer-local keymaps (which-key) | Press `<leader>?` to open buffer-local which-key | Normal | Requires `folke/which-key.nvim`; shows available prefixes and mappings for current buffer |
-| List mappings by mode | `:map`, `:nmap`, `:imap`, `:xmap`, `:tmap`, `:omap` | All | Use ``:map <leader>`` to filter Leader mappings |
-| Trace mapping source | ``:verbose map <lhs>`` (e.g., ``:verbose nmap <leader>f``) | All | Shows which file/plugin defined a mapping; helpful for diagnosing conflicts |
+| Toggle Filetree | Press `<F4>` | Normal | will open neotree (will rewrite because I want use hhkb) |
 | Telescope keymaps browser | `:Telescope keymaps` | Normal | Interactive keymap browser; requires `telescope.nvim` |
 | Adjust key-chord timing | `:set timeoutlen=500` | N/A | Lower values make multi-key sequences register faster; tune to preference |
 | Translate key notation | ``:echo keytrans("<C-x>t")`` | N/A | Converts raw sequences into readable notation; see `:help key-notation` |
+
 
 ## Deployment
 

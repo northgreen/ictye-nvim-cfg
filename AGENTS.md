@@ -1,5 +1,6 @@
 # AGENTS.md
 
+
 Please use chinese to talk and use english for commet.
 
 Purpose
@@ -17,8 +18,7 @@ Operation Log
 - 2025-08-24: Translated the full repository explanation to Chinese.
 - 2025-08-24: Renamed ANGENTS.md to AGENTS.md and standardized content.
 - 2025-08-24: Added deployment instructions to README.md.
-
-- 2025-08-24: Improved README keymaps section with keymap capture and inspection table (docs-only).
++ 2025-08-24: Improved README keymaps section with keymap capture and inspection table (docs-only).
 
 ## Deployment
 (To be completed)

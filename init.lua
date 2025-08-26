@@ -5,36 +5,36 @@
 -- 实测没什么用（
 -- 大型项目专用配置
 vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    -- 启动时暂停GC，让所有插件加载完成
-    collectgarbage("stop")
-    
-    -- 延迟设置GC参数
-    vim.defer_fn(function()
-      -- 允许更多内存使用，减少GC频率
-      collectgarbage("setpause", 180)
-      collectgarbage("setstepmul", 400)
-      collectgarbage("restart")
-      collectgarbage("collect") -- 执行一次完整回收
-    end, 5000) -- 5秒后执行
-  end,
-  once = true,
+    callback = function()
+        -- 启动时暂停GC，让所有插件加载完成
+        collectgarbage("stop")
+
+        -- 延迟设置GC参数
+        vim.defer_fn(function()
+            -- 允许更多内存使用，减少GC频率
+            collectgarbage("setpause", 180)
+            collectgarbage("setstepmul", 400)
+            collectgarbage("restart")
+            collectgarbage("collect") -- 执行一次完整回收
+        end, 5000)              -- 5秒后执行
+    end,
+    once = true,
 })
 
 -- 针对大型文件打开的优化
 vim.api.nvim_create_autocmd("BufRead", {
-  callback = function(args)
-    local line_count = vim.api.nvim_buf_line_count(args.buf)
-    if line_count > 5000 then -- 大型文件
-      collectgarbage("stop") -- 暂停GC防止卡顿
-      
-      -- 文件加载完成后恢复GC
-      vim.defer_fn(function()
-        collectgarbage("restart")
-        collectgarbage("collect")
-      end, 1000)
-    end
-  end,
+    callback = function(args)
+        local line_count = vim.api.nvim_buf_line_count(args.buf)
+        if line_count > 5000 then -- 大型文件
+            collectgarbage("stop") -- 暂停GC防止卡顿
+
+            -- 文件加载完成后恢复GC
+            vim.defer_fn(function()
+                collectgarbage("restart")
+                collectgarbage("collect")
+            end, 1000)
+        end
+    end,
 })
 
 if vim.g.ori_mode then
@@ -53,7 +53,7 @@ do
         vim.fs.joinpath(cfg_dir, "?", "init.lua"),
     }
     local lua_cpath = {
-        vim.fs.joinpath(cfg_dir, "bin","windows","?.dll")
+        vim.fs.joinpath(cfg_dir, "bin", "windows", "?.dll")
     }
 
     package.path = package.path .. ";" .. table.concat(lua_path, ";")
@@ -91,5 +91,3 @@ if vim.g.lite_mode then
 else
     ploadmodule 'full_init'
 end
-
-
