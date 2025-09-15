@@ -1,0 +1,9 @@
+  正在判斷要還原的專案...
+  所有專案都在最新狀態，可進行還原。
+C:\Program Files\dotnet\sdk\9.0.304\Current\SolutionFile\ImportAfter\Microsoft.NET.Sdk.Solution.targets(36,5): warning NETSDK1194: 建置解決方案時不支援「--output」選項。指定解決方案層級輸出路徑會導致所有專案將輸出複製到相同的目錄，而這可能會導致組建不一致。 [C:\Users\north\AppData\Local\nvim\native_sources\rust\cssupport\sl1.sln]
+  bridge -> C:\Users\north\AppData\Local\nvim\native_sources\rust\cssupport\bridge\bin\Release\net9.0\win-x64\bridge.dll
+  Output path written to: C:\Users\north\AppData\Local\nvim\native_sources\rust\cssupport\bridge\dotnet-output-path.txt
+  bridge -> C:\Users\north\AppData\Local\nvim\native_sources\rust\target\debug\build\cssupport-f416b1a2ee6d3d87\out\dll\
+cargo:rustc-link-search=native=C:\Users\north\AppData\Local\nvim\native_sources\rust\target\debug\build\cssupport-f416b1a2ee6d3d87\out/dll
+cargo:rustc-link-lib=dylib=bridge
+cargo:rerun-if-changed=./bridge

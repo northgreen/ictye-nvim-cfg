@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "VGwC8bRQ7Pk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\north\\AppData\\Local\\nvim\\native_sources\\rust\\cssupport\\bridge\\bridge.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\north\\.nuget\\packages\\microsoft.build\\17.15.0-preview-25277-114\\microsoft.build.17.15.0-preview-25277-114.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\microsoft.build.framework\\17.15.0-preview-25277-114\\microsoft.build.framework.17.15.0-preview-25277-114.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\microsoft.dotnet.ilcompiler\\9.0.8\\microsoft.dotnet.ilcompiler.9.0.8.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.8\\microsoft.net.illink.tasks.9.0.8.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\microsoft.net.stringtools\\17.15.0-preview-25277-114\\microsoft.net.stringtools.17.15.0-preview-25277-114.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\runtime.win-x64.microsoft.dotnet.ilcompiler\\9.0.8\\runtime.win-x64.microsoft.dotnet.ilcompiler.9.0.8.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\system.configuration.configurationmanager\\9.0.0\\system.configuration.configurationmanager.9.0.0.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\system.diagnostics.eventlog\\9.0.0\\system.diagnostics.eventlog.9.0.0.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\system.reflection.metadataloadcontext\\9.0.0\\system.reflection.metadataloadcontext.9.0.0.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.0\\system.security.cryptography.protecteddata.9.0.0.nupkg.sha512",
+    "C:\\Users\\north\\.nuget\\packages\\runtime.win-x64.microsoft.dotnet.ilcompiler\\9.0.8\\runtime.win-x64.microsoft.dotnet.ilcompiler.9.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}

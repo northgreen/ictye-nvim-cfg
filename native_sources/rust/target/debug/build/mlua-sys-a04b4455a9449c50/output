@@ -1,0 +1,2 @@
+cargo:rerun-if-changed=build
+cargo:rustc-cfg=raw_dylib

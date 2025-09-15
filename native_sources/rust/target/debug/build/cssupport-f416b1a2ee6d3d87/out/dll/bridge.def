@@ -1,0 +1,4 @@
+LIBRARY bridge.dll
+EXPORTS
+DotNetRuntimeDebugHeader DATA
+Foo

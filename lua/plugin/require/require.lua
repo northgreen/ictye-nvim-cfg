@@ -1,4 +1,5 @@
 --- dependencies of configs
+
 return {
     require 'plugin.require.ui.colortheme.catppuccin',
     require 'plugin.require.language.language_tool.coc',
@@ -47,11 +48,9 @@ return {
 	require 'plugin.require.tool.hydra',
 	require 'plugin.require.tool.im-select',
 	require 'plugin.require.tool.ai.avante',
-	require 'plugin.require.ui.quick_menu',
 	require 'plugin.require.editor.project_dir_cfg',
 	require 'plugin.require.language.language_tool.ostf_vimkind',
 	require 'plugin.require.editor.render_markdown',
-	require 'plugin.require.ui.nvim_buffer_form',
 	require 'plugin.require.ui.nvim_highight_colors',
 	require 'plugin.require.ui.vim_illuminate',
 	require 'plugin.require.editor.todo_comments',

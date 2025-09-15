@@ -14,7 +14,7 @@ local function init_plugin()
             tittle = 'Plugin Manager',
             tittle_pos = 'center'
         },
-        dev = {path = require('util.local_require')('')},
+        dev = {path = "D:\\home\\documents\\proj\\nvim_plugin"},
         install = {colorscheme = {'catppuccin'}}
     })
 end
