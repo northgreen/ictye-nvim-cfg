@@ -1,7 +1,8 @@
 ./ctags
 .spl
 ./lazy-lock.json
-./lua_docs/
+./lua_docs/*
 *.dll
 *.exe
 ./.mcphub/*
+.envrc

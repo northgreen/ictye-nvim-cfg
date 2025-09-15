@@ -1,3 +1,0 @@
----@meta
-
-return require 'uv'
