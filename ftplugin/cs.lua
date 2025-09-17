@@ -9,5 +9,3 @@ _G.configed[vim.bo.filetype] = true
 
 require'lspconfig'.csharp_ls.setup{}
 
-vim.lsp.enable('omnisharp')
-require'lspconfig'.omnisharp.setup{}

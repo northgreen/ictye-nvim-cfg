@@ -14,6 +14,7 @@
   "codewindow.nvim": { "branch": "master", "commit": "a8e175043ce3baaa89e0a6b5171bcd920aab3dad" },
   "copilot.lua": { "branch": "master", "commit": "f0c0d981de2737abc50bd7b5bb034ae440826827" },
   "dashboard-nvim": { "branch": "master", "commit": "c42fcfbd96dfcaa486c0a0ab52494316f1c31350" },
+  "easy-dotnet.nvim": { "branch": "main", "commit": "f4f0b5115cefd43a2f99b5a5b834740a686afe03" },
   "edgy.nvim": { "branch": "main", "commit": "7e8dedc39abebe40c289b8012cc89b11c69aa7a0" },
   "firenvim": { "branch": "master", "commit": "0c3b81444944ed51e9eb50b158b71ee26b611575" },
   "fittencode.nvim": { "branch": "master", "commit": "be2e6e8345bb76922fae37012af10c3cc51585b5" },

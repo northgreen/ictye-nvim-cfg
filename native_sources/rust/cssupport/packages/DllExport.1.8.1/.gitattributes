@@ -1,5 +1,0 @@
-
-# Batch files requires CRLF https://github.com/3F/hMSBuild/issues/2
-
-*.bat text eol=crlf
-*.cmd text eol=crlf

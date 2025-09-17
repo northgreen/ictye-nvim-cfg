@@ -37,6 +37,7 @@ vim.api.nvim_create_autocmd("BufRead", {
     end,
 })
 
+-- exit when ori mod
 if vim.g.ori_mode then
     return
 end
@@ -46,6 +47,7 @@ do
     local data_dir = vim.fn.stdpath('data') --[[@as string]]
     local cfg_dir = vim.fn.stdpath('config') --[[@as string]]
     local lazypath = vim.fs.joinpath(data_dir, "lazy", "lazy.nvim")
+    local bin_path = vim.fs.joinpath(cfg_dir, "bin", "windows")
 
     local lua_path = {
         vim.fs.joinpath(cfg_dir, "?.lua"),
@@ -71,6 +73,9 @@ do
     if not string.find(current_path, mason_bin_path, 1, true) then
         vim.env.PATH = mason_bin_path .. (is_windows and ";" or ":") .. current_path
     end
+
+    local _path = vim.env.PATH
+    vim.env.PATH = bin_path .. (is_windows and ";" or ":") .. _path
 end
 
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
@@ -92,4 +97,3 @@ else
     ploadmodule 'full_init'
 end
 
-require("cssupport")

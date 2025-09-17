@@ -2,7 +2,6 @@
 
 return {
     require 'plugin.require.ui.colortheme.catppuccin',
-    require 'plugin.require.language.language_tool.coc',
     require 'plugin.require.ui.nvim_tree',
 	require 'plugin.require.ui.indent_blankline',
 	require 'plugin.require.tool.vcs.git.gitsigns',
@@ -57,7 +56,6 @@ return {
 	-- require 'plugin.require.editor.rime_nvim',
 	-- require 'plugin.require.language.language_tool.cmp_rime',
 	require 'plugin.require.language.language_tool.lsp-signature',
-	-- require 'plugin.require.ui.telescope_select_ui',
 	require 'plugin.require.tool.telescope_fzf',
 	require 'plugin.require.language.language_require.haskell.haskell_tool',
 	require 'plugin.require.language.language_tool.nvim_test',
@@ -78,6 +76,8 @@ return {
     require 'plugin.require.ui.codewindow',
     -- require 'plugin.require.language.language_require.csharp',
     require 'plugin.require.tool.mcp',
+    -- require 'plugin.require.tool.lf',
+    require 'plugin.require.tool.eazy-dotnet',
 
 --------others
 	require 'plugin.require.tool.firenvim',

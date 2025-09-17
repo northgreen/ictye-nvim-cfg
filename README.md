@@ -26,7 +26,6 @@ CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 - `lazygit`(the gui manager for git,it is really eazy for use)
 - `rp`(ripgrep)
 - your favorite LSP
-- maybe,you need` node.js` for `coc.nvim`(it is disabled here)
 
 ## keymaps
 See `lua\core\keymaps.lua`

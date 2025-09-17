@@ -1,12 +1,4 @@
-  正在判斷要還原的專案...
-  所有專案都在最新狀態，可進行還原。
-  bridge -> C:\Users\north\AppData\Local\nvim\native_sources\rust\cssupport\bridge\bin\Debug\net9.0\bridge.dll
-  Output path written to: C:\Users\north\AppData\Local\nvim\native_sources\rust\cssupport\bridge\dotnet-output-path.txt
-
-建置成功。
-    0 個警告
-    0 個錯誤
-
-經過時間 00:00:03.14
-cargo:warning=output_path=﻿bin\Debug\net9.0\
-
+cargo:warning=C:\Users\north\AppData\Local\nvim\
+cargo:rustc-link-search=native=C:\Users\north\AppData\Local\nvim\\native_sources\build_dep\
+cargo:rustc-link-lib=dylib=bridge
+cargo:rerun-if-changed=C:\Users\north\AppData\Local\nvim\\native_sources\build_dep\

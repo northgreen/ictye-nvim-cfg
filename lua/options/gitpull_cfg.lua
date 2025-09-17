@@ -1,3 +1,3 @@
 return {
-	use_ssh = true,
+	use_ssh = false,
 }

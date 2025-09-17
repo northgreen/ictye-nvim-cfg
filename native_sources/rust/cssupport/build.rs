@@ -1,24 +1,19 @@
-use std::process::Command;
+use std::fs::File;
+use std::io::Write;
+use std::process::{Command, Output};
 use std::env;
 
 fn main(){
     let csdir = "./bridge";
     let outdir = env::var("OUT_DIR").unwrap();
 
-    let status = Command::new("dotnet")
-        .arg("publish")
-        .arg("-p:NativeLib=Shared")
-        .arg("-r").arg("win-x64")
-        .arg("-c").arg("Release")
-        .arg("-o").arg(outdir.clone()+"/dll")
-        .status()
-        .expect("failed to execute process");
-    if!status.success(){
-        panic!("failed to build bridge");
-    }
+    let lad = env::var("LOCALAPPDATA").unwrap();
+    let nvim_profile_dir = lad.clone() + "\\nvim\\";
+    let build_dep = nvim_profile_dir.clone() + "\\native_sources\\build_dep\\";
 
-    println!("cargo:rustc-link-search=native={}", outdir.clone()+"/dll");
+    println!("cargo:warning={}",nvim_profile_dir);
+    println!("cargo:rustc-link-search=native={}", build_dep);
     println!("cargo:rustc-link-lib=dylib=bridge");
-    println!("cargo:rerun-if-changed={}", csdir);
+    println!("cargo:rerun-if-changed={}", build_dep);
 }
 
