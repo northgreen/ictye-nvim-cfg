@@ -1,4 +1,0 @@
-cargo:warning=C:\Users\north\AppData\Local\nvim\
-cargo:rustc-link-search=native=C:\Users\north\AppData\Local\nvim\\native_sources\build_dep\
-cargo:rustc-link-lib=dylib=bridge
-cargo:rerun-if-changed=C:\Users\north\AppData\Local\nvim\\native_sources\build_dep\
