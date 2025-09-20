@@ -16,8 +16,6 @@ local function init()
     require'mason-lspconfig'.setup()
     require('dapui').setup()
 
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    require'lspconfig'.html.setup({capabilities = capabilities})
     require(t .. '.toolchain_init')
 end
 

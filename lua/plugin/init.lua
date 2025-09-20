@@ -20,4 +20,4 @@ local function init_plugin()
 end
 
 local b, r = pcall(init_plugin)
-if not b then print('Error: Failed to initialize lazy.nvim!!!' .. '\n' .. r) end
+if not b then print('Error: Failed to initialize lazy.nvim!!! Any Functionality will not work.' .. '\n' .. r) end

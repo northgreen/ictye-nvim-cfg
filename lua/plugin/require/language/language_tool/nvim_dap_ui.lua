@@ -5,20 +5,23 @@ return {
 	cmd = {'DapNew'},
 	opts = {},
     config = function(_, opts)
-        require("dapui").setup(opts)
+        local dapui = require('dapui')
+        local dap = require('dap')
+
+        dapui.setup(opts)
         if options.ui.dapui.autoopen then
-            require('dap').listeners.before.attach.dapui_config = function()
-                require('dapui').open()
+            dap.listeners.before.attach.dapui_config = function()
+                dapui.open()
             end
-            require('dap').listeners.before.launch.dapui_config = function()
-                require('dapui').open()
+            dap.listeners.before.launch.dapui_config = function()
+                dapui.open()
             end
         end
         if options.ui.dapui.autoclose then
-            require('dap').listeners.before.event_terminated.dapui_config =
-                function() require('dapui').close() end
-            require('dap').listeners.before.event_exited.dapui_config =
-                function() require('dapui').close() end
+            dap.listeners.before.event_terminated.dapui_config =
+                function() dapui.close() end
+            dap.listeners.before.event_exited.dapui_config =
+                function() dapui.close() end
         end
     end,
     dependencies = {'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio'}

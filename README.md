@@ -2,6 +2,8 @@
 This repo is my prisional config for neovim.
 CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
+If you want use this repo, I recommand you fork it or lock the version
+
 ## Factures
 - **Language Server Protocol (LSP)**: Supports Haskell, Python, and other languages via your preferred LSP server (e.g., `haskell-language-server`).  
 - **Syntax Highlighting**: Powered by `tree-sitter` for accurate and fast code parsing.  

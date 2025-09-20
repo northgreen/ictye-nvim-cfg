@@ -10,11 +10,11 @@ _G.configed[vim.bo.filetype] = true
 
 local dap = require('dap')
 local nvim_lsp = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local attach = require 'global.language.attach'.attach
 
-nvim_lsp.lua_ls.setup({
-    capabilities = capabilities,
+vim.lsp.config('lua_ls',{
+    -- capabilities = capabilities,
     on_init = function(client)
         local path = client.workspace_folders[1].name
         if not vim.loop.fs_stat(path .. '/.luarc.json') and

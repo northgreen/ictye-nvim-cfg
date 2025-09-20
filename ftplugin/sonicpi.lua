@@ -41,13 +41,9 @@ vim.api.nvim_create_user_command('LspAttachManual', attach_lsp_to_existing_buffe
 if _G.configed[vim.bo.filetype] then return end
 _G.configed[vim.bo.filetype] = true
 
-local lspconfig = require('lspconfig')
 local attach = require 'global.language.attach'.attach
 
-
-vim.lsp.enable('solargraph')
-
-lspconfig.solargraph.setup({
+vim.lsp.config('solargraph',{
     on_init = on_init,
     filetypes = { "ruby", "sonicpi" },
     settings = {

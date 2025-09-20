@@ -1,1 +1,1 @@
-return {'neovim/nvim-lspconfig', lazy = true}
+return {'neovim/nvim-lspconfig',lazy = true}

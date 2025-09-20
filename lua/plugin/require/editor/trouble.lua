@@ -7,12 +7,6 @@ return {
                 mode = "diagnostics",
                 desc = "Trouble Diagnostics",
                 relative = "editor",
-                preview = {
-                    type = "split",
-                    relative = "win",
-                    position = "right",
-                    size = 0.3
-                }
             }
         },
         icons = {

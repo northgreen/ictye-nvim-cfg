@@ -37,6 +37,7 @@ vim.api.nvim_create_autocmd("BufRead", {
     end,
 })
 
+
 -- exit when ori mod
 if vim.g.ori_mode then
     return
@@ -57,6 +58,7 @@ do
     local lua_cpath = {
         vim.fs.joinpath(cfg_dir, "bin", "windows", "?.dll")
     }
+
 
     package.path = package.path .. ";" .. table.concat(lua_path, ";")
     package.cpath = package.cpath .. ";" .. table.concat(lua_cpath, ";")

@@ -7,7 +7,7 @@ return {
             {ft = 'neotest-output-panel', tittle = 'Test Output'},
         },
         left = {
-            -- {ft = 'neo-tree'},
+            {ft = 'neo-tree', tittle = "Tree"},
             {ft = 'Outline', tittle = 'OverView', size = {height = 0.4}}
         },
         right = {

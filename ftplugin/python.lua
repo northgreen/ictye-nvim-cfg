@@ -8,11 +8,8 @@ end
 _G.configed[vim.bo.filetype] = true
 
 local attach = require'global.language.attach'.attach
-require'lspconfig'.pyright.setup {
-	on_attach = attach
-}
 
-require('lspconfig').ruff.setup({
+vim.lsp.config("ruff",{
   init_options = {
     settings = {
     }

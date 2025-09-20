@@ -7,6 +7,7 @@ if _G.configed[vim.bo.filetype] then
 end
 _G.configed[vim.bo.filetype] = true
 
+
 local dap = require('dap')
 dap.adapters.haskell = {
   type = 'executable';
