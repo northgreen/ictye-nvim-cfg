@@ -71,8 +71,8 @@ local normal_keymaps = {
     ['<C-r_>'] = '<Plug>coc-refactor',
     ['<C-n>']  = '<Cmd>lua vim.lsp.buf.hover()<CR>',
     ['<C-]>']  = '<Cmd> IcDefine<CR>',
-    ['<C-f>']  = '<Cmd>Telescope<CR>',
-    ['<C-p>']  = '<Cmd>Telescope find_files<CR>',
+    ['<C-f>']  = '<Cmd>Telescope find_files<CR>',
+    ['<C-p>']  = '<Cmd>Telescope<CR>',
 
     ['<F5>']   = '<Cmd>QuickMenu<CR>',
     ['<F6>']   = '<Cmd>IcDAPUIToggle<CR>',

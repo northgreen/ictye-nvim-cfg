@@ -43,6 +43,7 @@ if vim.g.ori_mode then
     return
 end
 
+
 do
     --- Config paths
     local data_dir = vim.fn.stdpath('data') --[[@as string]]
