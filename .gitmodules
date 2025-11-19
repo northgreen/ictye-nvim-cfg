@@ -1,0 +1,3 @@
+[submodule "luvit-meta"]
+	path = luvit-meta
+	url = https://github.com/Bilal2453/luvit-meta.git
