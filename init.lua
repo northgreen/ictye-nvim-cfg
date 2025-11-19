@@ -43,7 +43,6 @@ if vim.g.ori_mode then
     return
 end
 
-
 do
     --- Config paths
     local data_dir = vim.fn.stdpath('data') --[[@as string]]
@@ -79,6 +78,8 @@ do
 
     local _path = vim.env.PATH
     vim.env.PATH = bin_path .. (is_windows and ";" or ":") .. _path
+    vim.env.PATH = "~/.dotnet/tools" .. (is_windows and ";" or ":") .. _path
+
 end
 
 local ploadmodule = require 'util.module_load_utils'.ploadmodule

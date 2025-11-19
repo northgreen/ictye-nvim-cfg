@@ -23,7 +23,7 @@ return {
             }
         }
 
-        pcall(telescope.load_extension, 'project_dir_cfg')
+        -- pcall(telescope.load_extension, 'project_toolchain')
         pcall(telescope.load_extension, "noice")
         pcall(telescope.load_extension, "fzf")
     end

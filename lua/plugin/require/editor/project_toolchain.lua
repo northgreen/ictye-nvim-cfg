@@ -1,6 +1,6 @@
 return {
-    "project_dir_cfg",
-    dev = true,
+    "northgreen/project_toolchain.nvim",
+    -- enabled = false,
     opts = {},
     lazy = true,
     event = "BufRead",

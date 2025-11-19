@@ -8,9 +8,8 @@
 
     "workspace": {
         "library": [
-            "C:\\Users\\north\\AppData\\Local\\nvim\\lua_docs\\luvit-meta",
-            "C:\\Users\\north\\scoop\\apps\\neovim\\current\\share\\nvim\\runtime\\lua",
-            "C:\\Users\\north\\AppData\\Local\\nvim-data\\lazy"
+            "./luvit-meta/library/",
+            "/usr/share/nvim/runtime/lua/"
         ]
     }
 }

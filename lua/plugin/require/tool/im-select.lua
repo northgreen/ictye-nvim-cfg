@@ -1,5 +1,6 @@
 return {
     "keaising/im-select.nvim",
+    enabled = false,
 	event = {"BufReadPre"},
     opts = {
         default_im_select = "1033",

@@ -10,6 +10,7 @@ Enable('ruff')
 Enable('jsonls')
 Enable('solargraph')
 Enable('cspell_ls')
+Enable('pyright')
 
 -- The lsp below is not here, it config with the plugin
 -- Rust
