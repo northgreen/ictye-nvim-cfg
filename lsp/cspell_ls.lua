@@ -21,4 +21,5 @@ return {
     'cspell.yaml',
     'cspell.yml',
   },
+  capabilities = require('blink-cmp').get_lsp_capabilities(),
 }

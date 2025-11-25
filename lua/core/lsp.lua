@@ -11,6 +11,7 @@ Enable('jsonls')
 Enable('solargraph')
 Enable('cspell_ls')
 Enable('pyright')
+-- Enable('omnisharp')
 
 -- The lsp below is not here, it config with the plugin
 -- Rust
