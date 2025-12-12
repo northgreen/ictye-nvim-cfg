@@ -196,15 +196,14 @@ return {
             desc = 'roslyn_ls: refresh diagnostics',
         })
     end,
-
-    capabilities = {
+    capabilities = require("global.language.capabilities")({
         -- HACK: Doesn't show any diagnostics if we do not set this to true
         textDocument = {
             diagnostic = {
                 dynamicRegistration = true,
             },
         },
-    },
+    }),
     settings = {
         ['csharp|background_analysis'] = {
             dotnet_analyzer_diagnostics_scope = 'fullSolution',

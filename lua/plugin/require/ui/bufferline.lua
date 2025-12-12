@@ -24,7 +24,7 @@ return {
         { "[B",         "<cmd>BufferLineMovePrev<cr>",  desc = "Move buffer prev" },
         { "]B",         "<cmd>BufferLineMoveNext<cr>",  desc = "Move buffer next" }
     },
-    dependencies = { 'catppuccin/nvim', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'catppuccin/nvim', 'nvim-tree/nvim-web-devicons', "catppuccin/nvim" },
     opts = {
         options = {
             themeable = true,
@@ -44,7 +44,7 @@ return {
     },
     config = function(_, opts)
         local frappe = require("catppuccin.palettes").get_palette('frappe')
-        local _h = require 'catppuccin.groups.integrations.bufferline'.get_theme({
+        local _h = require 'catppuccin.special.bufferline'.get_theme({
             styles = { 'boid', "italic" },
             custom = { frappe = { fill = { bg = frappe.crust } } }
         })

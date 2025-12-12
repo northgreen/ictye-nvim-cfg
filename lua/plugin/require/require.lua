@@ -61,7 +61,7 @@ return {
     require 'plugin.require.editor.mininvim',
     -- require 'plugin.require.editor.orgmode',
     -- require 'plugin.require.editor.neorg',
-    -- require 'plugin.require.tool.yazi',
+    require 'plugin.require.tool.yazi',
     require 'plugin.require.ui.flash',
     require 'plugin.require.ui.smear-cursor',
     require 'plugin.require.ui.vim-smoothie',
@@ -77,6 +77,7 @@ return {
     -- require 'plugin.require.ui.play-one',
     require 'plugin.require.tool.oil',
     require 'plugin.require.language.language_tool.bink-cmp',
+    require 'plugin.require.tool.vcs.jj',
 
 --------others
 	require 'plugin.require.tool.firenvim',

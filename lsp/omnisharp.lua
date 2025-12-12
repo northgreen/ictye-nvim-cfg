@@ -39,7 +39,7 @@ return {
         )
     end,
     init_options = {},
-    capabilities = require('blink-cmp').get_lsp_capabilities({
+    capabilities = require("global.language.capabilities")({
         workspace = {
             workspaceFolders = false, -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
         },

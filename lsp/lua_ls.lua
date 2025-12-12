@@ -82,6 +82,6 @@ return {
         'selene.yml',
         '.git',
     },
-    capabilities = require('blink-cmp').get_lsp_capabilities(),
+    capabilities = require("global.language.capabilities")(),
 
 }
