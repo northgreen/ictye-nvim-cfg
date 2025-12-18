@@ -34,7 +34,7 @@ local QuickMenu = Menu({
         ["Questions"] = bind(lazy_call("trouble", "open"), "questions"),
         ["Find and Replace"] = bind(vim.cmd, "GrugFar"),
         ["Find in Files"] = bind(vim.cmd, "RipSubstitute"),
-        ["Terminal"] = bind(vim.cmd, "FloatermNew powershell"),
+        ["Terminal"] = bind(vim.cmd, "FloatermNew zsh"),
         ["Git"] = bind(vim.cmd, "LazyGit"),
         ["Debug"] = bind(vim.cmd, "DapNew"),
         ["Todo"] = bind(vim.cmd, "Trouble todo"),
@@ -92,6 +92,7 @@ Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, si
 Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
 Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
 Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
+Keymap('n','gf',require('snacks').image.hover,{ noremap = true, silent = true })
 
 Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, desc = 'Open QuickMenu' })
 Keymap('n', '<C-x>u', require 'undotree'.toggle, { noremap = true, silent = true, desc = "Toggle undotree" })

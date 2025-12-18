@@ -4,8 +4,11 @@ return {
     opts = {
         map     = {
             symbols = {
-                encode = █,
+                encode = "█",
             }
+        },
+        move = {
+
         },
         pick    = {},
         align   = {},
@@ -24,6 +27,9 @@ return {
         require('mini.pick').setup(opts.pick)
         require('mini.align').setup(opts.align)
         require('mini.files').setup(opts.files)
-        -- require('mini.animate').setup(opts.animate)
+        -- if not vim.g.GUI then
+            -- require('mini.animate').setup(opts.animate)
+        -- end
+        require('mini.move').setup(opts.move)
     end
 }

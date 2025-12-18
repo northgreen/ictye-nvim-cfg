@@ -13,6 +13,7 @@ Enable('cspell_ls')
 Enable('pyright')
 -- Enable('omnisharp')
 Enable('roslyn')
+Enable('fsautocomplete')
 
 -- The lsp below is not here, it config with the plugin
 -- Rust

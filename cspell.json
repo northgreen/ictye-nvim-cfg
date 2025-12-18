@@ -1,5 +1,10 @@
 {
   "words": [
-    "lspconfig"
+    "lspconfig",
+    "echasnovski",
+    "nvim"
+  ],
+  "userWords": [
+    "Ictye"
   ]
 }
