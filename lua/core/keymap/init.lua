@@ -101,6 +101,7 @@ Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent =
 Keymap("n", "<C-x>a", require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
 Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
 Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap("n", "<C-x><C-b>", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
 
 Keymap("n", "<leader>O", "<Cmd>Oil<CR>",{ noremap = true, silent = true, desc = "Open Oil View" })
 Keymap('n', '<A-x>', ":", { desc = "Command line" })

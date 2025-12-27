@@ -1,5 +1,6 @@
 return {
     enabled = (not vim.g.started_by_firenvim) and options.ui.ui_options.noise,
+    -- enabled = false,
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {

@@ -21,14 +21,14 @@ ret.required = {
 		return r
 	end,
 	required = {
+        -- here the required command-line tool
 		'git',
         'lazygit',
         'rg',
         'node',
-		twc(ret.os.linux == 0,'make',nil)
+        'pass',
+		twc(ret.os.linux + ret.os.mac > 0,'make','pwsh')
 	}
 }
-
-
 
 return ret

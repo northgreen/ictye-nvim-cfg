@@ -21,6 +21,8 @@ return {
             }
         },
         animate = {},
+        diff = {},
+
     },
     config = function(_, opts)
         -- require('mini.map').setup(opts.map)
@@ -31,5 +33,6 @@ return {
             -- require('mini.animate').setup(opts.animate)
         -- end
         require('mini.move').setup(opts.move)
+        require('mini.diff').setup(opts.diff)
     end
 }

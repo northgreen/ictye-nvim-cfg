@@ -1,4 +1,7 @@
 local twc = require 'util.functions'.three_way_compare
+local close_ai_key = twc(options.env.os.win==1,"CLOSEAI_API_KEY","cmd:pass show ai-key/close-ai")
+local github_pat = "cmd:gh auth token"
+local siliconflow_api_key = twc(options.env.os.win==1,"SILICONFLOW_API_KEY","cmd:pass show ai-key/siliconflow")
 
 return {
     "yetone/avante.nvim",
@@ -18,13 +21,13 @@ return {
         web_search_engine = {
             provider = "searchapi"
         },
-        provider = "qianwen_3",
+        provider = "github_models_gpt4o",
         providers = {
             closeai_gpt5 = { -- too expensive!!
                 __inherited_from = "openai",
                 endpoint = "https://api.openai-proxy.org/v1",
                 model = "gpt-5",
-                api_key_name = "CLOSEAI_API_KEY",
+                api_key_name = close_ai_key,
                 timeout = 30000,
                 extra_request_body = {
                     temperature = 1,
@@ -35,7 +38,7 @@ return {
                 __inherited_from = "openai",
                 endpoint = "https://api.openai-proxy.org/v1",
                 model = "deepseek-chat",
-                api_key_name = "CLOSEAI_API_KEY",
+                api_key_name = close_ai_key,
                 timeout = 30000,
                 extra_request_body = {
                     temperature = 1,
@@ -46,29 +49,29 @@ return {
                 __inherited_from = "openai",
                 endpoint = "https://api.openai-proxy.org/v1",
                 model = "gpt-4o-mini",
-                api_key_name = "CLOSEAI_API_KEY",
+                api_key_name = close_ai_key,
                 timeout = 30000,
                 extra_request_body = {
                     temperature = 1,
                     max_completion_tokens = 12287,
                 }
             },
-            siliconflow = {
+            siliconflow_q38b = {
                 __inherited_from = "openai",
                 endpoint = "https://api.siliconflow.cn/v1",
                 model = "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
-                api_key_name = "SILICONFLOW_API_KEY",
+                api_key_name = siliconflow_api_key,
                 timeout = 30000,
                 extra_request_body = {
                     temperature = 1,
                     max_completion_tokens = 12287,
                 }
             },
-            github_models = {
+            github_models_gpt4o = {
                 __inherited_from = "openai",
                 endpoint = "https://models.github.ai/inference/v1",
                 model = "gpt-4o",
-                api_key_name = "GITHUB_PAT",
+                api_key_name = github_pat,
                 timeout = 30000,
                 context_window = 7900,
                 extra_request_body = {
@@ -101,7 +104,7 @@ return {
 
         },
     },
-    build = twc(options.env.os.win,
+    build = twc(options.env.os.win==1,
         "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
         "make"),
     dependencies = {

@@ -14,6 +14,9 @@ Enable('pyright')
 -- Enable('omnisharp')
 Enable('roslyn')
 Enable('fsautocomplete')
+Enable('clangd')
+Enable('asm_lsp')
+Enable('bashls')
 
 -- The lsp below is not here, it config with the plugin
 -- Rust

@@ -3,6 +3,7 @@ return {
     'akinsho/bufferline.nvim',
     version = '*',
     enabled = not (options.env_var.firenvim or options.env_var.vscode),
+    -- enabled = false,
     event = "VeryLazy",
     keys = {
         { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" }, {

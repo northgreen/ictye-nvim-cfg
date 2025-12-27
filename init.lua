@@ -2,21 +2,18 @@
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
--- 实测没什么用（
--- 大型项目专用配置
 vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
-        -- 启动时暂停GC，让所有插件加载完成
+        -- stop gc at bootup
         collectgarbage("stop")
 
-        -- 延迟设置GC参数
+        -- set the gc
         vim.defer_fn(function()
-            -- 允许更多内存使用，减少GC频率
             collectgarbage("setpause", 180)
             collectgarbage("setstepmul", 400)
             collectgarbage("restart")
-            collectgarbage("collect") -- 执行一次完整回收
-        end, 5000)              -- 5秒后执行
+            collectgarbage("collect")
+        end, 5000)
     end,
     once = true,
 })
