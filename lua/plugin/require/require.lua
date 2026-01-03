@@ -82,6 +82,7 @@ return {
     require 'plugin.require.tool.obsidian',
     require 'plugin.require.editor.fcitx5ui',
     require 'plugin.require.editor.fcitx5',
+    require 'plugin.require.tool.overseer',
 --------others
 	require 'plugin.require.tool.firenvim',
 }

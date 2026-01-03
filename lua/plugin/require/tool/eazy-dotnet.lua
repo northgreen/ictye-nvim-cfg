@@ -4,6 +4,13 @@ return -- lazy.nvim
     dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
     -- enabled = false,
     config = function()
-        require("easy-dotnet").setup()
+        require("easy-dotnet").setup({
+            lsp = {
+                enabled = false, -- it will take away many of inotify,FUCK!!!!
+            },
+            debugger = {
+                bin_path = "netcoredbg",
+            }
+        })
     end
 }

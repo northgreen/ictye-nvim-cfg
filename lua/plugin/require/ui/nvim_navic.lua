@@ -3,7 +3,7 @@ return {
     lazy = true,
     opts = {
         icons = options.ui.symbal_map,
-        lsp = {auto_attach = true, preference = nil},
+        lsp = {auto_attach = true, preference = {"roslyn"}},
         -- highlight = true,
         separator = options.ui.nav_option.sparator,
         depth_limit = 8,

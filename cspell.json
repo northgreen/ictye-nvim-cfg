@@ -4,7 +4,9 @@
     "echasnovski",
     "nvim",
     "siliconflow",
-    "CLOSEAI"
+    "CLOSEAI",
+    "stevearc",
+    "autocmd"
   ],
   "userWords": [
     "Ictye"
