@@ -83,6 +83,7 @@ return {
     require 'plugin.require.editor.fcitx5ui',
     require 'plugin.require.editor.fcitx5',
     require 'plugin.require.tool.overseer',
+    require 'plugin.require.tool.opencode',
 --------others
 	require 'plugin.require.tool.firenvim',
 }

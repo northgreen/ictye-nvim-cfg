@@ -11,6 +11,20 @@ return {
         },
         constrain_cursor = "name",
         watch_for_changes = true,
+        lsp_file_method = {
+            enabled = true,
+        },
+        view_options = {
+            is_hidden_file = function (name,bufnr)
+                local m = name:match("^%.")
+                local n = name:match("(%.uid)$")
+                local n = name:match("(%.import)$")
+                return m ~= nil or n~= nil
+            end
+        },
+        keymaps = {
+            [_G.options.keymaps.exit] = { "actions.close", mode = "n" }
+        }
     },
     -- Optional dependencies
     -- dependencies = { { "echasnovski/mini.icons", opts = {} } },

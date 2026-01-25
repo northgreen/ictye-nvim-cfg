@@ -46,7 +46,3 @@ local ahk2_configs = {
     on_attach = require'global.language.attach'.attach
 }
 
-local configs = require "lspconfig.configs"
-configs["ahk2"] = {default_config = ahk2_configs}
-local nvim_lsp = require("lspconfig")
-nvim_lsp.ahk2.setup({})

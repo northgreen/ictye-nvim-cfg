@@ -1,5 +1,9 @@
 return {
     'MagicDuck/grug-far.nvim',
 	cmd = 'GrugFar',
-	opts = {}
+    opts = {
+        keymaps = {
+            close = { n = _G.options.keymaps.exit},
+        }
+    }
 }

@@ -9,7 +9,6 @@ _G.configed[vim.bo.filetype] = true
 
 
 local dap = require('dap')
-local nvim_lsp = require('lspconfig')
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local attach = require 'global.language.attach'.attach
 

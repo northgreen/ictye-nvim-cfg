@@ -4,6 +4,7 @@ local Enable = vim.lsp.enable
 
 Enable('autohotkey_lsp')
 Enable('lua_ls')
+
 -- Enable('csharp_ls')
 Enable('powershell_es')
 Enable('ruff')
@@ -14,7 +15,9 @@ Enable('pyright')
 -- Enable('omnisharp')
 Enable('roslyn')
 Enable('fsautocomplete')
+-- Enable('fsharp_language_server')
 Enable('clangd')
+Enable("cmake")
 Enable('asm_lsp')
 Enable('bashls')
 Enable("lemminx")

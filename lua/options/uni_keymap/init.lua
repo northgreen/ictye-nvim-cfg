@@ -1,0 +1,3 @@
+return {
+    exit = "<leader>c"
+}

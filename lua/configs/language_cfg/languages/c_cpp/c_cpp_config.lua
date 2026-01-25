@@ -1,7 +1,4 @@
 local dap = require("dap")
-local lspconfig = require 'lspconfig'
-lspconfig.clangd.setup({capabilities = capabilities})
-lspconfig.cmake.setup({capabilities = capabilities})
 
 dap.configurations.cpp = {
   {

@@ -9,11 +9,12 @@ end
 return {
     'nvim-lualine/lualine.nvim',
     event = 'BufReadPre',
+    -- enabled = false,
     opts = {
         options = {
             icons_enabled = true,
             component_separators = '',
-            section_separators = {left = '', right = ''},
+            section_separators = {left = '', right = ''},
             disabled_filetypes = {
                 statusline = {'NvimTree', 'Outline', 'neo-tree', 'neotest-summary'},
                 'trouble',
@@ -36,7 +37,7 @@ return {
             lualine_b = {
                 {
                     'branch',
-                    separator = {left = '', right = ''},
+                    separator = {left = '', right = ''},
                     right_padding = 2
                 }, 'diff', 'diagnostics'
             },
@@ -44,7 +45,7 @@ return {
             lualine_x = {'encoding', 'fileformat', 'filetype'},
             lualine_y = {'progress'},
             lualine_z = {
-                {'location', separator = {right = ''}, left_padding = 2}
+                {'location', separator = {right = ''}, left_padding = 2}
             }
         },
         inactive_sections = {
@@ -59,7 +60,7 @@ return {
             lualine_a = {
                 {
                     'mode',
-                    separator = {left = '', right = ''},
+                    separator = {left = '', right = ''},
                     right_padding = 2
                 }
             },
