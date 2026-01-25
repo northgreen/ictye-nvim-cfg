@@ -29,14 +29,83 @@ If you want use this repo, I recommand you fork it or lock the version
 - `rp`(ripgrep)
 - your favorite LSP
 
-## keymaps
-See `lua\core\keymaps.lua`
+## Keymaps
 
+### Navigation & Files
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<F3>` | Outline | Normal | Toggle code outline |
+| `<F4>` | Neotree toggle | Normal | Toggle file explorer |
+| `<C-f>` | Telescope find_files | Normal | Search files with Telescope |
+| `<C-p>` | Telescope | Normal | Open Telescope main menu |
 
+### Debugging
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<F9>` | DapContinue | Normal | Continue debugging |
+| `<F10>` | DapStepOver | Normal | Step over function |
+| `<F11>` | DapStepInto | Normal | Step into function |
+| `<F12>` | DapStepOut | Normal | Step out of function |
+| `<C-b>` | Toggle breakpoint | Normal | Toggle debug breakpoint |
+
+### LSP & Code Actions
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<C-r_>` | Coc refactor | Normal | Refactor code with coc.nvim |
+| `<C-n>` | LSP hover | Normal | Show hover documentation |
+| `<C-]>` | IcDefine | Normal | Go to definition |
+
+### Utility Menus
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<F5>` | QuickMenu | Normal | Open quick menu |
+| `<F6>` | IcDAPUIToggle | Normal | Toggle DAP UI |
+| `<F2>` | Lazy | Normal | Open Lazy plugin manager |
+
+### Buffer Navigation
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<leader>1-9` | Go to buffer | Normal | Jump to specific buffer |
+| `<leader>-` | Previous buffer | Normal | Cycle to previous buffer |
+| `<leader>=` | Next buffer | Normal | Cycle to next buffer |
+| `<leader>q` | Close buffer | Normal | Close current buffer |
+| `<leader>O` | Oil | Normal | Open Oil file manager |
+
+### Ctrl-x Prefix
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<C-x>q` | QuickMenu | Normal | Open quick menu |
+| `<C-x>u` | Undotree toggle | Normal | Toggle undo tree |
+| `<C-x>f` | Pick files | Normal | Pick files |
+| `<C-x><C-f>` | Mini.files | Normal | Open mini.files |
+| `<C-x>a` | LSP actions | Normal | Show LSP actions |
+| `<C-x>t` | IcTestMenu | Normal | Open test menu |
+| `<C-x>bf` | Telescope buffers | Normal | Show buffer list |
+| `<C-x><C-b>` | Telescope buffers | Normal,Terminal | Show buffer list |
+
+### Other
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `gf` | Image hover | Normal | Hover over images with snacks |
+| `<A-x>` | Command line | Normal | Open command line |
+
+### OpenCode Integration
+| Key | Action | Mode | Description |
+|-----|--------|------|-------------|
+| `<C-a>` | Ask opencode | Normal,Visual | Ask opencode AI assistant |
+| `<C-x>` | Select opencode | Normal,Visual | Execute opencode action |
+| `<C-.>` | Toggle opencode | Normal,Terminal | Toggle opencode panel |
+| `go` | Add range to opencode | Normal,Visual | Add range to opencode |
+| `goo` | Add line to opencode | Normal | Add current line to opencode |
+| `<S-C-u>` | Scroll opencode up | Normal | Scroll opencode up |
+| `<S-C-d>` | Scroll opencode down | Normal | Scroll opencode down |
+| `+` | Increment | Normal | Increment number under cursor |
+| `-` | Decrement | Normal | Decrement number under cursor |
+
+### Additional Keymap Utilities
 | Purpose | How to use | Modes | Notes |
 |---|---|---|---|
 | Buffer-local keymaps (which-key) | Press `<leader>?` to open buffer-local which-key | Normal | Requires `folke/which-key.nvim`; shows available prefixes and mappings for current buffer |
-| Toggle Filetree | Press `<F4>` | Normal | will open neotree (will rewrite because I want use hhkb) |
 | Telescope keymaps browser | `:Telescope keymaps` | Normal | Interactive keymap browser; requires `telescope.nvim` |
 | Adjust key-chord timing | `:set timeoutlen=500` | N/A | Lower values make multi-key sequences register faster; tune to preference |
 | Translate key notation | ``:echo keytrans("<C-x>t")`` | N/A | Converts raw sequences into readable notation; see `:help key-notation` |

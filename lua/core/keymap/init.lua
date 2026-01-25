@@ -9,7 +9,7 @@ local Menu = require("util.quickmenu")
 
 local bind = require 'util.functions'.bind
 local lazy_require = require 'util.functions'.lazy_require
-local lazy_call = require'util.functions'.lazy_call
+local lazy_call = require 'util.functions'.lazy_call
 
 local neotest = lazy_require("neotest")
 local telescope_builtin = lazy_require("telescope.builtin")
@@ -59,26 +59,29 @@ Command("QuickMenu", bind(QuickMenu.mount, QuickMenu), {})
 
 
 local keymap_opt = { noremap = true, silent = true }
-local normal_keymaps = {
-    ['<F3>']   = '<Cmd>Outline<CR>',
-    ['<F4>']   = '<Cmd>Neotree toggle<CR>',
 
-    ['<F9>']   = '<Cmd>DapContinue<CR>',
-    ['<F10>']  = '<Cmd>DapStepOver<CR>',
-    ['<F11>']  = '<Cmd>DapStepInto<CR>',
-    ['<F12>']  = '<Cmd>DapStepOut<CR>',
+-- Navigation and files
+Keymap('n', '<F3>', '<Cmd>Outline<CR>', keymap_opt)
+Keymap('n', '<F4>', '<Cmd>Neotree toggle<CR>', keymap_opt)
+Keymap('n', '<C-f>', '<Cmd>Telescope find_files<CR>', keymap_opt)
+Keymap('n', '<C-p>', '<Cmd>Telescope<CR>', keymap_opt)
 
-    ['<C-b>']  = '<Cmd>lua require"dap".toggle_breakpoint()<CR>',
-    ['<C-r_>'] = '<Plug>coc-refactor',
-    ['<C-n>']  = '<Cmd>lua vim.lsp.buf.hover()<CR>',
-    ['<C-]>']  = '<Cmd> IcDefine<CR>',
-    ['<C-f>']  = '<Cmd>Telescope find_files<CR>',
-    ['<C-p>']  = '<Cmd>Telescope<CR>',
+-- Debugging
+Keymap('n', '<F9>', '<Cmd>DapContinue<CR>', keymap_opt)
+Keymap('n', '<F10>', '<Cmd>DapStepOver<CR>', keymap_opt)
+Keymap('n', '<F11>', '<Cmd>DapStepInto<CR>', keymap_opt)
+Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>', keymap_opt)
+Keymap('n', '<C-b>', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', keymap_opt)
 
-    ['<F5>']   = '<Cmd>QuickMenu<CR>',
-    ['<F6>']   = '<Cmd>IcDAPUIToggle<CR>',
-    ['<F2>']   = '<Cmd>Lazy<CR>',
-}
+-- LSP and code actions
+Keymap('n', '<C-r_>', '<Plug>coc-refactor', keymap_opt)
+Keymap('n', '<C-n>', '<Cmd>lua vim.lsp.buf.hover()<CR>', keymap_opt)
+Keymap('n', '<C-]>', '<Cmd> IcDefine<CR>', keymap_opt)
+
+-- Utility menus
+Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>', keymap_opt)
+Keymap('n', '<F6>', '<Cmd>IcDAPUIToggle<CR>', keymap_opt)
+Keymap('n', '<F2>', '<Cmd>Lazy<CR>', keymap_opt)
 
 -- Buffer Keymaps
 Keymap('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', { noremap = true, silent = true })
@@ -93,7 +96,8 @@ Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, si
 Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
 Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
 Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
-Keymap('n','gf',require('snacks').image.hover,{ noremap = true, silent = true })
+
+Keymap('n', 'gf', require('snacks').image.hover, { noremap = true, silent = true })
 
 Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, desc = 'Open QuickMenu' })
 Keymap('n', '<C-x>u', require 'undotree'.toggle, { noremap = true, silent = true, desc = "Toggle undotree" })
@@ -102,10 +106,25 @@ Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent =
 Keymap("n", "<C-x>a", require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
 Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
 Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap("n", "<C-x><C-b>", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap({"n","t"}, "<C-x><C-b>", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
 
-Keymap("n", "<leader>O", "<Cmd>Oil<CR>",{ noremap = true, silent = true, desc = "Open Oil View" })
+Keymap("n", "<leader>O", "<Cmd>Oil<CR>", { noremap = true, silent = true, desc = "Open Oil View" })
 Keymap('n', '<A-x>', ":", { desc = "Command line" })
+
+
+Keymap({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
+Keymap({ "n", "x" }, "<C-x>", function() require("opencode").select() end, { desc = "Execute opencode action…" })
+Keymap({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+
+Keymap({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end, { desc = "Add range to opencode", expr = true })
+Keymap("n", "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
+
+Keymap("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end, { desc = "Scroll opencode up" })
+Keymap("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
+
+-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
+Keymap("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+Keymap("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
 
 -- Keymap('n', '<leader>mpt', require("mini.map").toggle, { noremap = true, silent = true, desc = "toggle minimap" })
 -- Keymap('n', '<leader>mps', require("mini.map").toggle_side, { noremap = true, silent = true, desc = "toggle minimap" })
@@ -168,10 +187,5 @@ Hydra({
         { 'k', '<Cmd>BufferLineCycleNext<CR>', { description = 'Move to next tab' } }
     }
 })
-
-
-
--- auto set some keymaps
-for key, mapping in pairs(normal_keymaps) do Keymap('n', key, mapping, keymap_opt) end
 
 require 'core.keymap.cfg_edit'
