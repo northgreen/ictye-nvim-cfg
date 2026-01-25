@@ -16,10 +16,11 @@ return {
         },
         view_options = {
             is_hidden_file = function (name,bufnr)
-                local m = name:match("^%.")
-                local n = name:match("(%.uid)$")
-                local n = name:match("(%.import)$")
-                return m ~= nil or n~= nil
+                local n = name:match("^%.") ~= nil
+                -- ignore rubbish file for godot
+                local n = n or name:match("(%.uid)$") ~= nil
+                local n = n or name:match("(%.import)$") ~= nil
+                return n
             end
         },
         keymaps = {

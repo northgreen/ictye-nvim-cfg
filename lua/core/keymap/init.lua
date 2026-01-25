@@ -38,7 +38,8 @@ local QuickMenu = Menu({
         ["Git"] = bind(vim.cmd, "LazyGit"),
         ["Debug"] = bind(vim.cmd, "DapNew"),
         ["Todo"] = bind(vim.cmd, "Trouble todo"),
-        ["Tasks"] = bind(vim.cmd, "terminal dooit")
+        ["Tasks"] = bind(vim.cmd, "terminal dooit"),
+        ["Run"] = bind(vim.cmd, "OverseerRun"),
     }
 })
 

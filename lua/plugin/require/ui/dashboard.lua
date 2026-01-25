@@ -11,6 +11,7 @@ local miku = {
 	"    .￣￣￣￣＼/＿＿＿＿/￣￣￣￣￣"
 }
 
+--- @return LazyPluginSpec
 return {
 	'nvimdev/dashboard-nvim',
 	event = 'VimEnter',

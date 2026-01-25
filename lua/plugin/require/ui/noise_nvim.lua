@@ -24,6 +24,9 @@ return {
         notify = {
             enabled = true,
         },
+        cmdline = {
+            view = "cmdline",
+        },
         messages = {
             enabled = true,
         },

@@ -81,13 +81,15 @@ end
 
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
+
 -- init environment
 local ok, err = pcall(require, 'env_init')
 if not ok then
     print('Error loading env_init,this config may not work properly: ' .. err)
 end
-
 ploadmodule 'options'
+ploadmodule 'core.vimpreconfig'
+
 if not options.env.required:chack() then
     print('Some required binarray is not found,and something will not work properly,please chack it')
 end

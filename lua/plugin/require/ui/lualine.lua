@@ -105,19 +105,19 @@ return {
                     noice.api.status.mode.get,
                     --- @diagnostic disable-next-line undefined-field
                     cond = noice.api.status.mode.has,
-                    color = {fg = "#ff9e64"}
+                    color = {fg = "#ef9f76"}
                 }, {
                     --- @diagnostic disable-next-line undefined-field
                     noice.api.status.command.get,
                     --- @diagnostic disable-next-line undefined-field
                     cond = noice.api.status.command.has,
-                    color = {fg = "#ff9e64"}
+                    color = {fg = "#ef9f76"}
                 }, {
                     --- @diagnostic disable-next-line undefined-field
                     noice.api.status.search.get,
                     --- @diagnostic disable-next-line undefined-field
                     cond = noice.api.status.search.has,
-                    color = {fg = "#ff9e64"}
+                    color = {fg = "#ef9f76"}
                 }
             }
         end
@@ -127,7 +127,7 @@ return {
                 f_nav().fun,
                 cond = f_nav().cond,
                 navic_opts = nil,
-                separator = {left = '', right = ''},
+                separator = {left = '', right = ''},
                 right_padding = 2
             }
         }

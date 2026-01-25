@@ -84,6 +84,7 @@ return {
     require 'plugin.require.editor.fcitx5',
     require 'plugin.require.tool.overseer',
     require 'plugin.require.tool.opencode',
+    require 'plugin.require.language.language_require.fsharp',
 --------others
 	require 'plugin.require.tool.firenvim',
 }
