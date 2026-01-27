@@ -3,7 +3,6 @@ if vim.g.neovide then
 end
 
 -- REGION Init Dependencies
-
 local mc = require("multicursor-nvim")
 local Hydra = require('hydra')
 local Keymap = vim.keymap.set
@@ -17,7 +16,6 @@ local lazy_call = require 'util.functions'.lazy_call
 
 local neotest = lazy_require("neotest")
 local telescope_builtin = lazy_require("telescope.builtin")
-
 -- ENDREGION
 
 -- Test Menu
@@ -51,18 +49,17 @@ local QuickMenu = Menu({
 
 -- #region Commands
 do
-    Command("IcFormat", function() vim.lsp.buf.format() end, {})
+    Command('IcFormat', function() vim.lsp.buf.format() end, {})
     Command('IcRename', function() vim.lsp.buf.rename() end, {})
     Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
     Command('IcDefine', function() vim.lsp.buf.definition() end, {})
-    Command('IcDAP', function() require "osv".launch({ port = 8086 }) end, {})
-    Command("IcDAPUIOpen", function() require("dapui").open() end, {})
-    Command("IcDAPUIClose", function() require("dapui").close() end, {})
-    Command("IcDAPUIToggle", function() require("dapui").toggle() end, {})
-    Command("Lsbf", function() telescope_builtin.buffers() end, {})
+    Command('IcDAP', function() require 'osv'.launch({ port = 8086 }) end, {})
+    Command('IcDAPUIOpen', function() require('dapui').open() end, {})
+    Command('IcDAPUIClose', function() require('dapui').close() end, {})
+    Command('IcDAPUIToggle', function() require('dapui').toggle() end, {})
 
-    Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
-    Command("QuickMenu", bind(QuickMenu.mount, QuickMenu), {})
+    Command('IcTestMenu', bind(TestMenu.mount, TestMenu), {})
+    Command('QuickMenu', bind(QuickMenu.mount, QuickMenu), {})
 end
 -- #endregion
 
@@ -90,18 +87,22 @@ Keymap('n', '<F6>', '<Cmd>IcDAPUIToggle<CR>', keymap_opt)
 Keymap('n', '<F2>', '<Cmd>Lazy<CR>', keymap_opt)
 
 -- Buffer Keymaps
-Keymap('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>2', '<Cmd>BufferLineGoToBuffer 2<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>3', '<Cmd>BufferLineGoToBuffer 3<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>4', '<Cmd>BufferLineGoToBuffer 4<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>5', '<Cmd>BufferLineGoToBuffer 5<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>6', '<Cmd>BufferLineGoToBuffer 6<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>7', '<Cmd>BufferLineGoToBuffer 7<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
-Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
+do
+    Keymap('n', '<leader>1', '<Cmd>BufferLineGoToBuffer 1<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>2', '<Cmd>BufferLineGoToBuffer 2<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>3', '<Cmd>BufferLineGoToBuffer 3<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>4', '<Cmd>BufferLineGoToBuffer 4<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>5', '<Cmd>BufferLineGoToBuffer 5<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>6', '<Cmd>BufferLineGoToBuffer 6<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>7', '<Cmd>BufferLineGoToBuffer 7<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
+end
+
+Keymap('n', '<leader>O', '<Cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Open Oil View' })
 
 Keymap('n', 'gf', require('snacks').image.hover, { noremap = true, silent = true })
 
@@ -110,15 +111,19 @@ Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, des
 Keymap('n', '<C-x>u', require 'undotree'.toggle, { noremap = true, silent = true, desc = "Toggle undotree" })
 
 Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, desc = "Pick a file" })
+Keymap('n', '<C-x>ft', "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, desc = "Pick a file" })
 Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
-Keymap("n", "<C-x>a", require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show Test Men" })
-Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap({ "n", "t" }, "<C-x><C-b>", "<Cmd>Telescope buffers<CR>",
-    { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap('n', '<C-x>a', require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Show Test Men" })
+Keymap({ 'n', 't' }, '<C-x><C-b>', '<Cmd>Telescope buffers<CR>',
+    { noremap = true, silent = true, desc = 'Show lsp actions' })
+Keymap('n', '<C-x>bf', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = "Show lsp actions" })
 
-Keymap("n", "<leader>O", "<Cmd>Oil<CR>", { noremap = true, silent = true, desc = "Open Oil View" })
-Keymap('n', '<A-x>', ":", { desc = "Command line" })
+-- Overseer
+Keymap('n', '<C-x>oo', '<Cmd>OverseerToggle<CR>', { noremap = true, silent = true, desc = 'Toggle Overseer' })
+Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>', { noremap = true, silent = true, desc = 'Run Task' })
+
+Keymap('n', '<A-x>', ":", { desc = 'Command line' })
 
 do
     local opencode = require("opencode")
@@ -132,9 +137,9 @@ do
     Keymap("n", "goo", function() return opencode.operator("@this ") .. "_" end,
         { desc = "Add line to opencode", expr = true })
 
-    Keymap("n", "<S-C-u>", function() opencode.command("session.half.page.up") end,
+    Keymap({"n", "x"}, "<S-C-u>", function() opencode.command("session.half.page.up") end,
         { desc = "Scroll opencode up" })
-    Keymap("n", "<S-C-d>", function() opencode.command("session.half.page.down") end,
+    Keymap({"n", "x"}, "<S-C-d>", function() opencode.command("session.half.page.down") end,
         { desc = "Scroll opencode down" })
 end
 
@@ -145,63 +150,68 @@ Keymap("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
 -- Keymap('n', '<leader>mpt', require("mini.map").toggle, { noremap = true, silent = true, desc = "toggle minimap" })
 -- Keymap('n', '<leader>mps', require("mini.map").toggle_side, { noremap = true, silent = true, desc = "toggle minimap" })
 
-
+-- Oh Baby
 Keymap({ "n", "x" }, "cxk", function() vim.notify("只因你太美") end)
 
 
--- Add or skip cursor above/below the main cursor.
-Keymap({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
-Keymap({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
-Keymap({ "n", "x" }, "<leader><up>", function() mc.lineSkipCursor(-1) end)
-Keymap({ "n", "x" }, "<leader><down>", function() mc.lineSkipCursor(1) end)
-Keymap({ "n", "x" }, "<leader>n", function() mc.matchAddCursor(1) end)
-Keymap({ "n", "x" }, "<leader>s", function() mc.matchSkipCursor(1) end)
-Keymap({ "n", "x" }, "<leader>N", function() mc.matchAddCursor(-1) end)
-Keymap({ "n", "x" }, "<leader>S", function() mc.matchSkipCursor(-1) end)
-Keymap("n", "<c-leftmouse>", mc.handleMouse)
-Keymap("n", "<c-leftdrag>", mc.handleMouseDrag)
-Keymap("n", "<c-leftrelease>", mc.handleMouseRelease)
-Keymap({ "n", "x" }, "<c-q>", mc.toggleCursor)
+--- Add or skip cursor above/below the main cursor.
+do
+    Keymap({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
+    Keymap({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
+    Keymap({ "n", "x" }, "<leader><up>", function() mc.lineSkipCursor(-1) end)
+    Keymap({ "n", "x" }, "<leader><down>", function() mc.lineSkipCursor(1) end)
+    Keymap({ "n", "x" }, "<leader>n", function() mc.matchAddCursor(1) end)
+    Keymap({ "n", "x" }, "<leader>s", function() mc.matchSkipCursor(1) end)
+    Keymap({ "n", "x" }, "<leader>N", function() mc.matchAddCursor(-1) end)
+    Keymap({ "n", "x" }, "<leader>S", function() mc.matchSkipCursor(-1) end)
 
-mc.addKeymapLayer(function(layerSet)
-    -- Select a different cursor as the main one.
-    layerSet({ "n", "x" }, "<left>", mc.prevCursor)
-    layerSet({ "n", "x" }, "<right>", mc.nextCursor)
+    Keymap("n", "<c-leftmouse>", mc.handleMouse)
+    Keymap("n", "<c-leftdrag>", mc.handleMouseDrag)
+    Keymap("n", "<c-leftrelease>", mc.handleMouseRelease)
+    Keymap({ "n", "x" }, "<c-q>", mc.toggleCursor)
 
-    -- Delete the main cursor.
-    layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+    mc.addKeymapLayer(function(layerSet)
+        -- Select a different cursor as the main one.
+        layerSet({ "n", "x" }, "<left>", mc.prevCursor)
+        layerSet({ "n", "x" }, "<right>", mc.nextCursor)
 
-    -- Enable and clear cursors using escape.
-    layerSet("n", "<esc>", function()
-        if not mc.cursorsEnabled() then
-            mc.enableCursors()
-        else
-            mc.clearCursors()
-        end
+
+        -- Delete the main cursor.
+        layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+
+        -- Enable and clear cursors using escape.
+        layerSet("n", "<esc>", function()
+            if not mc.cursorsEnabled() then
+                mc.enableCursors()
+            else
+                mc.clearCursors()
+            end
+        end)
     end)
-end)
+end
 
 
 -- Newline below and above
-Keymap('n', '<CR>', function()
-    if vim.bo.filetype == "qf" then
-        vim.cmd([[execute "normal! \<CR>"]])
-    else
+do
+    Keymap('n', '<CR>', function()
+        if vim.bo.filetype == "qf" then
+            vim.cmd([[execute "normal! \<CR>"]])
+        else
+            local line = vim.api.nvim_win_get_cursor(0)[1]
+            vim.api.nvim_buf_set_lines(0, line, line, false, { '' })
+            vim.api.nvim_win_set_cursor(0, { line + 1, 0 })
+        end
+    end, { noremap = true, silent = true })
+
+    Keymap('n', '<S-CR>', function()
         local line = vim.api.nvim_win_get_cursor(0)[1]
-        vim.api.nvim_buf_set_lines(0, line, line, false, { '' })
-        vim.api.nvim_win_set_cursor(0, { line + 1, 0 })
-    end
-end, { noremap = true, silent = true })
+        vim.api.nvim_buf_set_lines(0, line - 1, line - 1, false, { '' })
+        vim.api.nvim_win_set_cursor(0, { line, 0 })
+    end, { noremap = true, silent = true })
 
-Keymap('n', '<S-CR>', function()
-    local line = vim.api.nvim_win_get_cursor(0)[1]
-    vim.api.nvim_buf_set_lines(0, line - 1, line - 1, false, { '' })
-    vim.api.nvim_win_set_cursor(0, { line, 0 })
-end, { noremap = true, silent = true })
-
--- 'jj' for exit
-Keymap('i', 'jj', '<esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
-
+    -- 'jj' for exit
+    Keymap('i', 'jj', '<esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
+end
 
 -- #region Hydras
 

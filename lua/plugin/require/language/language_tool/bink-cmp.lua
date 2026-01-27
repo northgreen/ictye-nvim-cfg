@@ -17,12 +17,14 @@ return {
 
         keymap = {
             preset = 'default',
+            ['<C-j>'] = { 'select_next', 'fallback' },
+            ['<C-k>'] = { 'select_prev', 'fallback' },
         },
         appearance = {
             nerd_font_variant = 'mono'
         },
         sources = {
-            default = { 'lsp', 'path', 'snippets', 'buffer','fittencode' },
+            default = { 'lsp', 'path', 'snippets', 'buffer', 'fittencode' },
             providers = {
                 fittencode = {
                     name = "fittencode",
@@ -31,7 +33,7 @@ return {
             },
         },
         fuzzy = { implementation = "prefer_rust_with_warning" },
-        snippets = {preset = "luasnip"},
+        snippets = { preset = "luasnip" },
         completion = {
             documentation =
             {

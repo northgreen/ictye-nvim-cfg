@@ -87,6 +87,7 @@ local ok, err = pcall(require, 'env_init')
 if not ok then
     print('Error loading env_init,this config may not work properly: ' .. err)
 end
+
 ploadmodule 'options'
 ploadmodule 'core.vimpreconfig'
 
