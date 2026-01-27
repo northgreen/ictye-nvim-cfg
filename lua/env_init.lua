@@ -24,3 +24,6 @@ end
 
 vim.g.GUI = vim.g.neovide
 
+-- Randomize the seed for better randomness
+math.randomseed(os.time())
+

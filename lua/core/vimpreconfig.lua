@@ -82,3 +82,6 @@ vim.g.langmenu = 'zh'
 -- border
 vim.g.border_style = 'single'
 vim.o.winborder = 'single'
+
+vim.opt.laststatus = 3
+vim.opt.splitkeep = "screen"

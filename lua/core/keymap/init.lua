@@ -2,10 +2,14 @@ if vim.g.neovide then
     require 'core.keymap.neovide'
 end
 
+-- REGION Init Dependencies
+
+local mc = require("multicursor-nvim")
 local Hydra = require('hydra')
 local Keymap = vim.keymap.set
 local Command = vim.api.nvim_create_user_command
 local Menu = require("util.quickmenu")
+local WhichKey = require("which-key")
 
 local bind = require 'util.functions'.bind
 local lazy_require = require 'util.functions'.lazy_require
@@ -13,6 +17,8 @@ local lazy_call = require 'util.functions'.lazy_call
 
 local neotest = lazy_require("neotest")
 local telescope_builtin = lazy_require("telescope.builtin")
+
+-- ENDREGION
 
 -- Test Menu
 local TestMenu = Menu({
@@ -43,20 +49,22 @@ local QuickMenu = Menu({
     }
 })
 
+-- #region Commands
+do
+    Command("IcFormat", function() vim.lsp.buf.format() end, {})
+    Command('IcRename', function() vim.lsp.buf.rename() end, {})
+    Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
+    Command('IcDefine', function() vim.lsp.buf.definition() end, {})
+    Command('IcDAP', function() require "osv".launch({ port = 8086 }) end, {})
+    Command("IcDAPUIOpen", function() require("dapui").open() end, {})
+    Command("IcDAPUIClose", function() require("dapui").close() end, {})
+    Command("IcDAPUIToggle", function() require("dapui").toggle() end, {})
+    Command("Lsbf", function() telescope_builtin.buffers() end, {})
 
-Command("IcFormat", function() vim.lsp.buf.format() end, {})
-Command('IcRename', function() vim.lsp.buf.rename() end, {})
-Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
-Command('IcDefine', function() vim.lsp.buf.definition() end, {})
-Command('IcDAP', function() require "osv".launch({ port = 8086 }) end, {})
-Command("IcDAPUIOpen", function() require("dapui").open() end, {})
-Command("IcDAPUIClose", function() require("dapui").close() end, {})
-Command("IcDAPUIToggle", function() require("dapui").toggle() end, {})
-Command("Lsbf", function() telescope_builtin.buffers() end, {})
-
-Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
-Command("QuickMenu", bind(QuickMenu.mount, QuickMenu), {})
-
+    Command("IcTestMenu", bind(TestMenu.mount, TestMenu), {})
+    Command("QuickMenu", bind(QuickMenu.mount, QuickMenu), {})
+end
+-- #endregion
 
 local keymap_opt = { noremap = true, silent = true }
 
@@ -74,9 +82,7 @@ Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>', keymap_opt)
 Keymap('n', '<C-b>', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', keymap_opt)
 
 -- LSP and code actions
-Keymap('n', '<C-r_>', '<Plug>coc-refactor', keymap_opt)
-Keymap('n', '<C-n>', '<Cmd>lua vim.lsp.buf.hover()<CR>', keymap_opt)
-Keymap('n', '<C-]>', '<Cmd> IcDefine<CR>', keymap_opt)
+Keymap('n', '<C-]>', '<Cmd>IcDefine<CR>', keymap_opt)
 
 -- Utility menus
 Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>', keymap_opt)
@@ -100,27 +106,37 @@ Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
 Keymap('n', 'gf', require('snacks').image.hover, { noremap = true, silent = true })
 
 Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, desc = 'Open QuickMenu' })
+
 Keymap('n', '<C-x>u', require 'undotree'.toggle, { noremap = true, silent = true, desc = "Toggle undotree" })
+
 Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, desc = "Pick a file" })
 Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
 Keymap("n", "<C-x>a", require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap("n", "<C-x>t", "<Cmd>IcTestMenu<CR>", { noremap = true, silent = true, desc = "Show Test Men" })
 Keymap("n", "<C-x>bf", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap({"n","t"}, "<C-x><C-b>", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap({ "n", "t" }, "<C-x><C-b>", "<Cmd>Telescope buffers<CR>",
+    { noremap = true, silent = true, desc = "Show lsp actions" })
 
 Keymap("n", "<leader>O", "<Cmd>Oil<CR>", { noremap = true, silent = true, desc = "Open Oil View" })
 Keymap('n', '<A-x>', ":", { desc = "Command line" })
 
+do
+    local opencode = require("opencode")
+    Keymap({ "n", "x" }, "<C-a>", function() opencode.ask("@this: ", { submit = true }) end,
+        { desc = "Ask opencode…" })
+    Keymap({ "n", "x" }, "<C-x>", function() opencode.select() end, { desc = "Execute opencode action…" })
+    Keymap({ "n", "t" }, "<C-.>", function() opencode.toggle() end, { desc = "Toggle opencode" })
 
-Keymap({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
-Keymap({ "n", "x" }, "<C-x>", function() require("opencode").select() end, { desc = "Execute opencode action…" })
-Keymap({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+    Keymap({ "n", "x" }, "go", function() return opencode.operator("@this ") end,
+        { desc = "Add range to opencode", expr = true })
+    Keymap("n", "goo", function() return opencode.operator("@this ") .. "_" end,
+        { desc = "Add line to opencode", expr = true })
 
-Keymap({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end, { desc = "Add range to opencode", expr = true })
-Keymap("n", "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
-
-Keymap("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end, { desc = "Scroll opencode up" })
-Keymap("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
+    Keymap("n", "<S-C-u>", function() opencode.command("session.half.page.up") end,
+        { desc = "Scroll opencode up" })
+    Keymap("n", "<S-C-d>", function() opencode.command("session.half.page.down") end,
+        { desc = "Scroll opencode down" })
+end
 
 -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
 Keymap("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
@@ -129,6 +145,41 @@ Keymap("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
 -- Keymap('n', '<leader>mpt', require("mini.map").toggle, { noremap = true, silent = true, desc = "toggle minimap" })
 -- Keymap('n', '<leader>mps', require("mini.map").toggle_side, { noremap = true, silent = true, desc = "toggle minimap" })
 
+
+Keymap({ "n", "x" }, "cxk", function() vim.notify("只因你太美") end)
+
+
+-- Add or skip cursor above/below the main cursor.
+Keymap({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
+Keymap({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
+Keymap({ "n", "x" }, "<leader><up>", function() mc.lineSkipCursor(-1) end)
+Keymap({ "n", "x" }, "<leader><down>", function() mc.lineSkipCursor(1) end)
+Keymap({ "n", "x" }, "<leader>n", function() mc.matchAddCursor(1) end)
+Keymap({ "n", "x" }, "<leader>s", function() mc.matchSkipCursor(1) end)
+Keymap({ "n", "x" }, "<leader>N", function() mc.matchAddCursor(-1) end)
+Keymap({ "n", "x" }, "<leader>S", function() mc.matchSkipCursor(-1) end)
+Keymap("n", "<c-leftmouse>", mc.handleMouse)
+Keymap("n", "<c-leftdrag>", mc.handleMouseDrag)
+Keymap("n", "<c-leftrelease>", mc.handleMouseRelease)
+Keymap({ "n", "x" }, "<c-q>", mc.toggleCursor)
+
+mc.addKeymapLayer(function(layerSet)
+    -- Select a different cursor as the main one.
+    layerSet({ "n", "x" }, "<left>", mc.prevCursor)
+    layerSet({ "n", "x" }, "<right>", mc.nextCursor)
+
+    -- Delete the main cursor.
+    layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+
+    -- Enable and clear cursors using escape.
+    layerSet("n", "<esc>", function()
+        if not mc.cursorsEnabled() then
+            mc.enableCursors()
+        else
+            mc.clearCursors()
+        end
+    end)
+end)
 
 
 -- Newline below and above
@@ -152,10 +203,11 @@ end, { noremap = true, silent = true })
 Keymap('i', 'jj', '<esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
 
 
---Hydras
+-- #region Hydras
 
 Hydra({
     name = 'Window Change',
+    hint = 'Change Window Size',
     mode = 'n',
     body = '<C-w>c',
     heads = {
@@ -187,5 +239,41 @@ Hydra({
         { 'k', '<Cmd>BufferLineCycleNext<CR>', { description = 'Move to next tab' } }
     }
 })
+
+-- NOTE: Confident With muti cursor
+
+-- Hydra({
+--     name = "MutiCursor",
+--     mode = 'n',
+--     body = '<leader>c',
+--     hint = "Hydra",
+--     config = {
+--         hint = {
+--         }
+--     },
+--     heads = {
+--         { 'j',     bind(mc.lineAddCursor, 1),    { description = 'Add cursor above' } },
+--         { 'k',     bind(mc.lineAddCursor, -1),   { description = 'Add cursor below' } },
+--         { '<C-j>', bind(mc.lineSkipCursor, 1),   { description = 'Skip cursor above' } },
+--         { '<C-k>', bind(mc.lineSkipCursor, -1),  { description = 'Skip cursor below' } },
+--
+--         { 'l',     mc.nextCursor,                { description = 'Char add cursor left' } },
+--         { 'h',     mc.prevCursor,                { description = 'Char add cursor right' } },
+--
+--         { 'n',     bind(mc.matchAddCursor, 1),   { description = 'Match add cursor below' } },
+--         { '<C-n>', bind(mc.matchSkipCursor, 1),  { description = 'Match skip cursor below' } },
+--         { 'p',     bind(mc.matchAddCursor, -1),  { description = 'Match cursor above' } },
+--         { '<C-p>', bind(mc.matchSkipCursor, -1), { description = 'Match skip cursor above' } },
+--
+--         { 'd',     mc.deleteCursor,              { description = 'Delete main cursor' } },
+--         { 'x',     mc.toggleCursor,              { description = 'Disable and enable cursors' } },
+--
+--         { 's',     mc.searchAddCursor,           { description = 'Match cursors' } },
+--
+--         { 'q',     nil,                          { exit = true, description = 'Exit multi-cursor mode' } }
+--     }
+-- })
+
+-- #endregion
 
 require 'core.keymap.cfg_edit'

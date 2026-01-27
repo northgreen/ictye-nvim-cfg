@@ -8,7 +8,6 @@ local t = require("util.functions").three_way_compare
 --- @return NuiMenu
 local function get_line(menu)
     local lines = {}
-
     for _, line in ipairs(menu) do
         if type(line) == "string" then
             table.insert(lines, Menu.separator(line, {
@@ -27,7 +26,6 @@ end
 --- Default options
 local default_opt = {
     keymap = {
-
         focus_next = {"j", "<Down>", "<Tab>"},
         focus_prev = {"k", '<Up>', '<S-Tab>'},
         close = {"<Esc>", "<C-c>", '<F5>', "q"},
@@ -45,6 +43,9 @@ local default_opt = {
     },
 }
 
+--- Create a quickmenu object
+--- @param menu table | nil
+--- @param opt table | nil
 return function (menu,opt)
     opt = t(opt == nil,default_opt,opt)
     menu = t(menu == nil,{},menu)

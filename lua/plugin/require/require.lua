@@ -85,6 +85,8 @@ return {
     require 'plugin.require.tool.overseer',
     require 'plugin.require.tool.opencode',
     require 'plugin.require.language.language_require.fsharp',
+    require 'plugin.require.tool.multicursor',
+    require 'plugin.require.ui.lensline',
 --------others
 	require 'plugin.require.tool.firenvim',
 }

@@ -1,4 +1,14 @@
 local Enable = vim.lsp.enable
+local Config = vim.lsp.config
+
+
+Config('roslyn',{
+    settings = {
+        ["csharp|code_lens"] = {
+            dotnet_enable_reference_code_lens = true
+        }
+    }
+})
 
 -- Enabled Lsp seriver
 
@@ -14,13 +24,14 @@ Enable('solargraph')
 Enable('pyright')
 -- Enable('omnisharp')
 Enable('roslyn')
-Enable('fsautocomplete')
+-- Enable('fsautocomplete') -- already enabled by default
 -- Enable('fsharp_language_server')
 Enable('clangd')
 Enable("cmake")
 Enable('asm_lsp')
 Enable('bashls')
 Enable("lemminx")
+
 
 -- The lsp below is not here, it config with the plugin
 -- Rust
@@ -42,17 +53,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
             end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
         end
 
-        vim.keymap.set('n', '<C-]>',
+        local Keymap = vim.keymap.set
+
+        Keymap('n', '<C-]>',
             require('telescope.builtin').lsp_definitions
             , { buffer = event.buf, desc = 'LSP: Go To Define' })
 
-        vim.keymap.set('n', 'gO',
+        Keymap('n', 'gO',
             require('telescope.builtin').lsp_document_symbols,
             { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
 
-        vim.keymap.set('n', 'grt',
+        Keymap('n', 'grt',
             require('telescope.builtin').lsp_type_definitions,
             { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
+
+        Keymap('n', 'grr',
+            require('telescope.builtin').lsp_references,
+            { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
+
+        Keymap('n', 'grf',
+            vim.lsp.buf.format,
+            { buffer = event.buf, desc = 'LSP: Format Buffer' })
     end
 })
 

@@ -3,16 +3,20 @@ return {
     event = "VeryLazy",
     opts = function(_, opts)
         opts = {
+            top = {
+
+            },
             bottom = {
                 { ft = 'trouble',              tittle = 'Files' },
                 { ft = 'neotest-output-panel', tittle = 'Test Output' },
             },
             left = {
                 { ft = 'neo-tree', tittle = "Tree" },
-                { ft = 'Outline',  tittle = 'OverView', size = { height = 0.4 } }
+                { ft = 'Outline',  tittle = 'OverView', size = { height = 0.4 } },
             },
             right = {
-                { ft = 'neotest-summary' }
+                { ft = 'neotest-summary' },
+                { ft = 'opencode_terminal',  tittle = 'OpenCode', size = { width = 0.3 } }
             }
         }
         for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
@@ -29,5 +33,6 @@ return {
                 end,
             })
         end
+        return opts
     end
 }

@@ -3,7 +3,20 @@ local function f_nav()
     local _fun = nil
     local _cond = nil
     _fun, _cond = options.ui.bread_nav()
-    return {fun = _fun, cond = _cond}
+    return { fun = _fun, cond = _cond }
+end
+
+local function muti_cursor_state()
+    local mc = require("multicursor-nvim")
+    return {
+        fun = function()
+            local num = mc.numCursors()
+            return "MultiCursor(" .. num .. ")"
+        end,
+        cond = function()
+            return mc.hasCursors()
+        end
+    }
 end
 
 return {
@@ -14,9 +27,14 @@ return {
         options = {
             icons_enabled = true,
             component_separators = '',
-            section_separators = {left = '', right = ''},
+            section_separators = { left = '', right = '' },
             disabled_filetypes = {
-                statusline = {'NvimTree', 'Outline', 'neo-tree', 'neotest-summary'},
+                statusline = { 'NvimTree',
+                    'Outline',
+                    'neo-tree',
+                    'neotest-summary',
+                    'opencode_terminal',
+                },
                 'trouble',
                 'dap-repl',
                 'dapui_watches',
@@ -29,7 +47,8 @@ return {
                 'Avante',
                 'AvanteInput',
                 'AvanteSelectedFiles',
-                winbar = {'NvimTree', 'Outline', 'trouble', 'neo-tree', 'neotest-summary'}
+                'opencode_terminal',
+                winbar = { 'NvimTree', 'Outline', 'trouble', 'neo-tree', 'neotest-summary' }
             }
         },
         sections = {
@@ -37,22 +56,24 @@ return {
             lualine_b = {
                 {
                     'branch',
-                    separator = {left = '', right = ''},
+                    separator = { left = '', right = '' },
                     right_padding = 2
-                }, 'diff', 'diagnostics'
+                },
+                'diff',
+                'diagnostics'
             },
-            lualine_c = {},
-            lualine_x = {'encoding', 'fileformat', 'filetype'},
-            lualine_y = {'progress'},
+            lualine_c = { 'overseer' },
+            lualine_x = { 'encoding', 'fileformat', 'filetype' },
+            lualine_y = { 'progress' },
             lualine_z = {
-                {'location', separator = {right = ''}, left_padding = 2}
+                { 'location', separator = { right = '' }, left_padding = 2 }
             }
         },
         inactive_sections = {
-            lualine_a = {'mode'},
+            lualine_a = { 'mode' },
             lualine_b = {},
             lualine_c = {},
-            lualine_x = {'location'},
+            lualine_x = { 'location' },
             lualine_y = {},
             lualine_z = {}
         },
@@ -60,18 +81,18 @@ return {
             lualine_a = {
                 {
                     'mode',
-                    separator = {left = '', right = ''},
+                    separator = { left = '', right = '' },
                     right_padding = 2
                 }
             },
             lualine_b = {},
-            lualine_c = {'filesize'},
+            lualine_c = { 'filesize' },
             lualine_x = {},
             lualine_y = {},
             lualine_z = {}
         },
         inactive_winbar = {
-            lualine_a = {'filename'},
+            lualine_a = { 'filename' },
             lualine_b = {},
             lualine_c = {},
             lualine_x = {},
@@ -80,8 +101,8 @@ return {
         }
     },
     config = function(_, opts)
-        local theme = require 'catppuccin.utils.lualine'()
-        local catppuccin = require'catppuccin.palettes'.get_palette()
+        local theme = require 'catppuccin.utils.lualine' ()
+        local catppuccin = require 'catppuccin.palettes'.get_palette()
 
         opts.options.theme = theme
         theme.normal.c.bg = catppuccin.base
@@ -99,27 +120,28 @@ return {
                     cond = noice.api.status.message.has
                 }
             }
-            opts.sections.lualine_c = {
+            table.insert(opts.sections.lualine_c,
                 {
                     --- @diagnostic disable-next-line undefined-field
                     noice.api.status.mode.get,
                     --- @diagnostic disable-next-line undefined-field
                     cond = noice.api.status.mode.has,
-                    color = {fg = "#ef9f76"}
-                }, {
-                    --- @diagnostic disable-next-line undefined-field
-                    noice.api.status.command.get,
-                    --- @diagnostic disable-next-line undefined-field
-                    cond = noice.api.status.command.has,
-                    color = {fg = "#ef9f76"}
-                }, {
-                    --- @diagnostic disable-next-line undefined-field
-                    noice.api.status.search.get,
-                    --- @diagnostic disable-next-line undefined-field
-                    cond = noice.api.status.search.has,
-                    color = {fg = "#ef9f76"}
-                }
-            }
+                    color = { fg = "#ef9f76" }
+                })
+            table.insert(opts.sections.lualine_c, {
+                --- @diagnostic disable-next-line undefined-field
+                noice.api.status.command.get,
+                --- @diagnostic disable-next-line undefined-field
+                cond = noice.api.status.command.has,
+                color = { fg = "#ef9f76" }
+            })
+            table.insert(opts.sections.lualine_c, {
+                --- @diagnostic disable-next-line undefined-field
+                noice.api.status.search.get,
+                --- @diagnostic disable-next-line undefined-field
+                cond = noice.api.status.search.has,
+                color = { fg = "#ef9f76" }
+            })
         end
 
         opts.winbar.lualine_y = {
@@ -127,13 +149,21 @@ return {
                 f_nav().fun,
                 cond = f_nav().cond,
                 navic_opts = nil,
-                separator = {left = '', right = ''},
+                separator = { left = '', right = '' },
                 right_padding = 2
             }
         }
+
+        table.insert(opts.winbar.lualine_a,
+            {
+                muti_cursor_state().fun,
+                cond = muti_cursor_state().cond,
+            }
+        )
+
+
         --- @diagnostic disable-next-line undefined-field
         require('lualine').setup(opts)
     end,
-    depedencies = {'nvim-treesitter/nvim-treesitter'}
+    depedencies = { 'nvim-treesitter/nvim-treesitter' }
 }
-
