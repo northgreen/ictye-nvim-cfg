@@ -49,42 +49,47 @@ local QuickMenu = Menu({
 
 -- #region Commands
 do
-    Command('IcFormat', function() vim.lsp.buf.format() end, {})
-    Command('IcRename', function() vim.lsp.buf.rename() end, {})
-    Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
-    Command('IcDefine', function() vim.lsp.buf.definition() end, {})
-    Command('IcDAP', function() require 'osv'.launch({ port = 8086 }) end, {})
-    Command('IcDAPUIOpen', function() require('dapui').open() end, {})
-    Command('IcDAPUIClose', function() require('dapui').close() end, {})
-    Command('IcDAPUIToggle', function() require('dapui').toggle() end, {})
+    Command('IcFormat'     , function() vim.lsp.buf.format() end                 , {})
+    Command('IcRename'     , function() vim.lsp.buf.rename() end                 , {})
+    Command('IcUseage'     , function() vim.lsp.buf.incoming_calls() end         , {})
+    Command('IcDefine'     , function() vim.lsp.buf.definition() end             , {})
+    Command('IcDAP'        , function() require 'osv'.launch({ port = 8086 }) end, {})
+    Command('IcDAPUIOpen'  , function() require('dapui').open() end              , {})
+    Command('IcDAPUIClose' , function() require('dapui').close() end             , {})
+    Command('IcDAPUIToggle', function() require('dapui').toggle() end            , {})
 
-    Command('IcTestMenu', bind(TestMenu.mount, TestMenu), {})
-    Command('QuickMenu', bind(QuickMenu.mount, QuickMenu), {})
+    Command('IcTestMenu'   , bind(TestMenu.mount, TestMenu)                      , {})
+    Command('QuickMenu'    , bind(QuickMenu.mount, QuickMenu)                    , {})
+
+    -- Adaptation for misstake
+    Command('Wa', bind(vim.cmd, "wa"), {})
+    Command('Q', bind(vim.cmd, "q"), {})
+    Command('W', bind(vim.cmd, "w"), {})
 end
 -- #endregion
 
 local keymap_opt = { noremap = true, silent = true }
 
 -- Navigation and files
-Keymap('n', '<F3>', '<Cmd>Outline<CR>', keymap_opt)
-Keymap('n', '<F4>', '<Cmd>Neotree toggle<CR>', keymap_opt)
+Keymap('n', '<F3>' , '<Cmd>Outline<CR>'             , keymap_opt)
+Keymap('n', '<F4>' , '<Cmd>Neotree toggle<CR>'      , keymap_opt)
 Keymap('n', '<C-f>', '<Cmd>Telescope find_files<CR>', keymap_opt)
-Keymap('n', '<C-p>', '<Cmd>Telescope<CR>', keymap_opt)
+Keymap('n', '<C-p>', '<Cmd>Telescope<CR>'           , keymap_opt)
 
 -- Debugging
-Keymap('n', '<F9>', '<Cmd>DapContinue<CR>', keymap_opt)
-Keymap('n', '<F10>', '<Cmd>DapStepOver<CR>', keymap_opt)
-Keymap('n', '<F11>', '<Cmd>DapStepInto<CR>', keymap_opt)
-Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>', keymap_opt)
+Keymap('n', '<F9>' , '<Cmd>DapContinue<CR>'                         , keymap_opt)
+Keymap('n', '<F10>', '<Cmd>DapStepOver<CR>'                         , keymap_opt)
+Keymap('n', '<F11>', '<Cmd>DapStepInto<CR>'                         , keymap_opt)
+Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>'                          , keymap_opt)
 Keymap('n', '<C-b>', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', keymap_opt)
 
 -- LSP and code actions
 Keymap('n', '<C-]>', '<Cmd>IcDefine<CR>', keymap_opt)
 
 -- Utility menus
-Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>', keymap_opt)
+Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>'    , keymap_opt)
 Keymap('n', '<F6>', '<Cmd>IcDAPUIToggle<CR>', keymap_opt)
-Keymap('n', '<F2>', '<Cmd>Lazy<CR>', keymap_opt)
+Keymap('n', '<F2>', '<Cmd>Lazy<CR>'         , keymap_opt)
 
 -- Buffer Keymaps
 do
@@ -97,9 +102,9 @@ do
     Keymap('n', '<leader>7', '<Cmd>BufferLineGoToBuffer 7<CR>', { noremap = true, silent = true })
     Keymap('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', { noremap = true, silent = true })
     Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, silent = true })
-    Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-    Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
-    Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>'   , { noremap = true, silent = true })
+    Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>'   , { noremap = true, silent = true })
+    Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>'               , { noremap = true, silent = true })
 end
 
 Keymap('n', '<leader>O', '<Cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Open Oil View' })
@@ -111,17 +116,16 @@ Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, des
 Keymap('n', '<C-x>u', require 'undotree'.toggle, { noremap = true, silent = true, desc = "Toggle undotree" })
 
 Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, desc = "Pick a file" })
-Keymap('n', '<C-x>ft', "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, desc = "Pick a file" })
+Keymap('n', '<C-x>ft', "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, desc = "Open a floaterm" })
 Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
-Keymap('n', '<C-x>a', require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show lsp actions" })
-Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Show Test Men" })
-Keymap({ 'n', 't' }, '<C-x><C-b>', '<Cmd>Telescope buffers<CR>',
-    { noremap = true, silent = true, desc = 'Show lsp actions' })
-Keymap('n', '<C-x>bf', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = "Show lsp actions" })
+Keymap('n', '<C-x>a', require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show LSP actions" })
+Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
+Keymap({ 'n', 't' }, '<C-x><C-b>', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = 'Show buffer list' })
+Keymap('n', '<C-x>bf', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = 'Show buffer list' })
 
 -- Overseer
 Keymap('n', '<C-x>oo', '<Cmd>OverseerToggle<CR>', { noremap = true, silent = true, desc = 'Toggle Overseer' })
-Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>', { noremap = true, silent = true, desc = 'Run Task' })
+Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>'   , { noremap = true, silent = true, desc = 'Run Task' })
 
 Keymap('n', '<A-x>', ":", { desc = 'Command line' })
 
@@ -217,7 +221,7 @@ end
 
 Hydra({
     name = 'Window Change',
-    hint = 'Change Window Size',
+    hint = 'Navigate windows',
     mode = 'n',
     body = '<C-w>c',
     heads = {
@@ -234,7 +238,7 @@ Hydra({
     body = '<C-w>W',
     heads = {
         { 'h', '<C-w>>', { description = 'Decrease window width' } },
-        { 'l', '<C-w><', { description = 'Incraese window width' } },
+        { 'l', '<C-w><', { description = 'Increase window width' } },
         { 'j', '<C-w>+', { description = 'Increase window height' } },
         { 'k', '<C-w>-', { description = 'Decrease window height' } }
     }
@@ -250,33 +254,33 @@ Hydra({
     }
 })
 
--- NOTE: Confident With muti cursor
+-- NOTE: Confident With multi cursor
 
 -- Hydra({
---     name = "MutiCursor",
+--     name = "MultiCursor",
 --     mode = 'n',
 --     body = '<leader>c',
---     hint = "Hydra",
+--     hint = "MultiCursor",
 --     config = {
 --         hint = {
 --         }
 --     },
 --     heads = {
---         { 'j',     bind(mc.lineAddCursor, 1),    { description = 'Add cursor above' } },
---         { 'k',     bind(mc.lineAddCursor, -1),   { description = 'Add cursor below' } },
---         { '<C-j>', bind(mc.lineSkipCursor, 1),   { description = 'Skip cursor above' } },
---         { '<C-k>', bind(mc.lineSkipCursor, -1),  { description = 'Skip cursor below' } },
+--         { 'j',     bind(mc.lineAddCursor, 1),    { description = 'Add cursor below' } },
+--         { 'k',     bind(mc.lineAddCursor, -1),   { description = 'Add cursor above' } },
+--         { '<C-j>', bind(mc.lineSkipCursor, 1),   { description = 'Skip cursor below' } },
+--         { '<C-k>', bind(mc.lineSkipCursor, -1),  { description = 'Skip cursor above' } },
 --
---         { 'l',     mc.nextCursor,                { description = 'Char add cursor left' } },
---         { 'h',     mc.prevCursor,                { description = 'Char add cursor right' } },
+--         { 'l',     mc.nextCursor,                { description = 'Move to next cursor' } },
+--         { 'h',     mc.prevCursor,                { description = 'Move to previous cursor' } },
 --
---         { 'n',     bind(mc.matchAddCursor, 1),   { description = 'Match add cursor below' } },
---         { '<C-n>', bind(mc.matchSkipCursor, 1),  { description = 'Match skip cursor below' } },
---         { 'p',     bind(mc.matchAddCursor, -1),  { description = 'Match cursor above' } },
---         { '<C-p>', bind(mc.matchSkipCursor, -1), { description = 'Match skip cursor above' } },
+--         { 'n',     bind(mc.matchAddCursor, 1),   { description = 'Match add cursor below' },
+--         { '<C-n>', bind(mc.matchSkipCursor, 1),  { description = 'Match skip cursor below' },
+--         { 'p',     bind(mc.matchAddCursor, -1),  { description = 'Match add cursor above' } },
+--         { '<C-p>', bind(mc.matchSkipCursor, -1), { description = 'Match skip cursor above' },
 --
 --         { 'd',     mc.deleteCursor,              { description = 'Delete main cursor' } },
---         { 'x',     mc.toggleCursor,              { description = 'Disable and enable cursors' } },
+--         { 'x',     mc.toggleCursor,              { description = 'Toggle multi-cursor mode' } },
 --
 --         { 's',     mc.searchAddCursor,           { description = 'Match cursors' } },
 --

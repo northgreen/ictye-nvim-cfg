@@ -65,11 +65,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         Keymap('n', 'grt',
             require('telescope.builtin').lsp_type_definitions,
-            { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
+            { buffer = event.buf, desc = 'LSP: Show Type Definitions' })
 
         Keymap('n', 'grr',
             require('telescope.builtin').lsp_references,
-            { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
+            { buffer = event.buf, desc = 'LSP: Show References' })
 
         Keymap('n', 'grf',
             vim.lsp.buf.format,

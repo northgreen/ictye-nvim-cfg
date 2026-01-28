@@ -26,9 +26,10 @@ return {
     },
     config = function(_, opts)
         -- require('mini.map').setup(opts.map)
-        require('mini.pick').setup(opts.pick)
+        require('mini.pick') .setup(opts.pick)
         require('mini.align').setup(opts.align)
         require('mini.files').setup(opts.files)
+
         -- if not vim.g.GUI then
             -- require('mini.animate').setup(opts.animate)
         -- end
