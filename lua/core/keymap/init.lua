@@ -131,7 +131,7 @@ Keymap('n', '<A-x>', ":", { desc = 'Command line' })
 
 do
     local ok, opencode = pcall(require, "opencode")
-    if not ok then
+    if ok then
         Keymap({ "n", "x" }, "<C-a>", function() opencode.ask("@this: ", { submit = true }) end,
             { desc = "Ask opencode…" })
         Keymap({ "n", "x" }, "<C-x>", function() opencode.select() end, { desc = "Execute opencode action…" })

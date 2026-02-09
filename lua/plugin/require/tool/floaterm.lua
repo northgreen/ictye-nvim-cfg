@@ -1,4 +1,15 @@
 return {
     'voldikss/vim-floaterm',
-	event = 'VeryLazy',
+    cmd = {
+        'FloatermNew',
+        'FloatermPrev',
+        'FloatermNext',
+        'FloatermFirst',
+        'FloatermLast',
+        'FloatermHide',
+        'FloatermShow',
+        'FloatermKill',
+        'FloatermToggle',
+    },
+    -- event = 'VeryLazy',
 }

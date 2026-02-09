@@ -1,6 +1,12 @@
 return {
-  "nicolasgb/jj.nvim",
-  config = function()
-    require("jj").setup({})
-  end,
+    "nicolasgb/jj.nvim",
+    cmd = {
+        'J',
+        'Jdiff',
+        'Jhdiff',
+        'Jvdiff'
+    },
+    config = function()
+        require("jj").setup({})
+    end,
 }

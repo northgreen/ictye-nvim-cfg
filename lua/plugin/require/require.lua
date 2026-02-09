@@ -89,6 +89,7 @@ return {
     require 'plugin.require.ui.lensline',
     require 'plugin.require.tool.ression',
     require 'plugin.require.language.language_require.typescript.ts_tool',
+    -- require 'plugin.require.tool.ai.bink-mcp-avante',
 --------others
 	require 'plugin.require.tool.firenvim',
 }

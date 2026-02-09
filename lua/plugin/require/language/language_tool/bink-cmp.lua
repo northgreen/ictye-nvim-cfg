@@ -3,6 +3,7 @@ return {
     dependencies = {
         'rafamadriz/friendly-snippets',
         'xzbdmw/colorful-menu.nvim',
+        'Kaiser-Yang/blink-cmp-avante',
         { 'L3MON4D3/LuaSnip', version = 'v2.*' }
     },
 
@@ -26,13 +27,18 @@ return {
             nerd_font_variant = 'mono'
         },
         sources = {
-            default = { 'lsp', 'path', 'snippets', 'buffer', 'fittencode' },
+            default = { 'avante', 'snippets', 'lsp', 'path', 'buffer', 'fittencode' },
             providers = {
                 fittencode = {
                     name = "fittencode",
                     module = "fittencode.sources.blink",
                 },
-            },
+                avante = {
+                    module = 'blink-cmp-avante',
+                    name = 'Avante',
+                    opts = {}
+                },
+            }
         },
         fuzzy = { implementation = "prefer_rust_with_warning" },
         snippets = { preset = "luasnip" },

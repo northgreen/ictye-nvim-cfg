@@ -1,5 +1,6 @@
 return {
     'gorbit99/codewindow.nvim',
+    event = 'BufReadPre',
     opts = {
         minimap_width = 10
     },

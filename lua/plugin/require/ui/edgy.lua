@@ -7,16 +7,21 @@ return {
 
             },
             bottom = {
-                { ft = 'trouble',              tittle = 'Files' },
-                { ft = 'neotest-output-panel', tittle = 'Test Output' },
+                { ft = 'trouble',              title = 'Files' },
+                { ft = 'neotest-output-panel', title = 'Test Output' },
             },
             left = {
                 { ft = 'neo-tree', tittle = "Tree" },
                 { ft = 'Outline',  tittle = 'OverView', size = { height = 0.4 } },
             },
             right = {
-                { ft = 'neotest-summary' },
-                { ft = 'opencode_terminal',  tittle = 'OpenCode', size = { width = 0.3 } }
+                { ft = 'neotest-summary',     size = { width = 0.3 } },
+                { ft = 'Avante',              size = { width = 0.3, height = 0.7 } },
+                { ft = 'AvanteTodos',         size = { width = 0.3 } },
+                { ft = 'AvanteSelectedFiles', size = { width = 0.3 } },
+                { ft = 'AvanteSelectedCode',  size = { width = 0.3 } },
+                { ft = 'AvanteInput',         size = { width = 0.3, height = 0.2 } },
+                { ft = 'opencode_terminal',   tittle = 'OpenCode',                 size = { width = 0.3 } }
             }
         }
         for _, pos in ipairs({ "top", "bottom", "left", "right" }) do

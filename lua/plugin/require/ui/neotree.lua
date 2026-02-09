@@ -6,7 +6,8 @@ return {
         "MunifTanjim/nui.nvim",
         "nvim-tree/nvim-web-devicons", -- optional, but recommended
     },
-    lazy = false,
+    -- lazy = false,
+    event = 'VeryLazy',
     opts = function(_, opts)
         local function on_move(data)
             Snacks.rename.on_rename_file(data.source, data.destination)

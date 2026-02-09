@@ -47,6 +47,8 @@ return {
                 'Avante',
                 'AvanteInput',
                 'AvanteSelectedFiles',
+                'AvanteTodos',
+                'AvanteSelectedCode',
                 'opencode_terminal',
                 winbar = { 'NvimTree', 'Outline', 'trouble', 'neo-tree', 'neotest-summary' }
             }
@@ -144,14 +146,14 @@ return {
             end
         end
 
-        -- do
-        --     local ok, opencode = pcall(require, 'opencode')
-        --     if ok then
-        --         table.insert(opts.sections.lualine_c, {
-        --             opencode.statusline
-        --         })
-        --     end
-        -- end
+        do
+            local ok, opencode = pcall(require, 'opencode')
+            if ok then
+                table.insert(opts.sections.lualine_c, {
+                    opencode.statusline
+                })
+            end
+        end
 
         opts.winbar.lualine_y = {
             {

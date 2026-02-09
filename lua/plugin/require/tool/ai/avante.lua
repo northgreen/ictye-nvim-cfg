@@ -24,6 +24,50 @@ local closeai = {
         max_completion_tokens = 12287,
     }
 }
+local siliconflow = {
+    __inherited_from = "openai",
+    endpoint = "https://api.siliconflow.cn/v1",
+    api_key_name = siliconflow_api_key,
+    timeout = 30000,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 12287,
+    }
+}
+
+local github_model = {
+    __inherited_from = "openai",
+    endpoint = "https://models.github.ai/inference/v1",
+    api_key_name = github_pat,
+    timeout = 30000,
+    context_window = 7900,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 8000,
+    }
+}
+
+local qianwen = {
+    __inherited_from = "openai",
+    endpoint = "https://api.suanli.cn/v1",
+    api_key_name = "QIANWEN_API_KEY",
+    timeout = 30000,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 8000,
+    }
+}
+
+local gaf = {
+    __inherited_from = "openai",
+    endpoint = "https://api.chatanywhere.tech",
+    api_key_name = "GAF_API_KEY",
+    timeout = 30000,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 4096,
+    }
+}
 
 local function module(provider, model)
     local ret = provider
@@ -31,12 +75,12 @@ local function module(provider, model)
     return ret
 end
 
-
 return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     version = false,
     opts = {
+        provider = "opencode",
         system_prompt = function()
             local hub = require("mcphub").get_hub_instance()
             return hub and hub:get_active_servers_prompt() or ""
@@ -46,85 +90,35 @@ return {
                 require("mcphub.extensions.avante").mcp_tool(),
             }
         end,
-
         web_search_engine = {
             provider = "searchapi"
         },
-        provider = "opencode_big_pickle",
         providers = {
-            opencode_big_pickle = module(opencode, "big-pickle"),
-            opencode_kimi_k25_free = module(opencode, "kimi-k2.5-free"),
-            opencode_glm_47_free = module(opencode, "glm-4.7-free"),
-            closeai_gpt5 = module(closeai, "gpt-5"), -- too expensive!!
-            closeai_ds = {
-                __inherited_from = "openai",
-                endpoint = "https://api.openai-proxy.org/v1",
-                model = "deepseek-chat",
-                api_key_name = close_ai_key,
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 12287,
-                }
-            },
-            closeai_4o_mini = {
-                __inherited_from = "openai",
-                endpoint = "https://api.openai-proxy.org/v1",
-                model = "gpt-4o-mini",
-                api_key_name = close_ai_key,
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 12287,
-                }
-            },
-            siliconflow_q38b = {
-                __inherited_from = "openai",
-                endpoint = "https://api.siliconflow.cn/v1",
-                model = "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
-                api_key_name = siliconflow_api_key,
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 12287,
-                }
-            },
-            github_models_gpt4o = {
-                __inherited_from = "openai",
-                endpoint = "https://models.github.ai/inference/v1",
-                model = "gpt-4o",
-                api_key_name = github_pat,
-                timeout = 30000,
-                context_window = 7900,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 8000,
-                }
-            },
-            qianwen_3 = {
-                __inherited_from = "openai",
-                endpoint = "https://api.suanli.cn/v1",
-                model = "free:Qwen3-30B-A3B",
-                api_key_name = "QIANWEN_API_KEY",
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 8000,
-                }
-            },
-            gaf = {
-                __inherited_from = "openai",
-                endpoint = "https://api.chatanywhere.tech",
-                model = "gpt-5",
-                api_key_name = "GAF_API_KEY",
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 4096,
-                }
-            }
-
+            ["opencode-big-pickle"]    = module(opencode, 'big-pickle'),
+            ["opencode-kimi-k25-free"] = module(opencode, 'kimi-k2.5-free'),
+            ["opencode-glm-47-free"]   = module(opencode, 'glm-4.7-free'),
+            ["closeai-gpt5"]           = module(closeai, 'gpt-5'),      -- too expensive!!
+            ["closeai-ds"]             = module(closeai, 'deepseek-chat'),
+            ["closeai-4o-mini"]        = module(closeai, 'gpt-4o-mini'),
+            ["siliconflow-q38b"]       = module(siliconflow, 'deepseek-ai/DeepSeek-R1-0528-Qwen3-8B'),
+            ["github-models-gpt4o"]    = module(github_model, 'gpt-4o'),
+            ["qianwen-3"]              = module(qianwen, 'free:Qwen3-30B-A3B'),
+            ["gaf"]                    = module(gaf, 'gpt-5')
         },
+        act_providers = {
+            ["opencode"] = {
+                command = "opencode",
+                args = { "acp" }
+            }
+        },
+        shortcuts = {
+            {
+                name = "jci",
+                describe = "Commit with jujutsu",
+                details = "commit with jujutsu",
+                prompt = "Use jj diff to view differences and gengrate commit message, then use jj commit to commit changes."
+            }
+        }
     },
     build = twc(options.env.os.win == 1,
         "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",

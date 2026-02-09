@@ -3,8 +3,8 @@ return {
     'luozhiya/fittencode.nvim',
     event = 'BufReadPre',
     opts = {
-        completion_mode = 'inline',
-        -- completion_mode = 'source',
+        -- completion_mode = 'inline', -- too noisy!!!
+        completion_mode = 'source',
         source_completion = {
             enabled = true,
             engine = "blink"
