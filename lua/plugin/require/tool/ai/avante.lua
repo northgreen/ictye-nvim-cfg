@@ -1,7 +1,36 @@
 local twc = require 'util.functions'.three_way_compare
-local close_ai_key = twc(options.env.os.win==1,"CLOSEAI_API_KEY","cmd:pass show ai-key/close-ai")
+local close_ai_key = twc(options.env.os.win == 1, "CLOSEAI_API_KEY", "cmd:pass show ai-key/close-ai")
 local github_pat = "cmd:gh auth token"
-local siliconflow_api_key = twc(options.env.os.win==1,"SILICONFLOW_API_KEY","cmd:pass show ai-key/siliconflow")
+local siliconflow_api_key = twc(options.env.os.win == 1, "SILICONFLOW_API_KEY", "cmd:pass show ai-key/siliconflow")
+local opencode_api_key = twc(options.env.os.win == 1, "OPENCODE_API_KEY", "cmd:pass show ai-key/opencode")
+
+local opencode = {
+    __inherited_from = "openai",
+    endpoint = "https://opencode.ai/zen/v1/",
+    api_key_name = opencode_api_key,
+    timeout = 30000,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 12287,
+    }
+}
+local closeai = {
+    __inherited_from = "openai",
+    endpoint = "https://api.openai-proxy.org/v1",
+    api_key_name = close_ai_key,
+    timeout = 30000,
+    extra_request_body = {
+        temperature = 1,
+        max_completion_tokens = 12287,
+    }
+}
+
+local function module(provider, model)
+    local ret = provider
+    provider.model = model
+    return ret
+end
+
 
 return {
     "yetone/avante.nvim",
@@ -21,19 +50,12 @@ return {
         web_search_engine = {
             provider = "searchapi"
         },
-        provider = "github_models_gpt4o",
+        provider = "opencode_big_pickle",
         providers = {
-            closeai_gpt5 = { -- too expensive!!
-                __inherited_from = "openai",
-                endpoint = "https://api.openai-proxy.org/v1",
-                model = "gpt-5",
-                api_key_name = close_ai_key,
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1,
-                    max_completion_tokens = 12287,
-                }
-            },
+            opencode_big_pickle = module(opencode, "big-pickle"),
+            opencode_kimi_k25_free = module(opencode, "kimi-k2.5-free"),
+            opencode_glm_47_free = module(opencode, "glm-4.7-free"),
+            closeai_gpt5 = module(closeai, "gpt-5"), -- too expensive!!
             closeai_ds = {
                 __inherited_from = "openai",
                 endpoint = "https://api.openai-proxy.org/v1",
@@ -104,7 +126,7 @@ return {
 
         },
     },
-    build = twc(options.env.os.win==1,
+    build = twc(options.env.os.win == 1,
         "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
         "make"),
     dependencies = {

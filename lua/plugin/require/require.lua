@@ -87,6 +87,8 @@ return {
     require 'plugin.require.language.language_require.fsharp',
     require 'plugin.require.tool.multicursor',
     require 'plugin.require.ui.lensline',
+    require 'plugin.require.tool.ression',
+    require 'plugin.require.language.language_require.typescript.ts_tool',
 --------others
 	require 'plugin.require.tool.firenvim',
 }

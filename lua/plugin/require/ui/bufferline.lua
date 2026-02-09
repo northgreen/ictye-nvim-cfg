@@ -36,7 +36,8 @@ return {
                 { filetype = 'NvimTree', text = '󰙅  File Explorer' },
                 { filetype = 'neo-tree', },
                 { filetype = 'Outline', text = '  Outline' },
-                { filetype = 'Dashboard', text = '  Dashboard' }
+                { filetype = 'Dashboard', text = '  Dashboard' },
+                {filetype = 'opencode_terminal', text = 'OpenCode' },
             },
             diagnostics = 'nvim_lsp',
             indicator = { icon = '▎' },

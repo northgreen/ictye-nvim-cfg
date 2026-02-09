@@ -2,20 +2,19 @@ if vim.g.neovide then
     require 'core.keymap.neovide'
 end
 
+local bind = require 'util.functions'.bind
+local lazy_require = require 'util.functions'.lazy_require
+local lazy_call = require 'util.functions'.lazy_call
+
 -- REGION Init Dependencies
 local mc = require("multicursor-nvim")
 local Hydra = require('hydra')
 local Keymap = vim.keymap.set
 local Command = vim.api.nvim_create_user_command
 local Menu = require("util.quickmenu")
-local WhichKey = require("which-key")
 
-local bind = require 'util.functions'.bind
-local lazy_require = require 'util.functions'.lazy_require
-local lazy_call = require 'util.functions'.lazy_call
 
 local neotest = lazy_require("neotest")
-local telescope_builtin = lazy_require("telescope.builtin")
 -- ENDREGION
 
 -- Test Menu
@@ -49,17 +48,17 @@ local QuickMenu = Menu({
 
 -- #region Commands
 do
-    Command('IcFormat'     , function() vim.lsp.buf.format() end                 , {})
-    Command('IcRename'     , function() vim.lsp.buf.rename() end                 , {})
-    Command('IcUseage'     , function() vim.lsp.buf.incoming_calls() end         , {})
-    Command('IcDefine'     , function() vim.lsp.buf.definition() end             , {})
-    Command('IcDAP'        , function() require 'osv'.launch({ port = 8086 }) end, {})
-    Command('IcDAPUIOpen'  , function() require('dapui').open() end              , {})
-    Command('IcDAPUIClose' , function() require('dapui').close() end             , {})
-    Command('IcDAPUIToggle', function() require('dapui').toggle() end            , {})
+    Command('IcFormat', function() vim.lsp.buf.format() end, {})
+    Command('IcRename', function() vim.lsp.buf.rename() end, {})
+    Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
+    Command('IcDefine', function() vim.lsp.buf.definition() end, {})
+    Command('IcDAP', function() require 'osv'.launch({ port = 8086 }) end, {})
+    Command('IcDAPUIOpen', function() require('dapui').open() end, {})
+    Command('IcDAPUIClose', function() require('dapui').close() end, {})
+    Command('IcDAPUIToggle', function() require('dapui').toggle() end, {})
 
-    Command('IcTestMenu'   , bind(TestMenu.mount, TestMenu)                      , {})
-    Command('QuickMenu'    , bind(QuickMenu.mount, QuickMenu)                    , {})
+    Command('IcTestMenu', bind(TestMenu.mount, TestMenu), {})
+    Command('QuickMenu', bind(QuickMenu.mount, QuickMenu), {})
 
     -- Adaptation for misstake
     Command('Wa', bind(vim.cmd, "wa"), {})
@@ -71,25 +70,25 @@ end
 local keymap_opt = { noremap = true, silent = true }
 
 -- Navigation and files
-Keymap('n', '<F3>' , '<Cmd>Outline<CR>'             , keymap_opt)
-Keymap('n', '<F4>' , '<Cmd>Neotree toggle<CR>'      , keymap_opt)
+Keymap('n', '<F3>', '<Cmd>Outline<CR>', keymap_opt)
+Keymap('n', '<F4>', '<Cmd>Neotree toggle<CR>', keymap_opt)
 Keymap('n', '<C-f>', '<Cmd>Telescope find_files<CR>', keymap_opt)
-Keymap('n', '<C-p>', '<Cmd>Telescope<CR>'           , keymap_opt)
+Keymap('n', '<C-p>', '<Cmd>Telescope<CR>', keymap_opt)
 
 -- Debugging
-Keymap('n', '<F9>' , '<Cmd>DapContinue<CR>'                         , keymap_opt)
-Keymap('n', '<F10>', '<Cmd>DapStepOver<CR>'                         , keymap_opt)
-Keymap('n', '<F11>', '<Cmd>DapStepInto<CR>'                         , keymap_opt)
-Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>'                          , keymap_opt)
+Keymap('n', '<F9>', '<Cmd>DapContinue<CR>', keymap_opt)
+Keymap('n', '<F10>', '<Cmd>DapStepOver<CR>', keymap_opt)
+Keymap('n', '<F11>', '<Cmd>DapStepInto<CR>', keymap_opt)
+Keymap('n', '<F12>', '<Cmd>DapStepOut<CR>', keymap_opt)
 Keymap('n', '<C-b>', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', keymap_opt)
 
 -- LSP and code actions
 Keymap('n', '<C-]>', '<Cmd>IcDefine<CR>', keymap_opt)
 
 -- Utility menus
-Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>'    , keymap_opt)
+Keymap('n', '<F5>', '<Cmd>QuickMenu<CR>', keymap_opt)
 Keymap('n', '<F6>', '<Cmd>IcDAPUIToggle<CR>', keymap_opt)
-Keymap('n', '<F2>', '<Cmd>Lazy<CR>'         , keymap_opt)
+Keymap('n', '<F2>', '<Cmd>Lazy<CR>', keymap_opt)
 
 -- Buffer Keymaps
 do
@@ -102,9 +101,9 @@ do
     Keymap('n', '<leader>7', '<Cmd>BufferLineGoToBuffer 7<CR>', { noremap = true, silent = true })
     Keymap('n', '<leader>8', '<Cmd>BufferLineGoToBuffer 8<CR>', { noremap = true, silent = true })
     Keymap('n', '<leader>9', '<Cmd>BufferLineGoToBuffer 9<CR>', { noremap = true, silent = true })
-    Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>'   , { noremap = true, silent = true })
-    Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>'   , { noremap = true, silent = true })
-    Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>'               , { noremap = true, silent = true })
+    Keymap('n', '<leader>-', '<Cmd>BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>=', '<Cmd>BufferLineCycleNext<CR>', { noremap = true, silent = true })
+    Keymap('n', '<leader>q', ':bp<cr>:bd #<CR>', { noremap = true, silent = true })
 end
 
 Keymap('n', '<leader>O', '<Cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Open Oil View' })
@@ -120,31 +119,34 @@ Keymap('n', '<C-x>ft', "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, 
 Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
 Keymap('n', '<C-x>a', require("global.ui_util.ui.actions"), { noremap = true, silent = true, desc = "Show LSP actions" })
 Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
-Keymap({ 'n', 't' }, '<C-x><C-b>', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = 'Show buffer list' })
+Keymap({ 'n', 't' }, '<C-x><C-b>', '<Cmd>Telescope buffers<CR>',
+    { noremap = true, silent = true, desc = 'Show buffer list' })
 Keymap('n', '<C-x>bf', '<Cmd>Telescope buffers<CR>', { noremap = true, silent = true, desc = 'Show buffer list' })
 
 -- Overseer
 Keymap('n', '<C-x>oo', '<Cmd>OverseerToggle<CR>', { noremap = true, silent = true, desc = 'Toggle Overseer' })
-Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>'   , { noremap = true, silent = true, desc = 'Run Task' })
+Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>', { noremap = true, silent = true, desc = 'Run Task' })
 
 Keymap('n', '<A-x>', ":", { desc = 'Command line' })
 
 do
-    local opencode = require("opencode")
-    Keymap({ "n", "x" }, "<C-a>", function() opencode.ask("@this: ", { submit = true }) end,
-        { desc = "Ask opencode…" })
-    Keymap({ "n", "x" }, "<C-x>", function() opencode.select() end, { desc = "Execute opencode action…" })
-    Keymap({ "n", "t" }, "<C-.>", function() opencode.toggle() end, { desc = "Toggle opencode" })
+    local ok, opencode = pcall(require, "opencode")
+    if not ok then
+        Keymap({ "n", "x" }, "<C-a>", function() opencode.ask("@this: ", { submit = true }) end,
+            { desc = "Ask opencode…" })
+        Keymap({ "n", "x" }, "<C-x>", function() opencode.select() end, { desc = "Execute opencode action…" })
+        Keymap({ "n", "t" }, "<C-.>", function() opencode.toggle() end, { desc = "Toggle opencode" })
 
-    Keymap({ "n", "x" }, "go", function() return opencode.operator("@this ") end,
-        { desc = "Add range to opencode", expr = true })
-    Keymap("n", "goo", function() return opencode.operator("@this ") .. "_" end,
-        { desc = "Add line to opencode", expr = true })
+        Keymap({ "n", "x" }, "go", function() return opencode.operator("@this ") end,
+            { desc = "Add range to opencode", expr = true })
+        Keymap("n", "goo", function() return opencode.operator("@this ") .. "_" end,
+            { desc = "Add line to opencode", expr = true })
 
-    Keymap({"n", "x"}, "<S-C-u>", function() opencode.command("session.half.page.up") end,
-        { desc = "Scroll opencode up" })
-    Keymap({"n", "x"}, "<S-C-d>", function() opencode.command("session.half.page.down") end,
-        { desc = "Scroll opencode down" })
+        Keymap({ "n", "x" }, "<S-C-u>", function() opencode.command("session.half.page.up") end,
+            { desc = "Scroll opencode up" })
+        Keymap({ "n", "x" }, "<S-C-d>", function() opencode.command("session.half.page.down") end,
+            { desc = "Scroll opencode down" })
+    end
 end
 
 -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
@@ -215,6 +217,15 @@ do
 
     -- 'jj' for exit
     Keymap('i', 'jj', '<esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
+end
+
+do
+    local resession = require("resession")
+    resession.setup()
+    -- Resession does NOTHING automagically, so we have to set up some keymaps
+    vim.keymap.set("n", "<leader>ss", resession.save)
+    vim.keymap.set("n", "<leader>sl", resession.load)
+    vim.keymap.set("n", "<leader>sd", resession.delete)
 end
 
 -- #region Hydras

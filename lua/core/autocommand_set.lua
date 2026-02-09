@@ -34,6 +34,14 @@ Autocmd("VimLeave", {
     end
 })
 
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    local resession = require("resession")
+    -- Always save a special session named "last"
+    resession.save("last")
+  end,
+})
+
 -- Autocmd to save file when leaving insert mode
 -- Autocmd({ 'InsertLeave' }, {
 --        callback = function()

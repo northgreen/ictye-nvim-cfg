@@ -2,7 +2,7 @@ local Enable = vim.lsp.enable
 local Config = vim.lsp.config
 
 
-Config('roslyn',{
+Config('roslyn', {
     settings = {
         ["csharp|code_lens"] = {
             dotnet_enable_reference_code_lens = true
@@ -31,6 +31,11 @@ Enable("cmake")
 Enable('asm_lsp')
 Enable('bashls')
 Enable("lemminx")
+
+Enable("glslls")
+Enable("gdscript")
+-- Enable("gdshader_lsp") -- not very eazy to use......
+Enable("cl-lsp")
 
 
 -- The lsp below is not here, it config with the plugin

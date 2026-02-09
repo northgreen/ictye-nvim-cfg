@@ -110,39 +110,48 @@ return {
         theme.inactive.b.bg = catppuccin.base
         theme.inactive.c.bg = catppuccin.base
 
-        local ok, noice = pcall(require, 'noice')
-        if ok then
-            opts.winbar.lualine_x = {
-                {
+        do
+            local ok, noice = pcall(require, 'noice')
+            if ok then
+                table.insert(opts.winbar.lualine_x, {
                     --- @diagnostic disable-next-line undefined-field
                     noice.api.status.message.get_hl,
                     --- @diagnostic disable-next-line undefined-field
                     cond = noice.api.status.message.has
-                }
-            }
-            table.insert(opts.sections.lualine_c,
-                {
+                })
+                table.insert(opts.sections.lualine_c,
+                    {
+                        --- @diagnostic disable-next-line undefined-field
+                        noice.api.status.mode.get,
+                        --- @diagnostic disable-next-line undefined-field
+                        cond = noice.api.status.mode.has,
+                        color = { fg = "#ef9f76" }
+                    })
+                table.insert(opts.sections.lualine_c, {
                     --- @diagnostic disable-next-line undefined-field
-                    noice.api.status.mode.get,
+                    noice.api.status.command.get,
                     --- @diagnostic disable-next-line undefined-field
-                    cond = noice.api.status.mode.has,
+                    cond = noice.api.status.command.has,
                     color = { fg = "#ef9f76" }
                 })
-            table.insert(opts.sections.lualine_c, {
-                --- @diagnostic disable-next-line undefined-field
-                noice.api.status.command.get,
-                --- @diagnostic disable-next-line undefined-field
-                cond = noice.api.status.command.has,
-                color = { fg = "#ef9f76" }
-            })
-            table.insert(opts.sections.lualine_c, {
-                --- @diagnostic disable-next-line undefined-field
-                noice.api.status.search.get,
-                --- @diagnostic disable-next-line undefined-field
-                cond = noice.api.status.search.has,
-                color = { fg = "#ef9f76" }
-            })
+                table.insert(opts.sections.lualine_c, {
+                    --- @diagnostic disable-next-line undefined-field
+                    noice.api.status.search.get,
+                    --- @diagnostic disable-next-line undefined-field
+                    cond = noice.api.status.search.has,
+                    color = { fg = "#ef9f76" }
+                })
+            end
         end
+
+        -- do
+        --     local ok, opencode = pcall(require, 'opencode')
+        --     if ok then
+        --         table.insert(opts.sections.lualine_c, {
+        --             opencode.statusline
+        --         })
+        --     end
+        -- end
 
         opts.winbar.lualine_y = {
             {
@@ -160,8 +169,6 @@ return {
                 cond = muti_cursor_state().cond,
             }
         )
-
-
         --- @diagnostic disable-next-line undefined-field
         require('lualine').setup(opts)
     end,
