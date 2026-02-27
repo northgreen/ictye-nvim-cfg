@@ -3,6 +3,7 @@ return {
     tag = '0.1.8',
     dependencies = {'nvim-lua/plenary.nvim'},
     cmd = {'Telescope'},
+    keys = require("core.keymap").telescope,
     config = function()
         local telescope = require('telescope')
         telescope.setup {

@@ -1,7 +1,7 @@
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
 ploadmodule 'core.vimconfig'
-ploadmodule 'core.keymap'
+ploadmodule 'core.keymap' .setup_keymap()
 ploadmodule 'core.autocommand_set'
 ploadmodule 'core.highlights'
 ploadmodule 'core.lsp_project'

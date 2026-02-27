@@ -47,13 +47,23 @@ do
     local lazypath = vim.fs.joinpath(data_dir, "lazy", "lazy.nvim")
     local bin_path = vim.fs.joinpath(cfg_dir, "bin", "windows")
 
+    local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+
+    local nvim_data_path = vim.fn.stdpath('data')
+    local mason_bin_path = nvim_data_path .. '/mason/bin'
+
+    local current_path = vim.env.PATH
+
+    -- lua path
     local lua_path = {
         vim.fs.joinpath(cfg_dir, "?.lua"),
         vim.fs.joinpath(cfg_dir, "lua", "?.lua"),
         vim.fs.joinpath(cfg_dir, "?", "init.lua"),
     }
+
+    -- module path
     local lua_cpath = {
-        vim.fs.joinpath(cfg_dir, "bin", "windows", "?.dll")
+        vim.fs.joinpath(cfg_dir, "bin", (is_windows and "windows" or "linux"), (is_windows and "?.dll" or "?.so"))
     }
 
 
@@ -62,12 +72,6 @@ do
 
     vim.opt.rtp:prepend(lazypath)
 
-    local nvim_data_path = vim.fn.stdpath('data')
-    local mason_bin_path = nvim_data_path .. '/mason/bin'
-
-    local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
-
-    local current_path = vim.env.PATH
 
     if not string.find(current_path, mason_bin_path, 1, true) then
         vim.env.PATH = mason_bin_path .. (is_windows and ";" or ":") .. current_path

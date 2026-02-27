@@ -15,6 +15,7 @@ Config('roslyn', {
 Enable('autohotkey_lsp')
 Enable('lua_ls')
 
+Enable("qmlls")
 -- Enable('csharp_ls')
 Enable('powershell_es')
 Enable('ruff')
@@ -36,6 +37,7 @@ Enable("glslls")
 Enable("gdscript")
 -- Enable("gdshader_lsp") -- not very eazy to use......
 Enable("cl-lsp")
+Enable("hyprls")
 
 
 -- The lsp below is not here, it config with the plugin

@@ -1,9 +1,11 @@
 {
-	"$schema": "https://raw.githubusercontent.com/luals/vscode-lua/master/setting/schema-zh-cn.json",
-	"completion.autoRequire": false,
-	"hint.arrayIndex":"Enable",
+    "$schema": "https://raw.githubusercontent.com/luals/vscode-lua/master/setting/schema-zh-cn.json",
+    "completion.autoRequire": false,
+    "hint.arrayIndex": "Enable",
     "runtime.version": "LuaJIT",
     "workspace": {
+        "maxPreload": 200,
+        "checkThirdParty": false,
         "library": [
             "./luvit-meta/library/",
             "/usr/share/nvim/runtime/lua/",
