@@ -6,5 +6,5 @@ return {
         'LazyGitFilterCurrentFile'
     },
     dependencies = {'nvim-lua/plenary.nvim'},
-    keys = {{'<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit'}}
+    keys = require("core.keymap").lazygit
 }

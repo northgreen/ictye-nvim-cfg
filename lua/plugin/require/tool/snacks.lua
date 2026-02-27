@@ -42,14 +42,5 @@ return {
 
         }
     },
-    keys = {
-        { "<leader>ps", function() Snacks.profiler.scratch() end,                 desc = "Profiler Scratch Bufer" },
-        { "<leader>pt", function() Snacks.profiler.toggle() end,                  desc = "Profiler Toggle" },
-        { "<leader>de", function() Snacks.dim.enable() end,                       desc = "Enable Dim" },
-        { "<leader>dd", function() Snacks.dim.disable() end,                      desc = "Disable Dim" },
-        { "<leader>gi", function() Snacks.picker.gh_issue() end,                  desc = "GitHub Issues (open)" },
-        { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
-        { "<leader>gp", function() Snacks.picker.gh_pr() end,                     desc = "GitHub Pull Requests (open)" },
-        { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,    desc = "GitHub Pull Requests (all)" },
-    }
+    keys = require("core.keymap").snacks
 }

@@ -102,7 +102,6 @@ If you want to use this configuration, I recommend you fork it or lock to a spec
 - **Java**: JDK + Maven/Gradle
 - **PHP**: Composer + PHP runtime
 
-
 ## Installation
 
 ### Prerequisites
@@ -238,154 +237,7 @@ All language servers are managed through Mason for easy installation and updates
 
 ## Keymaps
 
-### Navigation & Files
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<F3>` | Outline | Normal | Toggle code outline |
-| `<F4>` | Neotree toggle | Normal | Toggle file explorer |
-| `<C-f>` | Telescope find_files | Normal | Search files with Telescope |
-| `<C-p>` | Telescope | Normal | Open Telescope main menu |
-
-### Debugging
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<F9>` | DapContinue | Normal | Continue debugging |
-| `<F10>` | DapStepOver | Normal | Step over function |
-| `<F11>` | DapStepInto | Normal | Step into function |
-| `<F12>` | DapStepOut | Normal | Step out of function |
-| `<C-b>` | Toggle breakpoint | Normal | Toggle debug breakpoint |
-
-### LSP & Code Actions
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<C-n>` | LSP hover | Normal | Show hover documentation |
-| `<C-]>` | IcDefine | Normal | Go to definition |
-| `gO` | Document symbols | Normal | Show document symbols |
-| `grt` | Type definitions | Normal | Show type definitions |
-| `grr` | References | Normal | Show references |
-| `grf` | Format buffer | Normal | Format current buffer |
-| `<leader>th` | Toggle inlay hints | Normal | Toggle LSP inlay hints |
-
-### Utility Menus
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<F5>` | QuickMenu | Normal | Open quick menu |
-| `<F6>` | IcDAPUIToggle | Normal | Toggle DAP UI |
-| `<F2>` | Lazy | Normal | Open Lazy plugin manager |
-
-### Buffer Navigation
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<leader>1-9` | Go to buffer | Normal | Jump to specific buffer |
-| `<leader>-` | Previous buffer | Normal | Cycle to previous buffer |
-| `<leader>=` | Next buffer | Normal | Cycle to next buffer |
-| `<leader>q` | Close buffer | Normal | Close current buffer |
-| `<leader>O` | Oil | Normal | Open Oil file manager |
-
-### Ctrl-x Prefix (Extended Functions)
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<C-x>q` | QuickMenu | Normal | Open quick menu |
-| `<C-x>u` | Undotree toggle | Normal | Toggle undo tree |
-| `<C-x>f` | Pick files | Normal | Pick files |
-| `<C-x>ft` | FloatermNew | Normal | Open floating terminal |
-| `<C-x><C-f>` | Mini.files | Normal | Open mini.files |
-| `<C-x>a` | LSP actions | Normal | Show LSP actions |
-| `<C-x>t` | IcTestMenu | Normal | Open test menu |
-| `<C-x>bf` | Telescope buffers | Normal | Show buffer list |
-| `<C-x><C-b>` | Telescope buffers | Normal,Terminal | Show buffer list |
-| `<C-x>oo` | OverseerToggle | Normal | Toggle Overseer task manager |
-| `<C-x>or` | OverseerRun | Normal | Run Overseer task |
-| `<C-x>fs` | Neovide fullscreen | Normal | Toggle fullscreen (Neovide only) |
-
-### MultiCursor Integration
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<up>` | Add cursor above | Normal,Visual | Add cursor above |
-| `<down>` | Add cursor below | Normal,Visual | Add cursor below |
-| `<leader><up>` | Skip cursor above | Normal,Visual | Skip cursor above |
-| `<leader><down>` | Skip cursor below | Normal,Visual | Skip cursor below |
-| `<leader>n` | Match add cursor down | Normal,Visual | Add cursor to next match |
-| `<leader>s` | Match skip cursor down | Normal,Visual | Skip to next match |
-| `<leader>N` | Match add cursor up | Normal,Visual | Add cursor to previous match |
-| `<leader>S` | Match skip cursor up | Normal,Visual | Skip to previous match |
-| `<c-q>` | Toggle cursor | Normal | Toggle multi-cursor mode |
-| `<c-leftmouse>` | Handle mouse | Normal | Mouse cursor handling |
-| `<c-leftdrag>` | Handle drag | Normal | Mouse drag handling |
-| `<c-leftrelease>` | Handle release | Normal | Mouse release handling |
-
-### Window & Tab Management (Hydra)
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<C-w>c` + `h/j/k/l` | Navigate windows | Normal | Hydra mode for window navigation |
-| `<C-w>W` + `h/l/j/k` | Resize windows | Normal | Hydra mode for window resizing |
-| `<leader>t` + `j/k` | Navigate tabs | Normal | Hydra mode for tab navigation |
-
-### OpenCode Integration
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<C-a>` | Ask opencode | Normal,Visual | Ask opencode AI assistant |
-| `<C-x>` | Select opencode | Normal,Visual | Execute opencode action |
-| `<C-.>` | Toggle opencode | Normal,Terminal | Toggle opencode panel |
-| `go` | Add range to opencode | Normal,Visual | Add range to opencode |
-| `goo` | Add line to opencode | Normal | Add current line to opencode |
-| `<S-C-u>` | Scroll opencode up | Normal | Scroll opencode up |
-| `<S-C-d>` | Scroll opencode down | Normal | Scroll opencode down |
-
-### File Operations & Text Manipulation
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<CR>` | Smart newline | Normal | Add line below (special handling for quickfix) |
-| `<S-CR>` | Smart newline above | Normal | Add line above |
-| `jj` | Exit insert mode | Insert | Exit insert mode |
-| `+` | Increment | Normal | Increment number under cursor |
-| `-` | Decrement | Normal | Decrement number under cursor |
-| `gf` | Image hover | Normal | Hover over images with snacks |
-
-### Folding (UFO)
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `zR` | Open all folds | Normal | Open all folds |
-| `zM` | Close all folds | Normal | Close all folds |
-| `zr` | Open folds except kinds | Normal | Open folds except certain kinds |
-| `zm` | Close folds with | Normal | Close folds with condition |
-
-### Input Method (Rime)
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<C-^>` | Toggle Rime | Insert | Toggle Rime input method |
-| `<C-@>` | Enable Rime | Insert | Enable Rime input method |
-| `<C-_>` | Disable Rime | Insert | Disable Rime input method |
-| `<C-\>` | Rime callback | Insert | Rime callback |
-
-### Other Utilities
-| Key | Action | Mode | Description |
-|-----|--------|------|-------------|
-| `<A-x>` | Command line | Normal | Open command line |
-| `<leader>c` | Exit | Various | Exit from various UIs (common exit key) |
-
-### Custom Commands
-| Command | Description |
-|---------|-------------|
-| `IcFormat` | Format current buffer with LSP |
-| `IcRename` | Rename symbol under cursor |
-| `IcUseage` | Show incoming calls |
-| `IcDefine` | Go to definition |
-| `IcDAP` | Launch DAP server |
-| `IcDAPUIOpen` | Open DAP UI |
-| `IcDAPUIClose` | Close DAP UI |
-| `IcDAPUIToggle` | Toggle DAP UI |
-| `IcTestMenu` | Open test menu |
-| `QuickMenu` | Open quick menu |
-| `ConfigEdit nvim` | Edit Neovim config file |
-
-### Additional Keymap Utilities
-| Purpose | How to use | Modes | Notes |
-|---|---|---|---|
-| Buffer-local keymaps (which-key) | Press `<leader>?` to open buffer-local which-key | Normal | Requires `folke/which-key.nvim`; shows available prefixes and mappings for current buffer |
-| Telescope keymaps browser | `:Telescope keymaps` | Normal | Interactive keymap browser; requires `telescope.nvim` |
-| Adjust key-chord timing | `:set timeoutlen=500` | N/A | Lower values make multi-key sequences register faster; tune to preference |
-| Translate key notation | ``:echo keytrans("<C-x>t")`` | N/A | Converts raw sequences into readable notation; see `:help key-notation` |
+Use `\?` to see
 
 ## Lite Mode
 
@@ -435,16 +287,6 @@ This configuration includes advanced AI capabilities for enhanced development:
 ### 🎨 Input Method Integration
 Special support for Chinese and other non-Latin input methods:
 
-#### Rime Input Method
-- **Seamless Switching**: Automatic IM toggle between insert/normal modes
-- **Custom Keybindings**: Dedicated keys for IM control
-- **Performance Optimized**: Minimal impact on editing speed
-
-#### fcitx5 Support
-- **Linux Integration**: Native fcitx5 support for Linux users
-- **Smart Detection**: Automatic IM state detection
-- **Mode-Aware**: Different behavior in insert vs normal mode
-
 ### 🖼️ Image Processing
 Advanced image handling capabilities:
 
@@ -489,18 +331,10 @@ Specialized tools for enhanced productivity:
 - **Remote Development**: SSH-based remote editing
 - **Web Development**: Live browser synchronization
 
-### 🎮 Customization & Theming
-Extensive customization options:
-
 #### ASCII Art Dashboard
 - **Custom Startup**: Personalized ASCII art welcome screen
 - **Dynamic Content**: Context-aware startup information
 - **Brand Integration**: Custom branding and logos
-
-#### Theme System
-- **Catppuccin Integration**: Beautiful color scheme
-- **Custom Highlights**: Extensive syntax highlighting
-- **UI Consistency**: Cohesive visual experience
 
 ## Configuration Structure
 
@@ -576,14 +410,6 @@ This configuration follows several key principles:
 - Try using lite mode: `nvim --cmd "let g:lite_mode=v:true"`
 - Ensure antivirus software isn't scanning Neovim files excessively
 - Consider using WSL2 instead of native Windows
-
-#### Tree-sitter Compilation Failures
-- Install a C/C++ compiler toolchain:
-  - Windows: MSVC Build Tools or LLVM/Clang
-  - Linux: `sudo apt install build-essential` (Ubuntu/Debian)
-  - macOS: `xcode-select --install`
-- Run `:TSUpdate` after installing the toolchain
-
 #### LSP Server Not Starting
 - Install language servers via Mason: `:Mason`
 - Check LSP status with `:LspInfo`

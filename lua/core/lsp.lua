@@ -54,13 +54,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
             virtual_text = true
         }
 
+        local Keymap = vim.keymap.set
+
         if client and client:supports_method(vim.lsp.protocol.Methods.testDocument_inlayHint) then
-            vim.keymap.set('n', '<leader>th', function()
+            Keymap('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
         end
 
-        local Keymap = vim.keymap.set
 
         Keymap('n', '<C-]>',
             require('telescope.builtin').lsp_definitions

@@ -27,10 +27,10 @@ M.bufferline = {
 
 ---@type LazyKeysSpec[]
 M.ufo = {
-    { 'zR', function() require('ufo').openAllFolds() end, noremap = true, silent = true, desc = "Open all folds" },
-    { 'zM', function() require('ufo').closeAllFolds() end, noremap = true, silent = true, desc = "Close all folds" },
+    { 'zR', function() require('ufo').openAllFolds() end,         noremap = true, silent = true, desc = "Open all folds" },
+    { 'zM', function() require('ufo').closeAllFolds() end,        noremap = true, silent = true, desc = "Close all folds" },
     { 'zr', function() require('ufo').openFoldsExceptKinds() end, noremap = true, silent = true, desc = "Open folds except kinds" },
-    { 'zm', function() require('ufo').closeFoldsWith() end, noremap = true, silent = true, desc = "Close folds with" },
+    { 'zm', function() require('ufo').closeFoldsWith() end,       noremap = true, silent = true, desc = "Close folds with" },
     {
         'K',
         function()
@@ -75,13 +75,68 @@ M.muti_cursor = {
     { "<c-q>",           function() require("multicursor-nvim").toggleCursor() end,      mode = { "n", "x" } },
 }
 
+---@type LazyKeysSpec[]
+M.lazygit = { { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' } }
+
+---@type LazyKeysSpec[]
+M.rip_substitute = {
+    {
+        '<leader>fs',
+        function() require('rip-substitute').sub() end,
+        mode = { 'n', 'x' },
+        desc = ' rip substitute',
+    },
+}
+
+---@type LazyKeysSpec[]
+M.flash = {
+    { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+    { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+    { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+    { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+}
+
+---@type LazyKeysSpec[]
+M.snacks = {
+    { "<leader>ps", function() Snacks.profiler.scratch() end,                 desc = "Profiler Scratch Bufer" },
+    { "<leader>pt", function() Snacks.profiler.toggle() end,                  desc = "Profiler Toggle" },
+    { "<leader>de", function() Snacks.dim.enable() end,                       desc = "Enable Dim" },
+    { "<leader>dd", function() Snacks.dim.disable() end,                      desc = "Disable Dim" },
+    { "<leader>gi", function() Snacks.picker.gh_issue() end,                  desc = "GitHub Issues (open)" },
+    { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+    { "<leader>gp", function() Snacks.picker.gh_pr() end,                     desc = "GitHub Pull Requests (open)" },
+    { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,    desc = "GitHub Pull Requests (all)" },
+}
+
+---@type LazyKeysSpec[]
+M.trouble = {
+    { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",                        desc = "Diagnostics (Trouble)" },
+    { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",           desc = "Buffer Diagnostics (Trouble)" },
+    { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                desc = "Symbols (Trouble)" },
+    { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
+    { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)" },
+    { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)"
+    }
+}
+
+---@type LazyKeysSpec[]
+M.which_key = {
+    { '<leader>?', function() require('which-key').show({ global = false }) end, desc = 'Buffer Local Keymaps (which-key)' }
+}
+
+M.resession = {
+    { "<leader>ss", function() require("resession").save() end },
+    { "<leader>sl", function() require("resession").load() end },
+    { "<leader>sd", function() require("resession").delete() end },
+}
+
 function M.setup_keymap()
     if vim.g.neovide then
         require 'core.keymap.neovide'
     end
 
     local bind = require 'util.functions'.bind
-    local lazy_require = require 'util.functions'.lazy_require
     local lazy_call = require 'util.functions'.lazy_call
 
     -- REGION Init Dependencies
@@ -96,12 +151,12 @@ function M.setup_keymap()
     -- Test Menu
     local TestMenu = Menu({
         {
-            ["Watch Test"] = function() lazy_require("neotest").watch.toggle() end,
-            ["Toggle Summary"] = function() lazy_require("neotest").summary.toggle() end,
-            ["Run Test"] = function() lazy_require("neotest").run.run() end,
-            ["Show Cur Output"] = function() lazy_require("neotest").output.open() end,
-            ["Toggle Output Panel"] = function() lazy_require("neotest").output_panel.toggle() end,
-            ["Run With Debug"] = function() lazy_require("neotest").run.run({ strategy = "dap" }) end,
+            ["Watch Test"] = function() require("neotest").watch.toggle() end,
+            ["Toggle Summary"] = function() require("neotest").summary.toggle() end,
+            ["Run Test"] = function() require("neotest").run.run() end,
+            ["Show Cur Output"] = function() require("neotest").output.open() end,
+            ["Toggle Output Panel"] = function() require("neotest").output_panel.toggle() end,
+            ["Run With Debug"] = function() require("neotest").run.run({ strategy = "dap" }) end,
 
         }
     })
@@ -113,7 +168,6 @@ function M.setup_keymap()
             ["Questions"] = bind(lazy_call("trouble", "open"), "questions"),
             ["Find and Replace"] = bind(vim.cmd, "GrugFar"),
             ["Find in Files"] = bind(vim.cmd, "RipSubstitute"),
-            ["Terminal"] = bind(vim.cmd, "FloatermNew zsh"),
             ["Git"] = bind(vim.cmd, "LazyGit"),
             ["Debug"] = bind(vim.cmd, "DapNew"),
             ["Todo"] = bind(vim.cmd, "Trouble todo"),
@@ -178,14 +232,21 @@ function M.setup_keymap()
 
 
     Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, desc = "Pick a file" })
-    Keymap('n', '<C-x>ft', "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, desc = "Open a floaterm" })
 
-    Keymap('n', '<C-x><C-f>', require("mini.files").open, { noremap = true, silent = true, desc = "Open a file" })
+    Keymap('n', '<C-x><C-f>', function() require("mini.files").open() end,
+        { noremap = true, silent = true, desc = "Open a file" })
     Keymap('n', '<C-x>a', require("global.ui_util.ui.actions"),
         { noremap = true, silent = true, desc = "Show LSP actions" })
 
     Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
 
+
+    Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
+
+    Keymap('n', '<C-x>ft', require("global.ui_util.ui.float_term"),
+        { noremap = true, silent = true, desc = "Test:Show Test Menu" })
+    Keymap('n', '<leader>lj', function() require("global.ui_util.ui.float_term")("jjui") end,
+        { noremap = true, silent = true, desc = "Test:Show Test Menu" })
 
     -- Overseer
     Keymap('n', '<C-x>oo', '<Cmd>OverseerToggle<CR>', { noremap = true, silent = true, desc = 'Toggle Overseer' })
@@ -226,15 +287,6 @@ function M.setup_keymap()
 
         -- 'jj' for exit
         Keymap('i', 'jj', '<esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
-    end
-
-    do
-        local resession = require("resession")
-        resession.setup({})
-        -- Resession does NOTHING automagically, so we have to set up some keymaps
-        vim.keymap.set("n", "<leader>ss", resession.save)
-        vim.keymap.set("n", "<leader>sl", resession.load)
-        vim.keymap.set("n", "<leader>sd", resession.delete)
     end
 
     -- #region Hydras

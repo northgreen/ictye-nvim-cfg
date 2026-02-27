@@ -44,6 +44,7 @@ do
     --- Config paths
     local data_dir = vim.fn.stdpath('data') --[[@as string]]
     local cfg_dir = vim.fn.stdpath('config') --[[@as string]]
+
     local lazypath = vim.fs.joinpath(data_dir, "lazy", "lazy.nvim")
     local bin_path = vim.fs.joinpath(cfg_dir, "bin", "windows")
 
