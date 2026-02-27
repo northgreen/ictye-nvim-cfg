@@ -26,7 +26,27 @@ M.bufferline = {
 }
 
 ---@type LazyKeysSpec[]
-M.undo_tree = {
+M.ufo = {
+    { 'zR', function() require('ufo').openAllFolds() end, noremap = true, silent = true, desc = "Open all folds" },
+    { 'zM', function() require('ufo').closeAllFolds() end, noremap = true, silent = true, desc = "Close all folds" },
+    { 'zr', function() require('ufo').openFoldsExceptKinds() end, noremap = true, silent = true, desc = "Open folds except kinds" },
+    { 'zm', function() require('ufo').closeFoldsWith() end, noremap = true, silent = true, desc = "Close folds with" },
+    {
+        'K',
+        function()
+            local winid = require('ufo').peekFoldedLinesUnderCursor()
+            if not winid then
+                vim.lsp.buf.hover()
+            end
+        end,
+        noremap = true,
+        silent = true,
+        desc = "Peek fold or hover"
+    },
+}
+
+---@type LazyKeysSpec[]
+M.undotree = {
     { '<C-x>u',    function() require 'undotree'.toggle() end, noremap = true, silent = true, desc = "Toggle undotree" },
     { '<leader>u', function() require 'undotree'.toggle() end, noremap = true, silent = true, desc = "Toggle undotree" }
 }
