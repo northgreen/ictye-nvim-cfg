@@ -41,7 +41,7 @@ return {
     cmd = function(dispatchers)
         local temp_path = vim.fn.stdpath('cache')
         local bundle_path = vim.lsp.config.powershell_es.bundle_path
-
+        local bundle_path = "/opt/powershell-editor-services"
         local shell = vim.lsp.config.powershell_es.shell or 'pwsh'
 
         local command_fmt =

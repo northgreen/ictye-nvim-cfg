@@ -1,0 +1,1 @@
+require "paths.ts-locate"

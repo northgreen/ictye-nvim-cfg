@@ -16,13 +16,13 @@ vim.wo.signcolumn = 'yes'
 -- 右侧参考线
 vim.wo.colorcolumn = '160'
 -- 缩进字符
-vim.o.tabstop = 4
-vim.bo.tabstop = 4
-vim.o.softtabstop = 4
+vim.o.tabstop = 2
+vim.bo.tabstop = 2
+vim.o.softtabstop = 2
 vim.o.shiftround = true
 -- >> << 时移动长度
-vim.o.shiftwidth = 4
-vim.bo.shiftwidth = 4
+vim.o.shiftwidth = 2
+vim.bo.shiftwidth = 2
 -- 新行对齐当前行
 vim.o.autoindent = true
 vim.bo.autoindent = true
@@ -72,10 +72,10 @@ vim.opt.updatetime = 200
 vim.opt.termguicolors = true
 
 -- tab
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
-vim.opt.softtabstop = 4
+vim.opt.softtabstop = 2
 
 vim.g.langmenu = 'zh'
 

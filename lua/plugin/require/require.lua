@@ -91,6 +91,11 @@ return {
     require 'plugin.require.language.language_require.typescript.ts_tool', -- TypeScript工具
     -- require 'plugin.require.tool.ai.bink-mcp-avante', -- Avante MCP: 已禁用
     require 'plugin.require.tool.mark', -- Mark: 书签标记
+    require 'plugin.require.editor.unity',
+    require 'plugin.require.editor.vim-tmux-navigator',
+    require 'plugin.require.editor.kitty-navigator',
+    require 'plugin.require.tool.rest',
+    require 'plugin.require.tool.claude',
  --------others
 	require 'plugin.require.tool.firenvim', -- Firenvim: 在浏览器中编辑
 }

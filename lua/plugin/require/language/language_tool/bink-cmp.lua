@@ -27,12 +27,12 @@ return {
             nerd_font_variant = 'mono'
         },
         sources = {
-            default = { 'avante', 'snippets', 'lsp', 'path', 'buffer', 'fittencode' },
+            default = { 'avante', 'snippets', 'lsp', 'path', 'buffer' },
             providers = {
-                fittencode = {
-                    name = "fittencode",
-                    module = "fittencode.sources.blink",
-                },
+                -- fittencode = {
+                --     name = "fittencode",
+                --     module = "fittencode.sources.blink",
+                -- },
                 avante = {
                     module = 'blink-cmp-avante',
                     name = 'Avante',

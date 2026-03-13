@@ -1,6 +1,7 @@
 --- @return LazyPluginSpec
 return {
     'luozhiya/fittencode.nvim',
+    enabled = false,
     event = 'BufReadPre',
     opts = {
         -- completion_mode = 'inline', -- too noisy!!!

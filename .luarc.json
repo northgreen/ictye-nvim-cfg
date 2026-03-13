@@ -4,7 +4,7 @@
     "hint.arrayIndex": "Enable",
     "runtime.version": "LuaJIT",
     "workspace": {
-        "maxPreload": 200,
+        "maxPreload": 1200,
         "checkThirdParty": false,
         "library": [
             "./luvit-meta/library/",

@@ -34,7 +34,6 @@ vim.api.nvim_create_autocmd("BufRead", {
     end,
 })
 
-
 -- exit when ori mod
 if vim.g.ori_mode then
     return
@@ -86,6 +85,7 @@ end
 
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
+ploadmodule 'paths'
 
 -- init environment
 local ok, err = pcall(require, 'env_init')

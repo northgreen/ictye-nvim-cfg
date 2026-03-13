@@ -38,6 +38,12 @@ Enable("gdscript")
 -- Enable("gdshader_lsp") -- not very eazy to use......
 Enable("cl-lsp")
 Enable("hyprls")
+-- Enable("ts_ls")
+Enable("vtsls")
+Enable("vue_ls")
+Enable("emmet_ls")
+-- Enable("emmet-language-server")
+Enable("gopls")
 
 
 -- The lsp below is not here, it config with the plugin

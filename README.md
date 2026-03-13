@@ -14,6 +14,7 @@ If you want to use this configuration, I recommend you fork it or lock to a spec
   - [Linux/macOS Installation](#linuxmacos-installation)
   - [Language-specific Setup](#language-specific-setup)
 - [Keymaps](#keymaps)
+  - [Quick Reference](#quick-reference)
 - [Lite Mode](#lite-mode)
 - [Configuration Structure](#configuration-structure)
 - [Troubleshooting](#troubleshooting)
@@ -57,6 +58,14 @@ If you want to use this configuration, I recommend you fork it or lock to a spec
 - **Global Search & Replace**: `grug-far.nvim` for advanced search and replace operations
 - **Git Integration**: Comprehensive Git support with `gitsigns.nvim` and `lazygit.nvim`
 - **Version Control**: Support for both Git and Jujutsu (jj)
+- **File Manager**: `yazi` for terminal-based file management
+- **Quick Navigation**: `flash.nvim` for lightning-fast jumps
+- **Session Management**: `resession.nvim` for saving/restoring workspace sessions
+
+### 🛠️ Task & Terminal Management
+- **Task Runner**: `overseer.nvim` for running and managing development tasks
+- **Terminal**: `floaterm` for floating terminal windows
+- **Task Automation**: QuickMenu for common development workflows
 
 ## Known Issues
 - **Extended Startup Time**: This configuration prioritizes feature completeness over startup speed, resulting in longer initialization compared to minimal setups.
@@ -178,7 +187,7 @@ This configuration provides comprehensive support for 20+ programming languages 
 - **Features**: .NET solution integration
 - **Testing**: dotnet test support
 - **Installation**: Install .NET SDK and Mason-managed servers
-- **Note**: Enable in `lua/plugin/require/language/lspconfig.lua` if needed
+- **Note**: Enable in `lua/core/lsp.lua` if needed
 
 #### 🌐 TypeScript/JavaScript
 - **LSP**: ts_tool (TypeScript) and biome for formatting
@@ -237,7 +246,41 @@ All language servers are managed through Mason for easy installation and updates
 
 ## Keymaps
 
-Use `\?` to see
+Use `\?` to see all buffer-local keymaps.
+
+### Quick Reference
+
+| Shortcut | Description |
+|----------|-------------|
+| `<C-x>f` | Pick a file (mini.files) |
+| `<C-x><C-f>` | Open file |
+| `<C-x>a` | Show LSP actions menu |
+| `<C-x>t` | Show test menu |
+| `<C-x>q` | Open QuickMenu |
+| `<F3>` | Toggle Outline |
+| `<F4>` | Toggle Neotree |
+| `<F5>` | Open QuickMenu |
+| `<F6>` | Toggle DAP UI |
+| `<F9>` | DAP Continue |
+| `<F10>` | DAP Step Over |
+| `<F11>` | DAP Step Into |
+| `<F12>` | DAP Step Out |
+| `<C-b>` | Toggle breakpoint |
+| `<C-]>` | Go to definition |
+| `<C-w>W` + h/j/k/l | Window navigation (Hydra) |
+| `<leader>dp` | DAP menu (Hydra) |
+| `<leader>lg` | Open LazyGit |
+| `<leader>u` | Toggle UndoTree |
+| `<leader>q` | Close current buffer |
+| `<leader>t` + j/k | Buffer prev/next |
+| `s` | Flash jump |
+| `zR` / `zM` | Open/Close all folds |
+| `K` | Peek fold or hover |
+| `<C-f>` | Telescope find_files |
+| `<C-p>` | Telescope |
+| `<S-h>` / `<S-l>` | Prev/Next buffer |
+| `[b` / `]b` | Cycle buffer |
+| `jj` | Exit insert mode |
 
 ## Lite Mode
 
@@ -284,8 +327,18 @@ This configuration includes advanced AI capabilities for enhanced development:
 - **File Integration**: AI can read and analyze your codebase
 - **Smart Suggestions**: Contextually relevant recommendations
 
+#### OpenCode
+- **Inline AI Chat**: Query AI directly from editor with `<C-a>`
+- **Selection Actions**: Process selected code with `<C-x>`
+- **Operator Mode**: Use `go` / `goo` to feed text to OpenCode
+- **Panel Toggle**: Toggle OpenCode panel with `<C-.>`
+
 ### 🎨 Input Method Integration
 Special support for Chinese and other non-Latin input methods:
+
+- **Fcitx5 Support**: Automatic input method switching when entering/leaving insert mode
+- **Rime Integration**: Support for Rime input method with completion
+- **Status Display**: Visual feedback for input method state in UI
 
 ### 🖼️ Image Processing
 Advanced image handling capabilities:
@@ -419,6 +472,16 @@ This configuration follows several key principles:
 - Delete the `pack` directory and restart Neovim
 - Check your internet connection
 - Verify git is properly configured
+
+### Useful Commands
+
+- `:Lazy` - Plugin manager UI
+- `:Mason` - Install LSP servers, formatters, DAP adapters
+- `:LspInfo` - Check LSP server status
+- `:TSUpdate` - Update Tree-sitter parsers
+- `:checkhealth` - Diagnose common issues
+- `:QuickMenu` - Access common development tasks
+- `<C-x>oo` / `<C-x>or` - Overseer task commands
 
 ### Getting Help
 

@@ -1,6 +1,7 @@
 return {
     "NickvanDyke/opencode.nvim",
-    enabled = false,
+    -- enabled = false,
+    keys = require("core.keymap").opencode,
     dependencies = {
         -- Recommended for `ask()` and `select()`.
         -- Required for `snacks` provider.

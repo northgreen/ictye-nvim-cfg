@@ -48,7 +48,7 @@ end
 
 ---@param client vim.lsp.Client
 local function refresh_diagnostics(client)
-    for buf, _ in pairs(vim.lsp.get_client_by_id(client.id).attached_buffers) do
+    for buf, _ in pairs(client.attached_buffers) do
         if vim.api.nvim_buf_is_loaded(buf) then
             client:request(
                 vim.lsp.protocol.Methods.textDocument_diagnostic,
