@@ -1,6 +1,21 @@
 # Personal Neovim Configuration
+
+```
+ /$$$$$$             /$$                       
+|_  $$_/            | $$                        
+  | $$    /$$$$$$$ /$$$$$$   /$$   /$$  /$$$$$$ 
+  | $$   /$$_____/|_  $$_/  | $$  | $$ /$$__  $$
+  | $$  | $$        | $$    | $$  | $$| $$$$$$$$
+  | $$  | $$        | $$ /$$| $$  | $$| $$_____/ 
+ /$$$$$$|  $$$$$$$  |  $$$$/|  $$$$$$$|  $$$$$$$ 
+|______/ \_______/   \___/   \____  $$ \_______/  
+                             /$$  | $$           
+                            |  $$$$$$/           
+                             \______/            
+```
+
 This repository contains my personal Neovim configuration.
-Copyright (c) 2025/7/27 Ictye, All Rights Reserved
+Copyright (c) 2026 Ictye, All Rights Reserved
 
 If you want to use this configuration, I recommend you fork it or lock to a specific version.
 
