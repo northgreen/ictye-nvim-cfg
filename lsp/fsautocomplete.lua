@@ -59,6 +59,19 @@ return {
 
       -- 禁用日志
       trace = { server = "off" },
+
+      -- 格式化设置
+      keywordsFormat = {
+        SpaceAfterKeyword = true,
+        SpaceAfterLambdaArrow = true,
+        SpaceAfterMatchReturn = true,
+      },
+      Indentation = {
+        IndentSize = 4,
+        TabSize = 4,
+        UseTabs = false,
+      },
+      FormatOnKeyTyped = true,
     },
   },
 }

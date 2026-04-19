@@ -2,14 +2,6 @@ local Enable = vim.lsp.enable
 local Config = vim.lsp.config
 
 
-Config('roslyn', {
-    settings = {
-        ["csharp|code_lens"] = {
-            dotnet_enable_reference_code_lens = true
-        }
-    }
-})
-
 -- Enabled Lsp seriver
 
 Enable('autohotkey_lsp')
@@ -58,6 +50,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
     callback = function(event)
         local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+        -- Set position encoding to UTF-8 to avoid warnings
+        if client and not client.offset_encoding then
+            client.offset_encoding = "utf-8"
+        end
+
         vim.diagnostic.config {
             virtual_text = true
         }

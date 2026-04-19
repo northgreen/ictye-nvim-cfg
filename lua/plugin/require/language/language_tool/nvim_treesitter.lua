@@ -3,7 +3,7 @@ return {
     build = ':TSUpdate',
     event = 'BufReadPre',
     opt = {
-        ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'markdown', 'json', 'c_sharp', 'fsharp' },
+        ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'markdown', 'json', 'c_sharp', 'fsharp', 'xml' },
         sync_install = false,
         highlight = { enable = true },
         indent = { enable = true },
@@ -18,15 +18,13 @@ return {
         configs.setup(opt)
         -- start up ts when filetype
         vim.api.nvim_create_autocmd('FileType', {
-            pattern = { 'rust', 'c', 'fsharp','cpp','vimdoc','json' },
+            pattern = { 'rust', 'c', 'fsharp', 'cpp', 'vimdoc', 'json', 'markdown', 'xml' },
             callback = function()
                 -- syntax highlighting, provided by Neovim
                 vim.treesitter.start()
                 -- folds, provided by Neovim
                 vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
                 vim.wo.foldmethod = 'expr'
-                -- indentation, provided by nvim-treesitter
-                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end,
         })
     end
