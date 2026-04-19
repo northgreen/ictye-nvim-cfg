@@ -1,58 +1,64 @@
----@brief
----
---- https://github.com/fsharp/FsAutoComplete
----
---- Language Server for F# provided by FsAutoComplete (FSAC).
----
---- FsAutoComplete requires the [dotnet-sdk](https://dotnet.microsoft.com/download) to be installed.
----
---- The preferred way to install FsAutoComplete is with `dotnet tool install --global fsautocomplete`.
----
---- Instructions to compile from source are found on the main [repository](https://github.com/fsharp/FsAutoComplete).
----
---- You may also need to configure the filetype as Vim defaults to Forth for `*.fs` files:
----
---- `autocmd BufNewFile,BufRead *.fs,*.fsx,*.fsi set filetype=fsharp`
----
---- This is automatically done by plugins such as [PhilT/vim-fsharp](https://github.com/PhilT/vim-fsharp), [fsharp/vim-fsharp](https://github.com/fsharp/vim-fsharp), and [adelarsq/neofsharp.vim](https://github.com/adelarsq/neofsharp.vim).
----
+--- fsautocomplete 配置 - 针对 Godot + F# 项目优化
+--- 解决 typechecking 卡死问题
 
 local util = require 'lspconfig.util'
 
 ---@type vim.lsp.Config
 return {
-  cmd = { 'fsautocomplete', '--adaptive-lsp-server-enabled' },
+  -- 使用标准模式而非 adaptive 模式
+  cmd = { 'fsautocomplete' },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     on_dir(util.root_pattern('*.fsproj', '*.sln', '.git')(fname))
   end,
   filetypes = { 'fsharp' },
   init_options = {
-    AutomaticWorkspaceInit = true,
+    AutomaticWorkspaceInit = true,  -- 启用自动工作区初始化
   },
-  log_level = "DEBUG",
-  capabilities = require('blink-cmp').get_lsp_capabilities(),
-  -- this recommended settings values taken from  https://github.com/ionide/FsAutoComplete?tab=readme-ov-file#settings
+  log_level = "WARN",
+
+  -- 覆盖 LSP 服务器的能力，防止 blink.cmp 错误
+  capabilities = vim.tbl_extend('force', require('blink-cmp').get_lsp_capabilities(), {
+    textDocument = {
+      semanticTokens = nil,  -- 完全禁用语义令牌
+    },
+  }),
+
+  -- 关键配置：在 on_attach 中只禁用语义令牌，保留其他功能
+  on_attach = function(client, bufnr)
+    -- 完全禁用语义令牌 - 这是导致卡死的主要原因
+    client.server_capabilities.semanticTokensProvider = nil
+
+    -- 保留所有其他功能（补全、跳转、悬停等）
+    -- 不要修改 server_capabilities 中的其他项，让 LSP 服务器自己决定
+  end,
+
   settings = {
     FSharp = {
+      -- 核心功能
       keywordsAutocomplete = true,
       ExternalAutocomplete = false,
-      Linter = true,
-      UnionCaseStubGeneration = true,
-      UnionCaseStubGenerationBody = 'failwith "Not Implemented"',
-      RecordStubGeneration = true,
-      RecordStubGenerationBody = 'failwith "Not Implemented"',
-      InterfaceStubGeneration = true,
-      InterfaceStubGenerationObjectIdentifier = 'this',
-      InterfaceStubGenerationMethodBody = 'failwith "Not Implemented"',
-      UnusedOpensAnalyzer = true,
-      UnusedDeclarationsAnalyzer = true,
-      UseSdkScripts = true,
-      SimplifyNameAnalyzer = true,
-      ResolveNamespaces = true,
-      EnableReferenceCodeLens = true,
-      trace={ server = "debug" },
-    },
 
+      -- 禁用所有分析器
+      Linter = false,
+      UnusedOpensAnalyzer = false,
+      UnusedDeclarationsAnalyzer = false,
+      SimplifyNameAnalyzer = false,
+      ResolveNamespaces = false,
+
+      -- 禁用代码生成
+      UnionCaseStubGeneration = false,
+      RecordStubGeneration = false,
+      InterfaceStubGeneration = false,
+
+      -- 禁用代码镜头和提示
+      EnableReferenceCodeLens = false,
+      BackgroundAnalysisEnabled = false,
+      InlayHintsEnabled = false,
+      SemanticHighlighting = false,
+
+      -- 禁用日志
+      trace = { server = "off" },
+    },
   },
 }
