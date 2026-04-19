@@ -25,7 +25,9 @@ Enable('solargraph')
 Enable('pyright')
 -- Enable('omnisharp')
 Enable('roslyn')
--- Enable('fsautocomplete') -- already enabled by default
+-- local ionide_config = require("ionide").setup({})
+-- vim.lsp.config("fsautocomplete", ionide_config)
+Enable('fsautocomplete') -- already enabled by default
 -- Enable('fsharp_language_server')
 Enable('clangd')
 Enable("cmake")

@@ -20,8 +20,6 @@ local function patch_treesitter_range()
             return result
         end
     end
-    
-    print("[Monkepatch] Treesitter range patch applied")
 
     local v = vim.version()
     if v.major > 0 and v.minor >= 13 then

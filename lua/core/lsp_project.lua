@@ -1,1 +1,7 @@
-vim.fs.root(0,".git")
+local Root=vim.fs.root
+
+
+Root(0,'*.fsproj')
+Root(0,'*.sln')
+Root(0,'.git')
+Root(0,".git")

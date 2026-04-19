@@ -96,6 +96,7 @@ return {
     require 'plugin.require.editor.kitty-navigator',
     require 'plugin.require.tool.rest',
     require 'plugin.require.tool.claude',
+require 'plugin.require.tool.wakatime',
  --------others
 	require 'plugin.require.tool.firenvim', -- Firenvim: 在浏览器中编辑
 }

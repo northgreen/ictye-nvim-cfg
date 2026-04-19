@@ -134,8 +134,8 @@ M.resession = {
 ---@type LazyKeysSpec[]
 M.opencode = {
   { "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, mode = { "n", "x" }, desc = "Ask opencode…" },
-  { "<C-x>", function() require("opencode").select() end, mode = { "n", "x" }, desc = "Execute opencode action…" },
-  { "<leader>oC", function() require("opencode").toggle() end, mode = { "n", "t" }, desc = "Toggle opencode" },
+  -- { "<C-x>", function() require("opencode").select() end, mode = { "n", "x" }, desc = "Execute opencode action…" },
+  { "<leader>oC", function() require("opencode").select() end, mode = { "n", "t" }, desc = "Toggle opencode" },
   { "go", function() return require("opencode").operator("@this ") end, mode = { "n", "x" }, desc = "Add range to opencode", expr = true },
   { "goo", function() return require("opencode").operator("@this ") .. "_" end, mode = "n", desc = "Add line to opencode", expr = true },
   { "<S-C-u>", function() require("opencode").command("session.half.page.up") end, mode = "n", desc = "Scroll opencode up" },

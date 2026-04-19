@@ -21,35 +21,38 @@ local util = require 'lspconfig.util'
 
 ---@type vim.lsp.Config
 return {
-    cmd = { 'fsautocomplete', '--adaptive-lsp-server-enabled' },
-    root_dir = function(bufnr, on_dir)
-        local fname = vim.api.nvim_buf_get_name(bufnr)
-        on_dir(util.root_pattern('*.sln', '*.fsproj', '.git')(fname))
-    end,
-    filetypes = { 'fsharp' },
-    init_options = {
-        AutomaticWorkspaceInit = true,
+  cmd = { 'fsautocomplete', '--adaptive-lsp-server-enabled' },
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    on_dir(util.root_pattern('*.fsproj', '*.sln', '.git')(fname))
+  end,
+  filetypes = { 'fsharp' },
+  init_options = {
+    AutomaticWorkspaceInit = true,
+  },
+  log_level = "DEBUG",
+  capabilities = require('blink-cmp').get_lsp_capabilities(),
+  -- this recommended settings values taken from  https://github.com/ionide/FsAutoComplete?tab=readme-ov-file#settings
+  settings = {
+    FSharp = {
+      keywordsAutocomplete = true,
+      ExternalAutocomplete = false,
+      Linter = true,
+      UnionCaseStubGeneration = true,
+      UnionCaseStubGenerationBody = 'failwith "Not Implemented"',
+      RecordStubGeneration = true,
+      RecordStubGenerationBody = 'failwith "Not Implemented"',
+      InterfaceStubGeneration = true,
+      InterfaceStubGenerationObjectIdentifier = 'this',
+      InterfaceStubGenerationMethodBody = 'failwith "Not Implemented"',
+      UnusedOpensAnalyzer = true,
+      UnusedDeclarationsAnalyzer = true,
+      UseSdkScripts = true,
+      SimplifyNameAnalyzer = true,
+      ResolveNamespaces = true,
+      EnableReferenceCodeLens = true,
+      trace={ server = "debug" },
     },
-    capabilities = require('blink-cmp').get_lsp_capabilities(),
-    -- this recommended settings values taken from  https://github.com/ionide/FsAutoComplete?tab=readme-ov-file#settings
-    settings = {
-        FSharp = {
-            keywordsAutocomplete = true,
-            ExternalAutocomplete = false,
-            Linter = true,
-            UnionCaseStubGeneration = true,
-            UnionCaseStubGenerationBody = 'failwith "Not Implemented"',
-            RecordStubGeneration = true,
-            RecordStubGenerationBody = 'failwith "Not Implemented"',
-            InterfaceStubGeneration = true,
-            InterfaceStubGenerationObjectIdentifier = 'this',
-            InterfaceStubGenerationMethodBody = 'failwith "Not Implemented"',
-            UnusedOpensAnalyzer = true,
-            UnusedDeclarationsAnalyzer = true,
-            UseSdkScripts = true,
-            SimplifyNameAnalyzer = true,
-            ResolveNamespaces = true,
-            EnableReferenceCodeLens = true,
-        },
-    },
+
+  },
 }

@@ -1,12 +1,10 @@
 local config_paths = {
     nvim = vim.fn.stdpath('config') .. "/init.lua",
-}
 
+}
 
 vim.api.nvim_create_user_command('ConfigEdit', function(opts)
     local config_type = opts.args:lower()
-
-
 
     if not config_paths[config_type] then
         vim.notify("Only below config types are supported: \n" ..
