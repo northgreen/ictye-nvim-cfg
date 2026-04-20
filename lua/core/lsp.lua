@@ -38,6 +38,7 @@ Enable("vue_ls")
 Enable("emmet_ls")
 -- Enable("emmet-language-server")
 Enable("gopls")
+Enable("cssls")
 
 
 -- The lsp below is not here, it config with the plugin

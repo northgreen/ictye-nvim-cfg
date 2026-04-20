@@ -55,6 +55,7 @@ M.undotree = {
 M.telescope = {
   { '<C-x><C-b>', '<Cmd>Telescope buffers<CR>',   mode = { 'n', 't' }, noremap = true, silent = true,            desc = 'Show buffer list' },
   { '<C-x>bf',    '<Cmd>Telescope buffers<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
+  { '<C-c>',    '<Cmd>Telescope buffers<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
   { '<C-f>',      '<Cmd>Telescope find_files<CR>' },
   { '<C-p>',      '<Cmd>Telescope<CR>' },
 }

@@ -35,6 +35,9 @@ nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('che
 | `:LspInfo` | Check LSP server status |
 | `:TSUpdate` | Update Tree-sitter parsers |
 | `:checkhealth` | Diagnose issues |
+| `:ConfigEdit <type>` | Edit config files (nvim) |
+| `:OverseerRun` | Run a task |
+| `:OverseerToggle` | Toggle task panel |
 
 ## Architecture
 
@@ -54,22 +57,42 @@ nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('che
 | `lsp/*.lua` | Per-language LSP server configs |
 
 ### Plugin Loading
-All plugins in `lua/plugin/require/require.lua`, organized by category:
-- `ui/` - themes, statusline, file explorer
-- `tool/` - telescope, git, terminal, AI tools
-- `editor/` - surround, pairs, multi-cursor
-- `language/` - LSP, DAP, completion, treesitter
+Plugins are specified in `lua/plugin/require/require.lua`, organized by category:
+- `ui/` - themes, statusline, bufferline, edgy
+- `tool/` - telescope, git, overseer, AI tools (avante, opencode, claude)
+- `editor/` - surround, pairs, trouble, which-key
+- `language/` - LSP, DAP, completion, treesitter, blink.cmp
 
 ### Keymaps (all in `lua/core/keymap/init.lua`)
 - `<C-x>f` / `<C-x><C-f>` - File picking (mini.files)
 - `<C-x>a` - LSP actions menu
 - `<C-x>t` - Test menu
+- `<C-x>q` - QuickMenu
+- `<C-x>u` / `<leader>u` - Toggle undotree
+- `<F3>` - Toggle Outline
+- `<F4>` - Toggle Neotree
 - `<F5>` - QuickMenu
 - `<F6>` - DAP UI toggle
-- `<C-w>W` + hjkl - Window navigation (Hydra)
+- `<F9>` - DAP Continue
+- `<F10>` - DAP Step Over
+- `<F11>` - DAP Step Into
+- `<F12>` - DAP Step Out
+- `<C-b>` - Toggle breakpoint
+- `<C-w>W` + hjkl - Window sizing (Hydra)
+- `<C-w>c` + hjkl - Window navigation (Hydra)
 - `<leader>dp` - DapMenu (Hydra)
+- `<leader>q` - Close current buffer
+- `<leader>t` + j/k - Buffer prev/next
+- `<leader>lg` - Open LazyGit
+- `<leader>fs` - Rip substitute
+- `<leader>xx` - Trouble diagnostics
+- `<leader>?` - Which-key popup
 - `s` - Flash jump
-- `zR/zM` - UFO fold controls
+- `zR`/`zM` - UFO fold controls
+- `jj` - Exit insert mode
+- `<C-a>` / `<C-x>` - OpenCode AI chat (ask/select)
+- `go`/`goo` - OpenCode operator
+- `<leader>oC` - Toggle OpenCode panel
 
 ### Adding New Features
 
@@ -87,8 +110,26 @@ All plugins in `lua/plugin/require/require.lua`, organized by category:
 1. Edit `lua/core/keymap/init.lua` or create new file in `lua/core/keymap/`
 2. Use `vim.keymap.set()` or Hydra for complex mappings
 
+#### AI Integration
+- **Avante** - Multi-provider AI coding assistant (OpenAI, GitHub Models, SiliconFlow)
+- **OpenCode** - Inline AI chat and code actions
+  - `<C-a>` - Ask AI (with selection auto-prefix)
+  - `<C-x>` - Execute AI action on selection  
+  - `go` / `goo` - Operator to feed code to OpenCode
+  - `<leader>oC` - Toggle OpenCode panel
+- **Fitten Code** - AI code completion
+- **MCP** - Model Context Protocol for file integration
+
 ## Limitations
 
 - Windows: slower startup; use lite mode (`g:lite_mode`) if needed
 - External tools required: Neovim 0.9+, Git, Node.js, language toolchains
 - See README.md Dependencies section for full list
+
+## Mode Toggle
+
+Switch between full and lite modes at runtime:
+```lua
+-- Toggle full mode (reload config)
+:lua vim.g.lite_mode = not vim.g.lite_mode; source $MYVIMRC
+```
