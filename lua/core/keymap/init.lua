@@ -194,6 +194,55 @@ function M.setup_keymap()
     Command('IcRename', function() vim.lsp.buf.rename() end, {})
     Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
     Command('IcDefine', function() vim.lsp.buf.definition() end, {})
+    Command('IcLspRestart', function()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+      if #clients == 0 then
+        vim.notify('No LSP server attached to current buffer', vim.log.levels.WARN)
+        return
+      end
+
+      local restarted = {}
+      local failed = {}
+
+      for _, client in ipairs(clients) do
+        local ok, err = pcall(function()
+          local config = client.config or vim.lsp.config[client.name]
+          if not config then
+            table.insert(failed, string.format('%s (no config)', client.name))
+            return
+          end
+
+          -- Stop client and wait for it to fully shut down
+          vim.lsp.stop_client(client.id, true)
+          vim.wait(2000, function()
+            local remaining = vim.lsp.get_clients({ bufnr = bufnr, id = client.id })
+            return #remaining == 0
+          end)
+
+          vim.lsp.start(config)
+          table.insert(restarted, client.name)
+        end)
+
+        if not ok then
+          table.insert(failed, string.format('%s (%s)', client.name, tostring(err)))
+        end
+      end
+
+      -- Report results with appropriate log level
+      if #restarted > 0 and #failed > 0 then
+        vim.notify(string.format('Restarted: %s\nFailed: %s',
+          table.concat(restarted, ', '), table.concat(failed, ', ')),
+          vim.log.levels.WARN)
+      elseif #failed > 0 then
+        vim.notify(string.format('Failed: %s', table.concat(failed, ', ')),
+          vim.log.levels.ERROR)
+      else
+        vim.notify(string.format('Restarted LSP servers: %s', table.concat(restarted, ', ')),
+          vim.log.levels.INFO)
+      end
+    end, { desc = 'Restart LSP servers for current buffer' })
     Command('IcDAP', function() require 'osv'.launch({ port = 8086 }) end, {})
     Command('IcDAPUIOpen', function() require('dapui').open() end, {})
     Command('IcDAPUIClose', function() require('dapui').close() end, {})
