@@ -3,6 +3,7 @@ return {
   -- enabled = false,
   opts = {
     log_level = "warn",
+    manual_mode = false,
   },
   -- dev = true,
   lazy = true,
