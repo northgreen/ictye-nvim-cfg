@@ -136,7 +136,7 @@ All keymaps are defined in `lua/core/keymap/init.lua`:
 
 - Windows: slower startup; use lite mode (`g:lite_mode`) if needed
 - External tools required: Neovim 0.9+, Git, Node.js, language toolchains
-- See README.md Dependencies section for full list
+- See DEVELOP.md Dependencies section for full list
 
 ## Mode Toggle
 

@@ -135,7 +135,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **Build**: CMake integration via `cmake-tools`
 
 ### C#
-- **LSP**: `csharp-ls`, `omnisharp`, `roslyn`, `fsautocomplete`
+- **LSP**: `csharp-ls`, `omnisharp`, `roslyn`
 - **Features**: IntelliSense, navigate-to, rename, extract method
 - **DAP**: netcoredbg for .NET debugging
 - **Plugin**: `eazy-dotnet` for .NET project management
@@ -269,3 +269,9 @@ Productivity boosters and quality-of-life improvements:
 - **Project Toolchain**: Per-project tool and LSP configuration management
 - **Rest Client**: HTTP request testing from within Neovim
 - **Firenvim**: Turn your browser's text areas into Neovim buffers
+
+## See Also
+
+- [README.md](./README.md) - Installation guide and quick reference
+- [DEVELOP.md](./DEVELOP.md) - Development guide and configuration structure
+

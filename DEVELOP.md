@@ -243,6 +243,8 @@ This section walks through common extension tasks with practical guidance.
 
 All keymaps are defined under `lua/core/keymap/`. Use `<leader>?` to see buffer-local keymaps at any time.
 
+> **Note**: This table covers the most commonly used keymaps. Use `<leader>?` in Neovim to see all buffer-local keymaps (which-key popup), or review `lua/core/keymap/init.lua` for the complete list.
+
 ### Navigation & Files
 
 | Key | Action |
