@@ -1,0 +1,162 @@
+# 01 Quickstart: From Installation to Your First Edit *quickstart*
+
+Welcome to ictye-nvim-cfg! This tutorial walks you through your
+first launch, introduces the interface, and teaches the most
+essential operations. It takes about 10 minutes to read.
+
+## 1. Launch Modes *launch-modes*
+
+After installation, simply type `nvim` in your terminal to start in
+**Full Mode** — all plugins, LSP servers, and AI tools are loaded.
+
+If you just need to quickly edit a file without waiting for all
+plugins to load, use **Lite Mode**:
+
+~~~bash
+nvim --cmd "let g:lite_mode=v:true"
+~~~
+
+Lite Mode loads only the essential plugins (basic editing, syntax
+highlighting, file tree) for a noticeably faster startup. Both modes
+share the same configuration files, so switching between them is
+seamless.
+
+## 2. Understanding the Interface *interface*
+
+Once Neovim starts, you'll see several key areas:
+
+- **Status line** (lualine) at the bottom — shows the current
+  filename, Git branch, cursor position, and LSP status
+- **Tab bar** (bufferline) at the top — lists all open buffers with
+  the current file highlighted
+- **Sidebars** (edgy) on the left or right — contextually show the
+  outline, terminal, or debug panel
+
+NOTE: The interface may look sparse at first — don't worry. Once you
+open a few files, the tab bar and status indicators will fill in.
+
+## 3. The First Habit: Exiting Insert Mode *exit-insert*
+
+Press `jj` (two quick presses of `j`) to exit insert mode and return
+to normal mode. This is the single most important habit in this
+configuration — it's faster than reaching for Escape and keeps your
+fingers on home row.
+
+~~~
+Press i to enter insert mode → type some text → press jj to return
+to normal mode
+~~~
+
+## 4. Opening Files *opening-files*
+
+Press `<C-x>f` (Ctrl+x then f) to open Telescope file search. Start
+typing part of the filename and results filter in real time — this is
+your go-to for opening files.
+
+If you prefer browsing the directory tree, press `<C-x><C-f>` to open
+mini.files, a tree-based file manager. Navigate with `h`/`j`/`k`/`l`
+and press Enter to open a file.
+
+TIP: `<C-x>` is this configuration's "command prefix" — many features
+start with this key combination.
+
+## 5. QuickMenu *quickmenu*
+
+Press `<F5>` or `<C-x>q` to open the QuickMenu. This is a multi-
+purpose menu with:
+
+- **Search** — find files, text, or symbols
+- **Git** — Git operations
+- **Debug** — debugging features
+- **Tasks** — run background tasks
+- **Run** — execute commands quickly
+
+Navigate with arrow keys or `j`/`k`, then press Enter to confirm.
+Try it out — it covers most of your daily operations.
+
+## 6. Closing the Current File *close-file*
+
+Press `<leader>q` (Space then q) to close the current buffer. This
+command switches to the previous buffer then closes the current file,
+so Neovim won't exit unexpectedly.
+
+## 7. Previewing Images *image-preview*
+
+When your cursor is on an image file path, press `gf` to preview it
+in a floating window (Snacks image hover). Common image formats are
+supported — handy for inspecting resource files within your project.
+
+## 8. Discovering Keybindings *discover-keys*
+
+- Press `<leader>?` (Space then ?) to open **which-key** — a popup
+  window showing all available keybindings for the current mode
+- Type `:help` to browse Neovim's built-in documentation
+
+IMPORTANT: which-key is your best learning tool — if you can't
+remember a binding, press `<leader>?` and look.
+
+## 9. Common Diagnostic Commands *diagnostics*
+
+These few commands are enough to get started:
+
+- `:Lazy`: Open the plugin manager — check status, update, inspect
+  load times
+- `:Mason`: Install LSP servers, formatters, and DAP debuggers
+- `:checkhealth`: Full diagnostics of your Neovim environment and
+  config health
+- `:LspInfo`: Check LSP server status for the current buffer
+
+To install LSP support for a new language: `:MasonInstall
+<server-name>` (e.g. `:MasonInstall rust-analyzer`).
+
+## 10. Editing Configuration *edit-config*
+
+Type `:ConfigEdit nvim` to quickly open the core configuration file.
+This is the fastest way to adjust settings or add plugins when you
+need to customize something.
+
+## 11. Interactive Exercises *exercises*
+
+Practice what you've learned with these exercises. Follow the
+instructions for each one.
+
+### Exercise 1: Using jj to Exit Insert Mode *ex-jj*
+
+1. Press `i` to enter insert mode.
+2. Type some text (e.g. "hello") into the line below.
+3. Press `jj` to exit insert mode.
+
+✗ Press i, type "hello" on this line, then press jj
+
+### Exercise 2: Opening a File with Telescope *ex-telescope*
+
+1. Press `<C-x>f` to open Telescope file search.
+2. Type part of a filename to filter results.
+3. Select a file with `<Enter>` to open it.
+4. Press `<leader>q` to close the buffer.
+
+✗ Press <C-x>f, search for a file, open it, then close it
+
+### Exercise 3: Switching to Next Buffer *ex-buffer*
+
+1. If multiple files are open, press `<S-l>` (Shift+l) to switch to
+   the next buffer.
+2. Press `<S-h>` (Shift+h) to switch to the previous buffer.
+
+✗ Open two files, then switch between them with <S-h> and <S-l>
+
+## 12. Summary *summary*
+
+You've learned how to:
+
+- ✅ Launch in Full Mode or Lite Mode
+- ✅ Use `jj` to exit insert mode
+- ✅ Open files with `<C-x>f` and browse directories with
+  `<C-x><C-f>`
+- ✅ Use QuickMenu and which-key for discovery
+- ✅ Close buffers and preview images
+- ✅ Run diagnostic commands and edit configuration
+
+Next, try **Tutorial 02: File Navigation and Project Management** to
+dive deeper into file trees, fuzzy search, buffer management, and
+sessions.

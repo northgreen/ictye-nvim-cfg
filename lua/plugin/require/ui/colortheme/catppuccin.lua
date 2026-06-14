@@ -1,9 +1,9 @@
 return {
-    'catppuccin/nvim',
-	-- transparent_background = true,
-    name = 'catppuccin',
-    priority = 1000,
-	opts = {
-		flavour = 'frappe',
-	},
+  'catppuccin/nvim',
+  name = 'catppuccin',
+  priority = 1000,
+  opts = {
+    transparent_background = vim.g.started_by_firenvim,
+    flavour = 'frappe',
+  },
 }

@@ -1,0 +1,187 @@
+# 07 — AI-Assisted Development *ai-tutorial*
+
+This tutorial covers the AI integration tools in this config-
+uration: OpenCode for inline AI chat and code actions, Avante
+for multi-provider conversations, Fitten Code for completions,
+and MCP for file-aware tooling.
+
+---
+
+## OpenCode Overview *opencode-overview*
+
+OpenCode is the primary AI assistant in this setup. It runs
+inline inside Neovim — no need to switch windows or copy-
+paste code. You interact with AI through chat bubbles and
+operator-based code actions.
+
+- **Purpose** — Chat with AI, feed it code, get suggestions
+  back
+- **Interface** — Inline chat bubbles + side panel
+- **Provider** — Configurable (default: your AI backend)
+
+---
+
+## Basic Usage: Chat with AI *basic-usage*
+
+Press `<C-a>` in normal mode to open an OpenCode chat bubble.
+The current file is sent as context automatically. Type your
+question or instruction and press Enter. AI responds inline
+with code suggestions, explanations, or refactoring.
+
+- `<C-a>` (Normal mode) — Open AI chat bubble (current file
+  as context)
+
+**Example**: Open a Python file and press `<C-a>`, then type
+"Add error handling for file operations" — AI will analyze
+the current file and generate the suggested code.
+
+---
+
+## Selection Mode: Context from Selected Code *selection-mode*
+
+Select code visually and press `<C-a>` — the selection
+becomes the AI's context automatically. This is useful when
+you only want AI to focus on a specific function or block.
+
+- `<C-a>` (Visual mode) — Open AI chat with selected code as
+  context
+
+**Example**: Select a slow loop, press `<C-a>`, type "Optimize
+this" — AI sees only the selected code and suggests improve-
+ments.
+
+---
+
+## Operator Mode: `go` and `goo` *operator-mode*
+
+The `go` operator feeds a motion-defined range to OpenCode.
+Think of it like `y` (yank) but for AI — you choose what to
+send via motions.
+
+- `go` (Normal/Visual mode) — Add motion-defined range to
+  OpenCode
+- `goo` (Normal mode) — Add current line to OpenCode (line
+  operator)
+
+**Practical combinations with `go`**:
+
+- `goiw` — The current word
+- `goap` — The current paragraph
+- `goi(` — The content inside parentheses
+- `goG` — Everything from cursor to end of file
+- `go%` — The current brace-delimited block
+
+After sending, the AI chat bubble opens automatically so you
+can ask your question.
+
+---
+
+## Panel Operations *panel-operations*
+
+OpenCode has a side panel for reviewing conversation history.
+
+- `<leader>oC` (Normal/Terminal mode) — Toggle OpenCode panel
+- `<S-C-u>` (Normal mode) — Scroll up in OpenCode panel
+- `<S-C-d>` (Normal mode) — Scroll down in OpenCode panel
+
+Use the panel to revisit past AI conversations, review
+suggestions you dismissed earlier, or scroll through long
+responses.
+
+---
+
+## Avante: Multi-Provider AI *avante*
+
+This configuration also includes **Avante.nvim**, which
+supports multiple AI providers simultaneously.
+
+- **OpenAI (GPT-4o)** — General coding assistance
+- **GitHub Models** — Free tier access via GitHub Copilot
+- **SiliconFlow** — Alternative Chinese-friendly provider
+
+To use Avante, run:
+
+- `:AvanteAsk` — Ask a question in Avante chat
+- `:AvanteEdit` — Edit selected code with AI
+- `:AvanteToggle` — Toggle Avante panel
+
+**When to use Avante vs OpenCode**: OpenCode is lighter and
+great for quick inline queries. Avante is better when you
+want persistent conversations with provider choice.
+
+---
+
+## Fitten Code Completions *fitten-code*
+
+**Fitten Code** provides AI-powered code completions that
+activate automatically as you type. Unlike OpenCode (which
+you invoke explicitly), Fitten works silently in the back-
+ground:
+
+- **Inline completions** — Ghost text suggestions as you
+  type
+- **Auto-activation** — No keybinding needed — completions
+  appear automatically
+- **Acceptance** — Press `<Tab>` to accept the suggestion
+
+No configuration is needed — once installed, it works out of
+the box.
+
+---
+
+## MCP Integration *mcp*
+
+Model Context Protocol (MCP) bridges AI with external tools
+and the filesystem. This allows AI to read files, search
+content, and interact with your project in a controlled way.
+
+- **File reading** — AI can read specific files you reference
+- **File search** — AI can grep/search project files
+- **Tool execution** — AI can invoke approved external tools
+
+MCP is configured centrally. You interact with it through
+OpenCode and Avante automatically.
+
+---
+
+## Usage Tips *usage-tips*
+
+**Choosing the right tool**:
+
+- **OpenCode (`<C-a>`)** — Quick inline queries, code actions,
+  operator-driven context
+- **Avante (`:AvanteAsk`)** — Multi-turn conversations,
+  provider switching
+- **Fitten Code** — Passive completions while typing
+- **MCP** — When AI needs to read/search files beyond visible
+  code
+
+**Writing effective prompts**:
+
+- Be specific: "Refactor this function to use early returns"
+  not "Make this better"
+- Include desired output format: "Return the code as a diff"
+  or "Explain in bullet points"
+- Use operator mode (`go`) to precisely scope what AI sees
+  — less noise = better answers
+- Combine with `<C-a>` selection for focused questions on
+  specific blocks
+
+---
+
+## Summary *summary*
+
+You now have four AI tools integrated into your editor:
+
+1. **OpenCode** — Inline chat, operator-driven, `<C-a>` to
+   ask, `go` to feed context
+2. **Avante** — Multi-provider conversations for persistent
+   sessions
+3. **Fitten Code** — Silent background completions while you
+   type
+4. **MCP** — File-aware AI tooling for deeper project context
+
+Start with `<C-a>` for quick questions, and graduate to
+Avante for longer sessions. The operator mode (`go` / `goo`)
+is the most precise way to feed code to AI — practice
+combining it with text objects.

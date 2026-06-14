@@ -2,7 +2,7 @@
 
 return {
   require 'plugin.require.ui.colortheme.catppuccin',                       -- Catppuccin主题: 柔和 pastel 配色的 Neovim 主题
-  require 'plugin.require.ui.nvim_tree',                                   -- 文件浏览器: 左侧文件树导航
+  -- require 'plugin.require.ui.nvim_tree',                                   -- 文件浏览器: 左侧文件树导航
   require 'plugin.require.ui.indent_blankline',                            -- 缩进线: 显示代码缩进对齐线
   require 'plugin.require.tool.vcs.git.gitsigns',                          -- Git状态: 行内Git提示和操作
   require 'plugin.require.language.language_tool.nvim_dap',                -- DAP调试: Neovim内置调试协议支持
@@ -13,7 +13,7 @@ return {
   require 'plugin.require.language.language_require.rust.rustaceanvim',    -- Rust支持: Rust语言服务器和工具链
   require 'plugin.require.editor.which_key',                               -- 快捷键提示: 菜单式快捷键提示
   require 'plugin.require.tool.vcs.git.lazygit',                           -- LazyGit: TUI Git客户端
-  require 'plugin.require.tool.floaterm',                                  -- 浮动终端: 悬浮终端窗口
+  -- require 'plugin.require.tool.floaterm',                              -- 浮动终端: 悬浮终端窗口
   require 'plugin.require.tool.luapad',                                    -- Lua沙盒: 实时Lua代码执行
   require 'plugin.require.tool.markdown_preview',                          -- Markdown预览: 实时预览Markdown
   -- require 'plugin.require.language.language_tool.nvim_cmp', -- 代码补全: 已废弃,使用blink.cmp
@@ -43,7 +43,7 @@ return {
   require 'plugin.require.editor.trouble',                                 -- 问题列表: 诊断错误警告列表
   require 'plugin.require.tool.hydra',                                     -- Hydra: 多头映射
   require 'plugin.require.tool.im-select',                                 -- 输入法: 自动切换输入法
-  require 'plugin.require.tool.ai.avante',                                 -- Avante: AI编程助手
+  -- require 'plugin.require.tool.ai.avante',                                 -- Avante: AI编程助手
   require 'lua.plugin.require.editor.project_toolchain',                   -- 项目工具链: 项目级工具配置
   require 'plugin.require.language.language_tool.ostf_vimkind',            -- VimKind: Neovim开发辅助
   require 'plugin.require.editor.render_markdown',                         -- Markdown渲染: Markdown实时渲染
@@ -59,13 +59,13 @@ return {
   require 'plugin.require.tool.undotree',                                  -- 撤销树: 可视化撤销历史
   require 'plugin.require.editor.mininvim',                                -- Minivim: Neovim配置
   -- require 'plugin.require.editor.orgmode', -- Org模式: 已禁用
-  require 'plugin.require.editor.neorg',                                   -- Neorg: Neovim组织工具
-  require 'plugin.require.tool.yazi',                                      -- Yazi: 终端文件管理器
+  -- require 'plugin.require.editor.neorg',                                   -- Neorg: Neovim组织工具
+  -- require 'plugin.require.tool.yazi',                                      -- Yazi: 终端文件管理器
   require 'plugin.require.ui.flash',                                       -- Flash: 快速跳转搜索
   require 'plugin.require.ui.smear-cursor',                                -- 鼠标光标: 跟随鼠标位置
   require 'plugin.require.ui.vim-smoothie',                                -- 平滑滚动: Vim滚动增强
   require 'plugin.require.language.language_require.sonicpi',              -- Sonic Pi: Sonic Pi语言支持
-  require 'plugin.require.tool.carbon-now',                                -- Carbon: 代码截图
+  -- require 'plugin.require.tool.carbon-now',                                -- Carbon: 代码截图
   require 'plugin.require.tool.snacks',                                    -- Snacks: Neovim小工具集合
   require 'plugin.require.ui.neotree',                                     -- Neo-tree: 文件浏览器(新版)
   require 'plugin.require.ui.edgy',                                        -- Edgy: 侧边栏布局
@@ -77,7 +77,7 @@ return {
   require 'plugin.require.tool.oil',                                       -- Oil: 文件浏览器(纯文本)
   require 'plugin.require.language.language_tool.bink-cmp',                -- Blink.cmp: 现代代码补全
   require 'plugin.require.tool.vcs.jj',                                    -- Jujutsu: VCS版本控制
-  require 'plugin.require.tool.hardtime',                                  -- Hardtime: 强制使用正确快捷键
+  -- require 'plugin.require.tool.hardtime',                                  -- Hardtime: 强制使用正确快捷键
   require 'plugin.require.tool.obsidian',                                  -- Obsidian: Obsidian笔记集成
   require 'plugin.require.editor.fcitx5ui',                                -- Fcitx5 UI: 输入法状态显示
   require 'plugin.require.editor.fcitx5',                                  -- Fcitx5: 输入法控制
@@ -90,7 +90,7 @@ return {
   require 'plugin.require.language.language_require.typescript.ts_tool',   -- TypeScript工具
   -- require 'plugin.require.tool.ai.bink-mcp-avante', -- Avante MCP: 已禁用
   require 'plugin.require.tool.mark',                                      -- Mark: 书签标记
-  require 'plugin.require.editor.unity',
+  -- require 'plugin.require.editor.unity',
   require 'plugin.require.editor.vim-tmux-navigator',
   require 'plugin.require.editor.kitty-navigator',
   require 'plugin.require.tool.rest',
@@ -99,6 +99,9 @@ return {
   require 'plugin.require.tool.neogen',
   require 'plugin.require.tool.ai.minuet-ai',
   require 'plugin.require.tool.screenkey',
+  require 'plugin.require.tool.none-ls',
+  require 'plugin.require.language.language_require.common-lisp',
+  require 'plugin.require.tool.hotpot',
   --------others
   require 'plugin.require.tool.firenvim', -- Firenvim: 在浏览器中编辑
 }

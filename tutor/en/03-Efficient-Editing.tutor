@@ -1,0 +1,217 @@
+# 03 — Efficient Editing *efficient-editing*
+
+This tutorial covers the core editing enhancements in this
+configuration, designed to speed up your daily editing workflow
+significantly.
+
+---
+
+## Flash Jump *flash-jump*
+
+Traditional `f`/`t` motions require you to press a character, then
+use `;`/`,` to retarget. Flash replaces this with real-time
+label-based jumps:
+
+- `s` — Normal/Visual/Operator — Type a target character, get
+  auto-generated labels, jump instantly
+- `S` — Normal/Visual/Operator — Treesitter jump — move to function
+  names, class definitions, etc.
+- `r` — Operator — Remote Flash, jump across windows
+- `R` — Operator/Visual — Treesitter range search
+- `<C-s>` — Command-line — Toggle Flash search in cmdline mode
+
+When you press `s` followed by a character, Flash places short labels
+(usually two letters) on every occurrence of that character. Type the
+label to jump there directly — no more `f` then `;` repeatedly.
+
+TIP: Flash also works in operator-pending mode. For example, `ys`
+(from vim-surround) combined with Flash lets you visually scope a
+surround operation.
+
+---
+
+## Multicursor Editing *multicursor-editing*
+
+When you need to edit multiple locations simultaneously, multicursor
+mode is the most efficient tool:
+
+- `<up>` — Normal/Visual — Add cursor above
+- `<down>` — Normal/Visual — Add cursor below
+- `<leader><up>` — Normal/Visual — Skip candidate above
+- `<leader><down>` — Normal/Visual — Skip candidate below
+- `<leader>n` — Normal — Select next match and add cursor
+- `<leader>s` — Normal — Skip current match
+- `<leader>N` — Normal — Select previous match and add cursor
+- `<C-q>` — Normal/Visual — Toggle cursor manually
+
+Typical workflow: To rename all occurrences of `foo` to `bar`, place
+your cursor on the first `foo`, press `<leader>n` repeatedly to
+select each match, then execute `ciwbar<Esc>` to change all at once.
+
+---
+
+## Code Folding (UFO) *code-folding*
+
+UFO provides smarter code folding with support for both LSP ranges
+and Treesitter-based folding:
+
+- `zR` — Open all folds
+- `zM` — Close all folds
+- `zr` — Open folds incrementally
+- `zm` — Close folds incrementally
+- `K` — Peek fold content on a folded line; trigger LSP hover
+  otherwise
+
+Neovim's built-in `zc` (close fold) and `zo` (open fold) also work.
+`K` is especially useful: on a folded line it shows a preview of the
+collapsed content, while on normal code it triggers an LSP hover
+window with type information and documentation.
+
+---
+
+## Search & Replace *search-replace*
+
+- `<leader>fs` — Normal/Visual — Open rip-substitute interface
+
+Enter a search pattern (supports regex), then the replacement text.
+The interface shows a real-time preview of all matches and their
+replacements before you commit the change. This is much safer than
+`:%s/` for project-wide bulk replacements.
+
+---
+
+## Window Operations *window-operations*
+
+Hydra-based window management lets you perform multiple operations
+without repeating the prefix key:
+
+- `<C-w>c` + `h/j/k/l` — Activate navigation Hydra — `h`/`l` move
+  left/right, `j`/`k` up/down; press any other key to exit
+- `<C-w>W` + `h/j/k/l` — Activate resize Hydra — `h`/`l` adjust
+  width, `j`/`k` adjust height
+
+Once a Hydra is active, you can press direction keys repeatedly
+without repressing `<C-w>`. This makes window management much
+smoother than the traditional `Ctrl-w + arrow key` approach.
+
+---
+
+## Quick Newline Insertion *quick-newline*
+
+Insert blank lines without leaving normal mode:
+
+- `<CR>` — Insert a blank line below the current line (cursor stays
+  in place)
+- `<S-CR>` — Insert a blank line above the current line
+
+When you want to free up space around a block of code, move to the
+target line in normal mode and press `<CR>` or `<S-CR>`.
+
+---
+
+## Number Increment/Decrement *number-incdec*
+
+- `+` — Increment the number under the cursor
+- `-` — Decrement the number under the cursor
+
+Place your cursor on a number (e.g., the `5` in `count = 5`), press
+`+` to get `6`, or `-` to go back to `5`. The cursor only needs to be
+somewhere on the digit, not at the beginning.
+
+---
+
+## Undo Tree *undo-tree*
+
+Neovim's built-in undo history is linear, but undotree displays it as
+a branching tree:
+
+- `<C-x>u` — Toggle undotree
+- `<leader>u` — Same as above
+
+The undotree panel shows all your undo branches. You can jump back to
+any historical state, even if it was overwritten by subsequent edits.
+This is especially useful when you accidentally undo and then make
+more changes — you can still recover the intermediate state.
+
+---
+
+## Scenario: Refactoring Function Parameters *refactoring-scenario*
+
+Suppose you have this code:
+
+~~~python
+def process(a, b, c):
+    print(a)
+    print(b)
+    print(c)
+~~~
+
+And you want to rename the parameters to `x`, `y`, `z`:
+
+1. Press `S` then type `parameter` to jump to the function definition
+   (Treesitter)
+2. Press `zM` to fold everything, then `zr` to unfold to a
+   comfortable level
+3. Place cursor on `a`, press `<leader>n` three times to select all
+   three parameters
+4. Execute `cwx<Esc>` to rename all cursored instances to `x`
+5. Repeat for `b` → `y` and `c` → `z`
+6. Made a mistake? Press `<leader>u` to open undotree and recover
+
+---
+
+## Exercises *exercises*
+
+Try these exercises to practice what you've learned.
+
+### Exercise 1: Flash Jump
+
+Look at this line of text:
+
+~~~
+The quick brown fox jumps over the lazy dog.
+~~~
+
+Press `s` then the letter `o` to trigger Flash labels, then type the
+label shown on the `o` in `fox` to jump there.
+
+✗ Press `s` then `o` then the label on `fox`
+
+### Exercise 2: Multicursor
+
+Move to the word `foo` below and press `<leader>n` three times to
+select all three occurrences, then press `ciwbar<Esc>` to change them
+all to `bar`:
+
+~~~
+foo bar foo baz foo qux
+~~~
+
+✗ `<leader>n` x3 then `ciwbar<Esc>`
+
+### Exercise 3: Code Folding
+
+Place your cursor on the function below and press `zM` to close all
+folds, then press `zR` to open them again:
+
+~~~python
+def hello():
+    print("hello")
+    print("world")
+~~~
+
+✗ `zM` to close folds, then `zR` to open all folds
+
+---
+
+## Summary *summary*
+
+This tutorial covered the most frequently used editing enhancements
+in this configuration. Mastering them will noticeably improve your
+editing speed.
+
+What to learn next:
+- **Tutorial 04**: Git Workflow — handle all git operations from
+  within the editor
+- **Tutorial 05**: LSP & Code Intelligence — completions,
+  diagnostics, refactoring

@@ -13,7 +13,7 @@ local init_table = {
 }
 
 local function init()
-    require'mason-lspconfig'.setup()
+    -- require'mason-lspconfig'.setup()
     require('dapui').setup()
 
     require(t .. '.toolchain_init')

@@ -1,15 +1,13 @@
 --- fsautocomplete 配置 - 针对 Godot + F# 项目优化
 --- 解决 typechecking 卡死问题
 
-local util = require 'lspconfig.util'
-
 ---@type vim.lsp.Config
 return {
   -- 使用标准模式而非 adaptive 模式
   cmd = { 'fsautocomplete' },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
-    on_dir(util.root_pattern('*.fsproj', '*.sln', '.git')(fname))
+    on_dir(vim.fs.root('*.fsproj', '*.sln', '.git')(fname))
   end,
   filetypes = { 'fsharp' },
   init_options = {

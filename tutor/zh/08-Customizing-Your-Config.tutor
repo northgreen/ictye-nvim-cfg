@@ -1,0 +1,255 @@
+# 08 — 自定义配置 *customization-tutorial*
+
+本文教你如何修改此 Neovim 配置——更换主题、修改快捷键、
+添加或删除插件、调整 LSP 设置等。
+
+---
+
+## 配置结构概述 *config-structure*
+
+在动手修改之前，先了解关键文件的位置和作用：
+
+- `init.lua` — 入口点，引导 lazy.nvim，选择模式
+- `lua/plugin/init.lua` — lazy.nvim 的插件规格定义
+- `lua/plugin/require/require.lua` — 插件配置加载编排
+- `lua/core/keymap/init.lua` — 所有快捷键集中管理
+- `lua/core/lsp.lua` — LSP 服务器启用和全局设置
+- `lua/options/` — Neovim 编辑器选项（缩进、行号等）
+
+---
+
+## 更换主题 *changing-theme*
+
+此配置默认使用 **catppuccin** 主题。主题配置文件位于：
+
+~~~
+lua/plugin/require/ui/colortheme/catppuccin.lua
+~~~
+
+**切换不同变体**：
+
+打开配置文件，修改 `flavour` 选项：
+
+~~~lua
+-- 在 catppuccin.lua 中
+flavour = "latte",   -- 可选：latte, frappe, macchiato, mocha
+~~~
+
+**彻底替换主题**：
+
+1. 在 `lua/plugin/init.lua` 中添加新插件规格
+2. 在 `lua/plugin/require/ui/colortheme/` 下创建配置文件
+3. 从 `require.lua` 移除 catppuccin 配置
+4. 重启 Neovim 或运行 `:Lazy` 应用变更
+
+---
+
+## 修改快捷键 *modifying-keymaps*
+
+所有快捷键定义在 `lua/core/keymap/init.lua` 中，使用
+`vim.keymap.set()` 语法：
+
+~~~lua
+vim.keymap.set("n", "<leader>q", ":bdelete<CR>",
+  { desc = "关闭当前缓冲区" })
+~~~
+
+**示例**：将 `<leader>q` 从"关闭缓冲区"改为"退出 Neovim"：
+
+~~~lua
+-- 修改前
+vim.keymap.set("n", "<leader>q", ":bdelete<CR>",
+  { desc = "关闭当前缓冲区" })
+-- 修改后
+vim.keymap.set("n", "<leader>q", ":qa<CR>",
+  { desc = "退出 Neovim" })
+~~~
+
+**添加新快捷键**：直接添加一行 `vim.keymap.set()` 调用，
+遵循现有格式。注意指定模式（`n` 普通、`x` 可视、`i` 插
+入等）。
+
+---
+
+## 添加新插件 *adding-plugins*
+
+添加插件的标准三步流程：
+
+**第一步**：在 `lua/plugin/init.lua` 中添加 lazy.nvim 规
+格：
+
+~~~lua
+{
+  "author/plugin-name",
+  config = function()
+    require("plugin.require.tool.some-plugin")
+  end,
+  -- 可选：event, keys, cmd, dependencies 等
+}
+~~~
+
+**第二步**：在 `lua/plugin/require/` 下对应分类目录创建配
+置文件：
+
+~~~
+lua/plugin/require/tool/some-plugin.lua
+~~~
+
+例如创建简洁的配置：
+
+~~~lua
+return {
+  "author/plugin-name",
+  opts = {
+    -- 插件选项
+  },
+}
+~~~
+
+**第三步**：在 `lua/plugin/require/require.lua` 中添加
+require：
+
+~~~lua
+require("plugin.require.tool.some-plugin")
+~~~
+
+重启 Neovim 或运行 `:Lazy` 安装新插件。
+
+> **提示**：`require/` 目录下的文件名使用连字符：
+> `some-plugin.lua` 对应
+> `require("plugin.require.tool.some-plugin")`。
+
+---
+
+## 删除插件 *removing-plugins*
+
+反向执行三步流程：
+
+1. 从 `lua/plugin/init.lua` 移除插件规格
+2. 从 `lua/plugin/require/` 删除配置文件
+3. 从 `lua/plugin/require/require.lua` 移除 require 行
+
+然后运行 `:Lazy clean` 从磁盘清除未使用的插件。
+
+---
+
+## 调整编辑器选项 *editor-options*
+
+核心编辑器设置在 `lua/options/init.lua`。这里你可以修改：
+
+- **行号** — `vim.opt.number = true`：显示行号
+- **缩进宽度** — `vim.opt.tabstop = 4`：设置 Tab 为 4 个
+  空格
+- **相对行号** — `vim.opt.relativenumber = true`：显示相
+  对行号
+- **鼠标** — `vim.opt.mouse = "a"`：所有模式启用鼠标
+
+你也可以在 `lua/options/` 下为特定分类创建独立文件，然
+后在 `lua/options/init.lua` 中 require。
+
+---
+
+## 添加自定义命令 *custom-commands*
+
+使用 `vim.api.nvim_create_user_command()` 创建自己的命令：
+
+~~~lua
+vim.api.nvim_create_user_command("IcFormat", function()
+  vim.lsp.buf.format()
+end, { desc = "用 LSP 格式化当前缓冲区" })
+~~~
+
+将其添加到任意启动时运行的配置文件中。执行后运行
+`:IcFormat` 即可格式化代码。
+
+**示例**：创建切换相对行号的命令：
+
+~~~lua
+vim.api.nvim_create_user_command("RelNum", function()
+  vim.opt.relativenumber =
+    not vim.opt.relativenumber:get()
+end, { desc = "切换相对行号" })
+~~~
+
+---
+
+## 个性化 UI *personalizing-ui*
+
+**状态栏 (lualine)**：配置文件在
+`lua/plugin/require/ui/lualine.lua`。你可以更改主题、增
+删显示区域（文件名、git 分支、文件类型等）、调整组件顺
+序。
+
+~~~lua
+-- 在 lualine.lua 中修改主题：
+theme = "catppuccin",  -- 或 "auto"、"gruvbox" 等
+~~~
+
+**标签栏 (bufferline)**：配置文件在
+`lua/plugin/require/ui/bufferline.lua`。控制标签展示：显
+示/隐藏图标、截断长文件名、调整标签排序。
+
+**其他 UI 插件**：查看 `lua/plugin/require/ui/` 目录下的
+noice.nvim（命令行 UI）、dashboard（启动页）、edgy（边
+缘栏）等配置。
+
+---
+
+## 修改 LSP 配置 *lsp-config*
+
+语言特定的 LSP 设置在 `lsp/` 目录下。每种语言有自己的文
+件：
+
+~~~
+lsp/python.lua      ——→  pyright 配置
+lsp/typescript.lua  ——→  ts_ls 配置
+lsp/lua.lua         ——→  lua_ls 配置
+lsp/rust.lua        ——→  rust-analyzer 配置
+...
+~~~
+
+**示例**：为 TypeScript LSP 添加自动导入设置：
+
+~~~lua
+-- 在 lsp/typescript.lua 中
+settings = {
+  typescript = {
+    suggest = {
+      autoImports = true,
+    },
+  },
+},
+~~~
+
+全局 LSP 设置（所有服务器共享）在 `lua/core/lsp.lua` 中。
+
+---
+
+## 应用变更 *applying-changes*
+
+修改配置后：
+
+- **重载配置** — `:source $MYVIMRC`：修改了快捷键或选项
+  后快速生效
+- **重启 Neovim** — `:qa` 然后 `nvim`：添加或删除插件后
+- **Lazy UI** — `:Lazy`：安装、更新或清理插件
+- **健康检查** — `:checkhealth`：诊断变更后的问题
+
+> **建议**：做重大修改前先备份配置：
+> `cp -r ~/.config/nvim ~/.config/nvim.bak`
+
+---
+
+## 小结 *summary*
+
+推荐的自定义顺序：
+
+1. **主题**——选一个不伤眼的配色
+2. **快捷键**——把不顺手的地方改掉
+3. **编辑器选项**——缩进宽度、行号等基础设置
+4. **插件**——逐个添加，方便排查问题
+5. **LSP**——最后精细化调整各语言设置
+
+每一项修改都隔离在特定文件中——模块化结构让你可以随意定
+制而不破坏其他部分。如果出了问题，用 `:checkhealth` 诊
+断，用 `:Lazy` 查看插件状态。

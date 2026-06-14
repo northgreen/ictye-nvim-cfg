@@ -8,6 +8,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "nsidorenco/neotest-vstest"
   },
+  enable = false,
   config = function(_, _)
     require('neotest').setup({
       adapters = {

@@ -1,0 +1,276 @@
+# 08 — Customizing Your Config *customization-tutorial*
+
+This tutorial walks you through modifying this Neovim config-
+uration — changing themes, remapping keys, adding or removing
+plugins, tweaking LSP settings, and more.
+
+---
+
+## Configuration Structure Overview *config-structure*
+
+Before making changes, understand the key files you will be
+editing:
+
+- `init.lua` — Entry point, bootstraps lazy.nvim, selects
+  mode
+- `lua/plugin/init.lua` — Plugin specifications for
+  lazy.nvim
+- `lua/plugin/require/require.lua` — Plugin config loading
+  orchestration
+- `lua/core/keymap/init.lua` — All keymaps in one place
+- `lua/core/lsp.lua` — LSP server enablement and global
+  settings
+- `lua/options/` — Neovim editor options (tabs, line
+  numbers, etc.)
+
+---
+
+## Changing the Theme *changing-theme*
+
+This configuration uses **catppuccin** by default. The theme
+config is at:
+
+~~~
+lua/plugin/require/ui/colortheme/catppuccin.lua
+~~~
+
+**Switch to a different variant**:
+
+Open that file and change the `flavour` option:
+
+~~~lua
+-- In catppuccin.lua
+flavour = "latte",   -- options: latte, frappe, macchiato, mocha
+~~~
+
+**Replace the theme entirely**:
+
+1. Add a new plugin spec in `lua/plugin/init.lua`
+2. Create a config file under
+   `lua/plugin/require/ui/colortheme/`
+3. Remove the catppuccin config from `require.lua`
+4. Restart Neovim or run `:Lazy` to apply
+
+---
+
+## Modifying Keymaps *modifying-keymaps*
+
+All keymaps live in `lua/core/keymap/init.lua`. They use
+`vim.keymap.set()`:
+
+~~~lua
+vim.keymap.set("n", "<leader>q", ":bdelete<CR>",
+  { desc = "Close current buffer" })
+~~~
+
+**Example**: Change `<leader>q` from "close buffer" to "quit
+Neovim":
+
+~~~lua
+-- Before
+vim.keymap.set("n", "<leader>q", ":bdelete<CR>",
+  { desc = "Close current buffer" })
+-- After
+vim.keymap.set("n", "<leader>q", ":qa<CR>",
+  { desc = "Quit Neovim" })
+~~~
+
+**Add a new keymap**: Just add a new `vim.keymap.set()` call
+following the existing pattern. Remember to specify the mode
+(`n` for normal, `x` for visual, `i` for insert, etc.).
+
+---
+
+## Adding a New Plugin *adding-plugins*
+
+Adding a plugin follows a three-step flow:
+
+**Step 1**: Add the lazy.nvim spec in
+`lua/plugin/init.lua`:
+
+~~~lua
+{
+  "author/plugin-name",
+  config = function()
+    require("plugin.require.tool.some-plugin")
+  end,
+  -- optional: event, keys, cmd, dependencies, etc.
+}
+~~~
+
+**Step 2**: Create a config file in the appropriate category
+under `lua/plugin/require/`:
+
+~~~
+lua/plugin/require/tool/some-plugin.lua
+~~~
+
+For example, create a simple config:
+
+~~~lua
+return {
+  "author/plugin-name",
+  opts = {
+    -- plugin options here
+  },
+}
+~~~
+
+**Step 3**: Add the require in
+`lua/plugin/require/require.lua`:
+
+~~~lua
+require("plugin.require.tool.some-plugin")
+~~~
+
+Restart Neovim or run `:Lazy` to install the new plugin.
+
+> **Tip**: File naming in `require/` uses hyphens:
+> `some-plugin.lua` →
+> `require("plugin.require.tool.some-plugin")`.
+
+---
+
+## Removing a Plugin *removing-plugins*
+
+Reverse the three-step process:
+
+1. Remove the spec from `lua/plugin/init.lua`
+2. Delete the config file from `lua/plugin/require/`
+3. Remove the require line from
+   `lua/plugin/require/require.lua`
+
+Then run `:Lazy clean` to remove unused plugins from disk.
+
+---
+
+## Adjusting Editor Options *editor-options*
+
+Core editor settings are in `lua/options/init.lua`. This is
+where you change:
+
+- **Line numbers** — `vim.opt.number = true`: Show line
+  numbers
+- **Tab width** — `vim.opt.tabstop = 4`: Set tab to 4
+  spaces
+- **Relative numbers** — `vim.opt.relativenumber = true`:
+  Show relative line numbers
+- **Mouse** — `vim.opt.mouse = "a"`: Enable mouse in all
+  modes
+
+You can also create separate files under `lua/options/` for
+specific categories and require them from
+`lua/options/init.lua`.
+
+---
+
+## Adding Custom Commands *custom-commands*
+
+Create your own Neovim commands with
+`vim.api.nvim_create_user_command()`:
+
+~~~lua
+vim.api.nvim_create_user_command("Format", function()
+  vim.lsp.buf.format()
+end, { desc = "Format current buffer with LSP" })
+~~~
+
+Add this to any config file that runs on startup. After
+sourcing, run `:Format` to execute.
+
+**Example**: Create a command to toggle relative line numbers:
+
+~~~lua
+vim.api.nvim_create_user_command("RelNum", function()
+  vim.opt.relativenumber =
+    not vim.opt.relativenumber:get()
+end, { desc = "Toggle relative line numbers" })
+~~~
+
+---
+
+## Personalizing the UI *personalizing-ui*
+
+**Statusline (lualine)**: Config at
+`lua/plugin/require/ui/lualine.lua`. You can change the
+theme, add or remove sections (filename, git branch, file-
+type, etc.), and reorder components.
+
+~~~lua
+-- In lualine.lua, change theme:
+theme = "catppuccin",  -- or "auto", "gruvbox", etc.
+~~~
+
+**Bufferline tabs**: Config at
+`lua/plugin/require/ui/bufferline.lua`. Control tab appear-
+ance: show/hide icons, truncate long filenames, change tab
+ordering.
+
+**Other UI plugins**: Check `lua/plugin/require/ui/` for
+noice.nvim (command line UI), dashboard, and edgy (edge bar)
+configurations.
+
+---
+
+## Modifying LSP Configuration *lsp-config*
+
+Language-specific LSP settings are in the `lsp/` directory.
+Each language has its own file:
+
+~~~
+lsp/python.lua      ——→  pyright configuration
+lsp/typescript.lua  ——→  ts_ls configuration
+lsp/lua.lua         ——→  lua_ls configuration
+lsp/rust.lua        ——→  rust-analyzer configuration
+...
+~~~
+
+**Example**: Add auto-import setting for TypeScript LSP:
+
+~~~lua
+-- In lsp/typescript.lua
+settings = {
+  typescript = {
+    suggest = {
+      autoImports = true,
+    },
+  },
+},
+~~~
+
+Global LSP settings (shared across all servers) are in
+`lua/core/lsp.lua`.
+
+---
+
+## Applying Changes *applying-changes*
+
+After editing configuration files:
+
+- **Source config** — `:source $MYVIMRC`: Quick reload after
+  editing keymaps or options
+- **Restart Neovim** — `:qa` then `nvim`: After adding/
+  removing plugins
+- **Lazy UI** — `:Lazy`: Install, update, or clean plugins
+- **Check health** — `:checkhealth`: Diagnose issues after
+  changes
+
+> **Tip**: Before making major changes, back up your config
+> with `cp -r ~/.config/nvim ~/.config/nvim.bak`.
+
+---
+
+## Summary *summary*
+
+Recommended customization order for new users:
+
+1. **Theme** — Pick one that is easy on your eyes
+2. **Keymaps** — Remap anything that does not feel natural
+3. **Editor options** — Tab width, line numbers, etc.
+4. **Plugins** — Add one at a time to isolate issues
+5. **LSP** — Fine-tune per-language settings last
+
+Each change is isolated to a specific file — the modular
+structure means you can customize without breaking the rest.
+If something goes wrong, check `:checkhealth` and consult
+`:Lazy` for plugin status.

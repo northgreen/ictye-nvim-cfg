@@ -13,7 +13,7 @@
 ---
 --- `autocmd BufNewFile,BufRead *.fs,*.fsx,*.fsi set filetype=fsharp`
 
-local util = require 'lspconfig.util'
+local util = require 'util.lsp'
 
 ---@type vim.lsp.Config
 return {

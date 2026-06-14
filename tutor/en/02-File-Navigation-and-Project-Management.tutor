@@ -1,0 +1,175 @@
+# 02 File Navigation and Project Management *file-nav*
+
+Mastering file navigation is the first step toward an efficient
+editing workflow. This tutorial covers the full path — from directory
+browsing and fuzzy search to buffer management — for finding files
+in your project.
+
+## 1. File Tree (Neotree) *neotree*
+
+Press `<F4>` to toggle the Neotree file tree panel. This gives you a
+directory-structure view of your project, perfect for browsing and
+organizing files:
+
+- `j`/`k` to move up and down; Enter to open a file or expand a
+  directory
+- `?` to show Neotree help — there are many useful keybindings
+- Press `<F4>` again to close the panel
+
+TIP: Use the file tree when you roughly know where a file lives. If
+you know the filename but not the location, Telescope (next section)
+is faster.
+
+## 2. Fuzzy Search (Telescope) *telescope*
+
+Telescope is the universal search tool in this configuration:
+
+- `<C-f>`: Search files — filters by filename in real time
+- `<C-p>`: Open Telescope main menu — choose a search mode
+- `<C-x><C-b>` or `<C-c>`: Show buffer list — switch between already
+  open files
+
+Telescope opens a search box at the bottom of the window. Just start
+typing — it supports fuzzy matching, so a few letters of the
+filename is enough.
+
+NOTE: `<C-f>` is your daily driver for project files. `<C-x><C-b>`
+is great when you need to switch between already open files.
+
+## 3. mini.files File Manager *minifiles*
+
+Press `<C-x><C-f>` to open mini.files. Unlike Telescope's "search
+and select" model, mini.files lets you browse the directory tree:
+
+- Use `h`/`j`/`k`/`l` to move focus
+- Press Enter to open a file or enter a directory
+- Press `-` to go up one directory level
+- Supports file operations: copy, move, rename, delete
+
+**When to use it?** When you need to browse the directory structure,
+manage files (copy/move/rename), or you're not sure of the exact
+filename.
+
+TIP: `<C-x>f` (Pick mode) is best when you know the filename.
+`<C-x><C-f>` (mini.files) is best when you want to browse. They
+complement each other — use the right tool for the moment.
+
+## 4. Oil File Manager *oil*
+
+Press `<leader>O` (Space then capital O) to open Oil. Unlike
+mini.files, Oil presents a directory as a regular text buffer — you
+edit the file list like editing text:
+
+- Delete a file line → deletes the file
+- Rename a file line → renames the file
+- Add a new line → creates a new file
+
+This unique approach to file management is especially handy for batch
+operations.
+
+## 5. Buffer Management *buffers*
+
+In Neovim, a "buffer" is an open file. This config provides rich
+buffer management keybindings:
+
+- `<S-h>` / `<S-l>`: Switch to previous/next buffer
+- `[b` / `]b`: Cycle to previous/next buffer
+- `[B` / `]B`: Move current buffer one position left/right
+- `<leader>1`-`<leader>9`: Jump to buffer number 1-9
+- `<leader>bp`: Pin/unpin the current buffer
+- `<leader>bP`: Close all unpinned buffers
+- `<leader>br`: Close all buffers to the right
+- `<leader>bl`: Close all buffers to the left
+
+**Recommended workflow:** Use `<S-h>`/`<S-l>` to flip through files.
+Pin important buffers (`<leader>bp`), then close everything else in
+one go (`<leader>bP`) when you need to clean up.
+
+## 6. Bufferline Enhancements *bufferline*
+
+Bufferline shows all open buffers as tabs at the top of the window,
+with extra navigation options:
+
+- `<leader>-` / `<leader>=`: Cycle to previous/next buffer
+- `<C-,>` / `<C-.>`: Move buffer one position left/right
+
+The tab bar also shows modification state (`[+]` means unsaved
+changes) and Git status indicators.
+
+## 7. Window Operations *windows*
+
+When you have multiple splits, navigate and resize windows quickly:
+
+**Window navigation:** Press `<C-w>c` then `h`/`j`/`k`/`l` to move
+to left/down/up/right window. This uses Hydra mode — press `<C-w>c`
+once, then chain directional keys without repeating the prefix.
+
+**Window resizing:** Press `<C-w>W` then `h`/`j`/`k`/`l` to resize
+windows (`h` decreases width, `l` increases width, `j` increases
+height, `k` decreases height).
+
+NOTE: Hydra lets you chain multiple operations after a single prefix
+key — press Escape to exit the Hydra. Perfect for heavy window
+switching sessions.
+
+## 8. Floating Terminal *terminal*
+
+Run shell commands inside Neovim without switching to an external
+terminal:
+
+- `<C-x>ft`: Toggle floating terminal
+- `<leader>lj`: Open jjui (Jujutsu version control interface)
+
+The floating terminal opens in the center of the current window.
+After running commands, press `jj` to exit insert mode, then
+`<C-x>ft` to close it.
+
+TIP: This config uses Jujutsu (`jj`) for version control. Press
+`<leader>lj` to open the jjui graphical interface — more intuitive
+than the command line for many operations.
+
+## 9. Outline (Symbol Outline) *outline*
+
+Press `<F3>` to toggle the symbol outline panel. It parses functions,
+classes, variables, and other symbols in the current file, displayed
+in a hierarchical view.
+
+- Use `j`/`k` to select a symbol
+- Press Enter to jump to its definition
+- Press `<F3>` again to close
+
+Great for quickly grasping a large file's structure or locating a
+specific function in a long file.
+
+## 10. Session Management *sessions*
+
+Sessions save and restore your workspace state — open files, window
+layout, cursor positions, and more:
+
+- `<leader>ss`: Save the current session (prompt for a name)
+- `<leader>sl`: Load a saved session
+- `<leader>sd`: Delete a session you no longer need
+
+**Recommended workflow:** Press `<leader>ss` before leaving work,
+then `<leader>sl` the next morning to restore everything instantly —
+every file is right where you left it.
+
+## 11. Summary: Daily Best-Practice Flow *summary*
+
+Here's a natural workflow after opening a project:
+
+~~~
+1. Open project      nvim .
+2. Browse files      <F4> Neotree or <C-x><C-f> mini.files
+3. Search files      <C-f> Telescope, type filename
+4. Switch files      <S-h> / <S-l> back and forth
+5. Arrange layout    <C-w>c + h/j/k/l to navigate windows
+6. Run commands      <C-x>ft floating terminal
+7. View structure    <F3> Outline
+8. Save state        <leader>ss save session
+~~~
+
+With these skills, you can navigate and manage project files
+efficiently. Next, try **Tutorial 03: Efficient Editing** to learn
+Flash jumping, multi-cursor editing, and text manipulation
+techniques.

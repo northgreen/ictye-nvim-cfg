@@ -2,107 +2,32 @@
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
-vim.api.nvim_create_autocmd("VimEnter", {
-    callback = function()
-        -- stop gc at bootup
-        collectgarbage("stop")
-
-        -- set the gc
-        vim.defer_fn(function()
-            collectgarbage("setpause", 180)
-            collectgarbage("setstepmul", 400)
-            collectgarbage("restart")
-            collectgarbage("collect")
-        end, 5000)
-    end,
-    once = true,
-})
-
--- 针对大型文件打开的优化
-vim.api.nvim_create_autocmd("BufRead", {
-    callback = function(args)
-        local line_count = vim.api.nvim_buf_line_count(args.buf)
-        if line_count > 5000 then -- 大型文件
-            collectgarbage("stop") -- 暂停GC防止卡顿
-
-            -- 文件加载完成后恢复GC
-            vim.defer_fn(function()
-                collectgarbage("restart")
-                collectgarbage("collect")
-            end, 1000)
-        end
-    end,
-})
+local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
 -- exit when ori mod
 if vim.g.ori_mode then
-    return
+  return
 end
-
-do
-    --- Config paths
-    local data_dir = vim.fn.stdpath('data') --[[@as string]]
-    local cfg_dir = vim.fn.stdpath('config') --[[@as string]]
-
-    local lazypath = vim.fs.joinpath(data_dir, "lazy", "lazy.nvim")
-    local bin_path = vim.fs.joinpath(cfg_dir, "bin", "windows")
-
-    local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
-
-    local nvim_data_path = vim.fn.stdpath('data')
-    local mason_bin_path = nvim_data_path .. '/mason/bin'
-
-    local current_path = vim.env.PATH
-
-    -- lua path
-    local lua_path = {
-        vim.fs.joinpath(cfg_dir, "?.lua"),
-        vim.fs.joinpath(cfg_dir, "lua", "?.lua"),
-        vim.fs.joinpath(cfg_dir, "?", "init.lua"),
-    }
-
-    -- module path
-    local lua_cpath = {
-        vim.fs.joinpath(cfg_dir, "bin", (is_windows and "windows" or "linux"), (is_windows and "?.dll" or "?.so"))
-    }
-
-
-    package.path = package.path .. ";" .. table.concat(lua_path, ";")
-    package.cpath = package.cpath .. ";" .. table.concat(lua_cpath, ";")
-
-    vim.opt.rtp:prepend(lazypath)
-
-
-    if not string.find(current_path, mason_bin_path, 1, true) then
-        vim.env.PATH = mason_bin_path .. (is_windows and ";" or ":") .. current_path
-    end
-
-    local _path = vim.env.PATH
-    vim.env.PATH = bin_path .. (is_windows and ";" or ":") .. _path
-    vim.env.PATH = "~/.dotnet/tools" .. (is_windows and ";" or ":") .. _path
-
-end
-
-local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
 ploadmodule 'paths'
+ploadmodule 'options'
+
+if not options.env.required:chack() then
+  print('Some required binarray is not found,and something will not work properly,please chack it')
+end
 
 -- init environment
 local ok, err = pcall(require, 'env_init')
 if not ok then
-    print('Error loading env_init,this config may not work properly: ' .. err)
+  print('Error loading env_init,this config may not work properly: ' .. err)
 end
 
-ploadmodule 'options'
 ploadmodule 'core.vimpreconfig'
 
-if not options.env.required:chack() then
-    print('Some required binarray is not found,and something will not work properly,please chack it')
-end
 
 if vim.g.lite_mode then
-    ploadmodule 'lite_init'
+  ploadmodule 'lite_init'
 else
-    ploadmodule 'full_init'
+  ploadmodule 'full_init'
 end
 

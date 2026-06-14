@@ -14,7 +14,7 @@
 ---
 ---
 
-local util = require 'lspconfig.util'
+local util = require 'util.lsp'
 
 ---@type vim.lsp.Config
 return {

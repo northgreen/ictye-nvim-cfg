@@ -1,0 +1,145 @@
+# 04 — Git Workflow *git-workflow*
+
+This configuration provides a complete Git toolchain, allowing you to
+handle everything from reviewing changes to pushing — all without
+leaving the editor.
+
+---
+
+## LazyGit *lazygit*
+
+LazyGit is a terminal-based graphical Git client that runs either as
+a side panel or full-screen:
+
+- `<leader>lg` — Open LazyGit
+
+The LazyGit interface is divided into several areas:
+- **Left panel**: Changed files (modified/untracked/staged)
+- **Center panel**: File diff preview
+- **Right panel**: Commit history / branch graph
+- **Bottom bar**: Common action keybindings
+
+Basic operations: press `<space>` to stage a file, `c` to enter a
+commit message and commit, `P` to push, `b` to switch branches. When
+you encounter conflicts, LazyGit highlights conflicted files and
+provides merge tools.
+
+TIP: Press `?` inside LazyGit to view the full keybinding reference.
+
+---
+
+## Gitsigns *gitsigns*
+
+Gitsigns displays Git changes in the editor's sign column in real
+time:
+
+- View inline blame — `:Gitsigns blame_line` or
+  `:Gitsigns toggle_blame`
+- Navigate hunks — `]c` (next hunk), `[c` (previous hunk)
+- Stage current line/hunk — `:Gitsigns stage_hunk`
+- Undo stage for current line/hunk — `:Gitsigns undo_stage_hunk`
+
+Gitsigns works directly in the buffer — no page refresh needed.
+Change indicators include:
+- `│` red/green/blue bars for deletions, additions, and modifications
+- Additional symbols next to line numbers showing the change type
+
+---
+
+## Telescope Git Integration *telescope-git*
+
+Telescope provides several Git-related search sources:
+
+- `:Telescope git_status` — View all changed files in the working
+  tree; press Enter to see the diff
+- `:Telescope git_commits` — Browse commit history; select to view
+  commit details
+
+These commands let you browse files and trace history without leaving
+the Telescope interface.
+
+---
+
+## GitHub Integration *github-integration*
+
+This configuration integrates with GitHub through the Octo plugin:
+
+- `<leader>gi` — View opened Issues
+- `<leader>gI` — View all Issues (including closed)
+- `<leader>gp` — View opened Pull Requests
+- `<leader>gP` — View all Pull Requests (including closed)
+
+Issues and PR lists appear in a Telescope window. Once selected, you
+can view details, reply to comments, and manage items directly in the
+editor.
+
+---
+
+## Jujutsu (jj) Support *jujutsu-support*
+
+This configuration supports Jujutsu (jj) coexisting with git. jj is
+a modern version control system that is compatible with git
+repositories:
+
+- `<leader>lj` — Open jjui terminal interface
+
+jj works with changes rather than commits. You can use both `jj` and
+`git` commands on the same repository. This configuration does not
+enforce jj usage, but provides out-of-the-box support if you choose
+to use it.
+
+---
+
+## Git in QuickMenu *git-quickmenu*
+
+Press `<F5>` to open QuickMenu — there's a dedicated Git section with
+common operations. This is a good fallback when you can't remember
+the exact keybinding.
+
+---
+
+## Trouble and Git *trouble-git*
+
+The Trouble plugin can display results of Git operations (such as
+conflicted files or lint errors) in location lists or quickfix lists:
+
+- `<leader>xL` — Open location list
+- `<leader>xQ` — Open quickfix list
+
+Combined with Gitsigns hunk navigation, Trouble gives you a
+centralized view of all outstanding issues.
+
+---
+
+## Workflow: A Complete Commit Cycle *commit-workflow*
+
+Here's a typical workflow from edit to push:
+
+1. Make changes to your code
+2. Press `<leader>lg` to open LazyGit and see the change overview
+3. Press `<space>` to stage the files you want
+4. Press `c` to enter a commit message and commit locally
+5. Press `P` to push to the remote
+6. Press `q` to close LazyGit after pushing
+7. (Optional) Press `<leader>gp` to create a Pull Request on GitHub
+
+If you prefer Telescope over LazyGit:
+
+1. Run `:Telescope git_status` to see changes
+2. Press Enter on a changed file to view its diff
+3. Switch to a terminal or LazyGit to stage and commit
+
+---
+
+## Summary *summary*
+
+This config's Git integration covers the full pipeline: reviewing
+changes, staging and committing, browsing history, and collaborating
+on GitHub. LazyGit excels at visual operations, while Telescope is
+great for quick searching and browsing — they complement each other.
+
+What to learn next:
+- **Tutorial 05**: LSP & Code Intelligence — write code with fewer
+  errors and faster iteration
+- **Tutorial 07**: AI-Assisted Development — use AI assistants from
+  within the editor

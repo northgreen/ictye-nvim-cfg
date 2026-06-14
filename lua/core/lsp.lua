@@ -15,10 +15,7 @@ Enable('jsonls')
 Enable('solargraph')
 -- Enable('cspell_ls')
 Enable('pyright')
--- Enable('omnisharp')
 Enable('roslyn')
--- local ionide_config = require("ionide").setup({})
--- vim.lsp.config("fsautocomplete", ionide_config)
 Enable('fsautocomplete') -- already enabled by default
 -- Enable('fsharp_language_server')
 Enable('clangd')
@@ -32,14 +29,17 @@ Enable("gdscript")
 -- Enable("gdshader_lsp") -- not very eazy to use......
 Enable("cl-lsp")
 Enable("hyprls")
--- Enable("ts_ls")
+Enable("ts_ls")
+
 Enable("vtsls")
 Enable("vue_ls")
+
 Enable("emmet_ls")
 -- Enable("emmet-language-server")
 Enable("gopls")
 Enable("cssls")
-
+-- Enable("fennel_language_server")
+Enable("fennel_ls")
 
 -- The lsp below is not here, it config with the plugin
 -- Rust

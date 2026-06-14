@@ -82,6 +82,7 @@ return {
     'javascriptreact',
     'typescript',
     'typescriptreact',
+    'vue'
   },
   root_dir = function(bufnr, on_dir)
     -- The project root is where the LSP can be started from
@@ -187,4 +188,5 @@ return {
       end)
     end, { desc = 'Go to source definition' })
   end,
+  capabilities = require("global.language.capabilities")(),
 }

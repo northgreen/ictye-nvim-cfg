@@ -1,0 +1,210 @@
+# 10 深入架构与扩展
+
+## 1. 整体架构 *architecture*
+
+此配置采用分层设计，每一层职责明确：
+
+~~~text
+init.lua (入口)
+  │
+  ├── env_init.lua         ← 环境检测（检查必需工具）
+  │
+  ├── 判断 g:lite_mode
+  │     ├── true  → lite_init.lua
+  │     └── false → full_init.lua
+  │
+  ├── lua/core/            ← 核心设置
+  │     ├── vimpreconfig.lua  预配置
+  │     ├── vimconfig.lua     通用配置
+  │     ├── lsp.lua           LSP 注册与 attach
+  │     ├── keymap/           按键映射系统
+  │     └── lite_init.lua     Lite 模式核心设置
+  │
+  ├── lua/options/         ← Neovim 全局选项
+  │
+  ├── lua/plugin/          ← 插件规格 (lazy.nvim)
+  │     └── require/          ← 按分类加载配置
+  │           ├── ui/         视觉插件
+  │           ├── tool/       工具集成
+  │           ├── editor/     编辑增强
+  │           └── language/   语言支持
+  │
+  ├── lua/global/          ← 全局工具 (LSP, UI)
+  ├── lua/util/            ← 共享工具函数
+  ├── lua/configs/         ← 插件配置的二级组织
+  │
+  └── lsp/                 ← 各语言 LSP 服务端配置
+        ├── lua_ls.lua
+        ├── pyright.lua
+        ├── ts_ls.lua
+        └── ... (32 个语言)
+~~~
+
+数据流向：入口引导 → 环境检测 → 模式选择 → 核心设置 →
+插件注册 → 配置加载。
+
+## 2. 初始化流程详解 *init-flow*
+
+启动时序分解：
+
+1. **`init.lua`** — 加载路径和选项 → 执行环境检测 →
+   检查 `g:lite_mode` → 分流
+2. **`env_init.lua`** — 检测操作系统、必需工具
+   (git, node, rg 等)、设置环境变量
+3. **`full_init.lua` / `lite_init.lua`** — 禁用 netrw →
+   加载 `lua/plugin/` (lazy.nvim 规格) → 加载
+   `lua/configs/` (插件配置)
+4. **lazy.nvim** — 根据规格中的 `keys`/`cmd`/`event`/`ft`
+   条件自动延迟加载插件
+5. **`LspAttach` autocmd** — 在每个缓冲区附加 LSP 时设
+   置按键映射
+
+关键点：插件规格（哪些插件、如何加载）与配置（插件的行
+为设置）是分离的——规格在 `lua/plugin/` 中声明，配置在
+`lua/plugin/require/` 中定义。
+
+## 3. 插件分类系统 *plugin-categories*
+
+所有插件配置按功能分为四类，位于
+`lua/plugin/require/` 下：
+
+- **ui** — `ui/` 目录 — Catppuccin 主题、lualine 状态
+  栏、bufferline 标签栏、edgy 侧边栏、dashboard 启动页
+- **tool** — `tool/` 目录 — Telescope 搜索、Git 集成、
+  Overseer 任务、AI 工具 (OpenCode、Avante、Claude、
+  Minuet)、Snacks 工具集
+- **editor** — `editor/` 目录 — nvim-surround 环绕编辑、
+  auto-pairs 自动配对、trouble 诊断列表、which-key 快
+  捷键提示、flash 跳转
+- **language** — `language/` 目录 — LSP 配置、DAP 调试、
+  blink.cmp 补全、Treesitter 语法高亮、各语言专用工具
+
+`require.lua` (Full 模式) 和 `lite_require.lua` (Lite 模
+式) 分别管理分类加载。Full 模式加载 90+ 条目，Lite 模式
+仅 4 个核心插件。
+
+## 4. 添加新语言支持 *add-language*
+
+以添加 Rust 语言支持为例（此配置已内置，这里展示通用流
+程）：
+
+**第一步：安装 LSP 服务器**
+
+~~~
+:MasonInstall rust-analyzer
+~~~
+
+**第二步：创建 LSP 配置文件（可选）**
+
+在 `lsp/` 目录下创建 `rust.lua`，配置特定设置：
+
+~~~lua
+vim.lsp.config.rust_analyzer = {
+  cmd = { "rust-analyzer" },
+  filetypes = { "rust" },
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = { command = "clippy" },
+    },
+  },
+}
+~~~
+
+**第三步：注册 LSP 服务器**
+
+在 `lua/core/lsp.lua` 中添加：
+
+~~~lua
+Enable('rust_analyzer')
+~~~
+
+**第四步：添加文件类型设置（可选）**
+
+在 `ftplugin/` 下创建 `rust.lua`：
+
+~~~lua
+vim.bo.tabstop = 4
+vim.bo.shiftwidth = 4
+~~~
+
+**第五步：验证**
+
+打开一个 `.rs` 文件，运行 `:LspInfo` 确认服务器已附加。
+按 `K` 测试 hover 文档，按 `<C-]>` 测试跳转定义。
+
+## 5. 理解插件规格 *plugin-specs*
+
+lazy.nvim 的插件规格决定了"何时"和"如何"加载插件。关键
+字段：
+
+- `keys` — 按下指定按键时加载，例如
+  `keys = { "<leader>pt" }`
+- `cmd` — 首次执行命令时加载，例如 `cmd = "Telescope"`
+- `event` — 触发事件时加载，例如 `event = "VeryLazy"`
+- `ft` — 打开特定文件类型时加载，例如 `ft = "markdown"`
+- `opts` — 配置表 (lazy.nvim 自动调用 config)，例如
+  `opts = { ... }`
+- `config` — 自定义配置函数，例如
+  `config = function() ... end`
+- `dependencies` — 依赖插件，例如
+  `dependencies = { "nvim-lua/plenary.nvim" }`
+- `enabled` — 条件启用/禁用，例如
+  `enabled = function() return not vim.g.lite_mode end`
+
+## 6. 理解 Keymap 系统 *keymap-system*
+
+按键映射定义在 `lua/core/keymap/init.lua` 中，支持两种
+定义方式：
+
+**方式一：LazyKeysSpec 表（由 lazy.nvim 管理延迟加载）**
+
+~~~lua
+{ "<leader>pt", function()
+  Snacks.profiler.toggle()
+end, desc = "Profiler Toggle" }
+~~~
+
+当 `<leader>pt` 被按下时，lazy.nvim 会自动加载对应的插
+件（如果尚未加载），然后执行映射函数。
+
+**方式二：直接 `vim.keymap.set()`（不触发延迟加载）**
+
+~~~lua
+vim.keymap.set('n', '<C-]>',
+  require('telescope.builtin').lsp_definitions,
+  { buffer = event.buf, desc = 'LSP: Go To Define' })
+~~~
+
+用于 LspAttach 和 FTerm 等需要在特定时刻直接设置的场景。
+
+**Hydra 菜单** — 此配置使用 Hydra 实现多组关联按键菜单：
+
+- `<C-w>W` + hjkl — 窗口大小调整 — 连续调整窗口尺寸
+- `<C-w>c` + hjkl — 窗口导航 — 连续在窗口间跳转
+- `<leader>dp` — DAP 控制 — 调试操作菜单
+
+Hydra 激活后无需反复按前缀键，按方向键即可连续操作。
+
+## 7. 与现有文档配合 *companion-docs*
+
+- `DEVELOP_zh.md` — 完整的添加新功能流程开发指南
+- `FEATURES_zh.md` — 功能清单和详细介绍
+- `AGENTS.md` — 项目架构文档、所有按键映射表
+- `tutor/README.md` — 教程系列总览和学习路径
+
+本教程是实战操作补充，建议与其他文档配合阅读。
+
+## 8. 小结 *summary*
+
+你现在理解了此配置的完整架构：初始化流程 → 插件分类系统
+→ LSP 扩展流程 → 插件规格 → 按键映射系统。这套设计确
+保了配置的可维护性和可扩展性。
+
+核心原则：**配置即代码**——每个插件、每个按键、每个 LSP
+服务器都有明确的定义位置。不要害怕 Fork 并自定义它，这
+就是它被设计成这样原因。
+
+下一步建议：
+- 阅读 `DEVELOP_zh.md` 获取完整开发指南
+- Fork 此仓库，按自己的需求裁剪
+- 关注上游更新，定期合并最新优化

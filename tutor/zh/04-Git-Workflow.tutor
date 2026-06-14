@@ -1,0 +1,133 @@
+# 04 — Git 工作流 *git-workflow*
+
+此配置提供了完整的 Git 工具链，让你在编辑器内完成从查看变更
+到推送的完整流程，无需切换到终端。
+
+---
+
+## LazyGit *lazygit*
+
+LazyGit 是一个终端图形化 Git 客户端，以侧边栏或全屏方式运行：
+
+- `<leader>lg` — 打开 LazyGit
+
+LazyGit 界面分为几个区域：
+- **左侧**：文件变更列表（已修改/未跟踪/暂存）
+- **中间**：文件差异预览
+- **右侧**：提交历史 / 分支图
+- **底部**：常用操作快捷键
+
+基本操作：按 `<space>` 暂存文件，按 `c` 输入提交信息后提交，
+按 `P` 推送，按 `b` 切换分支。遇到冲突时，LazyGit 会高亮冲突
+文件并提供合并工具。
+
+TIP：按 `?` 可在 LazyGit 内查看完整快捷键帮助。
+
+---
+
+## Gitsigns *gitsigns*
+
+Gitsigns 在编辑器左侧标记列实时显示 Git 变更：
+
+- 查看行级 blame — `:Gitsigns blame_line` 或
+  `:Gitsigns toggle_blame`
+- 在变更块间导航 — `]c`（下一个）、`[c`（上一个）
+- 暂存当前行/块 — `:Gitsigns stage_hunk`
+- 撤销当前行/块 — `:Gitsigns undo_stage_hunk`
+
+Gitsigns 直接在缓冲区内工作，无需刷新页面。变更标记包括：
+- `│` 红/绿/蓝竖线表示删除/新增/修改
+- 行号右侧的附加符号同样反映变更类型
+
+---
+
+## Telescope Git 集成 *telescope-git*
+
+Telescope 提供了多个 Git 相关的搜索源：
+
+- `:Telescope git_status` — 查看工作区所有变更文件，按回车
+  打开差异
+- `:Telescope git_commits` — 浏览提交历史，选中后查看提交
+  内容
+
+这两个命令让你无需离开 Telescope 界面就可以完成文件浏览和
+历史追溯。
+
+---
+
+## GitHub 集成 *github-integration*
+
+此配置通过 Octo 插件提供 GitHub 集成：
+
+- `<leader>gi` — 查看打开中的 Issues
+- `<leader>gI` — 查看所有 Issues（含已关闭）
+- `<leader>gp` — 查看打开中的 Pull Requests
+- `<leader>gP` — 查看所有 Pull Requests（含已关闭）
+
+Issues 和 PR 列表会以 Telescope 界面展示，选中后可以在编辑器
+中查看详情、回复评论等。
+
+---
+
+## Jujutsu (jj) 支持 *jujutsu-support*
+
+此配置支持 Jujutsu (jj) 与 git 共存管理。jj 是一个现代化的
+版本控制系统，与 git 仓库兼容：
+
+- `<leader>lj` — 打开 jjui 终端界面
+
+jj 的工作流基于变更（change）而非提交（commit），同一仓库下
+你可以同时使用 `jj` 和 `git` 命令。此配置不强制使用 jj，但为
+使用 jj 的用户提供了开箱即用的支持。
+
+---
+
+## QuickMenu 中的 Git *git-quickmenu*
+
+按 `<F5>` 打开 QuickMenu，有专门的 Git 选项分组，包含常用 Git
+操作。这是记不住快捷键时的快速入口。
+
+---
+
+## Trouble 与 Git *trouble-git*
+
+Trouble 插件可以将 Git 操作的结果（如冲突文件、lint 错误）
+显示在位置列表或快速修复列表中：
+
+- `<leader>xL` — 打开位置列表（location list）
+- `<leader>xQ` — 打开快速修复列表（quickfix list）
+
+结合 Gitsigns 的变更块导航，Trouble 可以集中展示所有待处理的
+问题。
+
+---
+
+## 综合工作流：一次完整的修改提交 *commit-workflow*
+
+以下是典型的工作流示例：
+
+1. 在代码中做出修改
+2. 按 `<leader>lg` 打开 LazyGit 查看变更概览
+3. 按 `<space>` 暂存需要的文件
+4. 按 `c` 输入提交信息，提交到本地仓库
+5. 按 `P` 推送到远程
+6. 推送完成后按 `q` 退出 LazyGit
+7. （可选）按 `<leader>gp` 在 GitHub 上创建 Pull Request
+
+如果你只用 Telescope 而非 LazyGit：
+
+1. 输入 `:Telescope git_status` 查看变更
+2. 在变更文件上按回车查看差异
+3. 回到终端或 LazyGit 完成暂存和提交
+
+---
+
+## 小结 *summary*
+
+此配置的 Git 集成覆盖了从查看变更、暂存提交、浏览历史到
+GitHub 协作的全流程。LazyGit 适合视觉化操作，Telescope 适合
+快速搜索和浏览，两者互补。
+
+接下来建议学习：
+- **教程 05**：LSP 与代码智能 — 让你写代码更少出错、更快迭代
+- **教程 07**：AI 辅助开发 — 在编辑器中使用 AI 助手

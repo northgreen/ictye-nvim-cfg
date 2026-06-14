@@ -1,0 +1,88 @@
+# 05 LSP 与代码智能 *05-lsp*
+
+## 1. LSP 是什么 *lsp-intro*
+
+Language Server Protocol (LSP) 是此配置代码智能的
+核心。它提供：自动补全、实时诊断（错误/警告）、
+跳转定义、全局重命名、格式化、Hover 类型信息。
+你安装的每种语言都有对应的 LSP 服务器
+（rust-analyzer、pyright、ts_ls、lua_ls 等）。
+
+## 2. 安装 LSP 服务器 *install-lsp*
+
+打开 `:Mason` UI，搜索你需要的语言服务器，按 `i`
+安装。例如搜索 `pyright` 安装 Python 支持。
+
+安装后打开一个对应语言的文件，运行 `:LspInfo`
+确认服务器已附加到当前缓冲区。如果显示
+"No client attached"，检查 Mason 是否已安装
+对应的服务器。
+
+## 3. 代码补全 (blink.cmp) *autocompletion*
+
+补全菜单会随着你输入自动弹出。常用操作：
+
+- `<Tab>` — 选择下一个补全项
+- `<S-Tab>` — 选择上一个补全项
+- `<CR>` — 确认选择
+- 自动 — 文档预览窗格
+
+支持 snippet 展开和签名帮助，函数的参数提示会在
+你输入括号时自动出现。
+
+## 4. 诊断 (Trouble) *diagnostics*
+
+- `<leader>xx` — 打开全部诊断列表
+- `<leader>xX` — 仅当前缓冲区的诊断
+
+回车跳到对应位置。`q` 关闭窗口。诊断按严重程度分
+Errors 和 Warnings，一目了然。
+
+## 5. 导航与跳转 *navigation*
+
+- `<C-]>` — 跳转到定义
+- `K` — Hover 显示类型签名和文档
+- `:IcUseage` — 查看当前符号的调用关系
+
+跳转后按 `Ctrl+o` 返回上一位置。
+
+## 6. 代码操作 *code-actions*
+
+`<C-x>a` 打开 LSP Actions 菜单。这里集中了快速修复
+（如自动导入缺失的模块）、代码生成（如生成
+getter/setter）、和重构操作。选中后回车即刻生效。
+
+## 7. 格式化与重命名 *format-rename*
+
+- `:IcFormat` — 格式化当前文件
+- `:IcRename` — 重命名当前符号（项目级）
+
+重命名是跨文件的：修改后所有引用自动同步。
+
+## 8. 符号搜索 *symbol-search*
+
+- `<leader>cs` — 文档/工作区符号搜索（Trouble 集成）
+- `<F3>` — 切换 Outline 符号大纲
+
+在大型文件中用 `<leader>cs` 快速定位类/函数/定义。
+
+## 9. LSP 重启 *lsp-restart*
+
+如果服务器卡死或你修改了 LSP 配置，运行
+`:IcLspRestart` 重启当前缓冲区的 LSP 服务器，
+无需重启 Neovim。
+
+## 10. Trouble 高级用法 *trouble-advanced*
+
+- `<leader>cl` — 查看 LSP 引用/定义结果
+- `:Trouble qflist toggle` — 切换快速修复列表
+- `r` — 在 Trouble 中重命名当前符号
+
+Trouble 不只是诊断工具，也是 LSP 结果的统一展示
+面板。
+
+## 11. 小结 *summary*
+
+你掌握了 LSP 的完整工作流：安装服务器 → 自动补全
+→ 诊断检查 → 导航代码 → 代码操作 → 格式化/重命名。
+这套流程覆盖了日常开发中 90% 的代码智能需求。

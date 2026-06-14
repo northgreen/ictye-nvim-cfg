@@ -1,0 +1,131 @@
+# 06 Debugging & Testing *06-debug-test*
+
+## 1. Debugging Basics (DAP) *dap-basics*
+
+DAP (Debug Adapter Protocol) is the standard
+protocol for debugging. This configuration uses
+nvim-dap to support multi-language debugging:
+Python, JavaScript/TypeScript, Go, C/C++, Rust,
+Lua, and more. Each language needs its corresponding
+debug adapter installed.
+
+## 2. Setting Breakpoints *breakpoints*
+
+Press `<C-b>` to toggle a breakpoint on the current
+line. A breakpoint marker appears next to the line
+number. Press `<C-b>` again to remove it.
+
+## 3. Debug Controls *debug-controls*
+
+- `<F9>` — Continue execution
+- `<F10>` — Step over
+- `<F11>` — Step into
+- `<F12>` — Step out
+
+Once debugging starts, this key set controls execution
+flow. `<F10>` is the most frequently used — it steps
+line by line without entering function bodies.
+
+## 4. DAP UI *dap-ui*
+
+Press `<F6>` to toggle the debug UI panel. It
+contains:
+
+- **Variables**: current scope variable values
+- **Stack**: call stack, click to jump to a frame
+- **Watches**: custom expression watches
+- **Breakpoints**: list of all breakpoints
+
+## 5. DAP Hydra Menu *dap-hydra*
+
+`<leader>dp` opens the DAP Hydra quick menu:
+
+- `c` — Continue
+- `i` — Step into
+- `o` — Step out
+- `p` — Step over
+- `s` — Stop debugging
+- `r` — Restart debugging
+- `d` — Disconnect
+- `t` — Toggle breakpoint
+- `u` — Toggle UI
+- `e` — Evaluate expression
+
+Hydra locks the key mode — you don't need to press
+`<leader>dp` repeatedly.
+
+## 6. Evaluating Expressions *evaluate*
+
+While paused at a breakpoint, press `e` in the DAP
+Hydra, then type an expression (a variable name or
+`1+1`). The result is evaluated in the current
+debugging context.
+
+## 7. Lua Debugging *lua-debug*
+
+`:IcDAP` launches the OSV Lua debugger. This is
+especially useful for debugging this configuration
+itself or Lua projects. It attaches to the current
+Neovim instance so you can set breakpoints in Lua
+files and debug interactively.
+
+## 8. Test Integration (neotest) *test-integration*
+
+`<C-x>t` opens the test menu:
+
+- Run Test — Run the test at cursor
+- Watch Test — Auto-rerun on file changes
+- Show Cur Output — View current test output
+- Toggle Summary — Toggle test results overview
+- Toggle Output Panel — Toggle output panel
+- Run With Debug — Run test with DAP attached
+
+Supported languages: Python (pytest), Go, Rust,
+JavaScript/TypeScript (vitest), Lua, and more.
+
+## 9. Test Menu in Practice *test-menu*
+
+Test results are color-coded: green for pass, red
+for failure, yellow for skipped. Press Enter on a
+failed result to see the detailed output. Watch mode
+is ideal for TDD — tests re-run automatically when
+you modify code.
+
+## 10. Overseer Task System *overseer*
+
+- `<C-x>oo` — Toggle task panel
+- `<C-x>or` — Run a predefined task
+
+Overseer manages background tasks like building,
+testing, and linting. The task panel shows running
+status and output logs. You can cancel or restart
+tasks at any time.
+
+## 11. Complete Workflow *workflow*
+
+Here's a full debugging scenario from start to
+finish:
+
+1. **Press `<C-b>`** to set a breakpoint on the
+   target line
+2. **Launch the program** (run a test or start the
+   process)
+3. Execution pauses at the breakpoint — **press
+   `<F10>`** to step through
+4. **Inspect variables** (DAP UI, or press `e` to
+   evaluate manually)
+5. When you find the issue, press `<leader>dp` + `c`
+   to **continue execution**
+6. **Press `<F6>`** to close the UI, then press `s`
+   to **stop debugging**
+7. Fix the code, then rerun tests with
+   **`:IcTestMenu`** to verify
+
+## 12. Summary *summary*
+
+You now have the complete debug-and-test toolchain:
+set breakpoints → control execution flow → inspect
+variables and stack → evaluate expressions → run/debug
+tests. Combined with the Overseer task system, you
+can go from "write → test → debug → build" all
+within a single workflow.

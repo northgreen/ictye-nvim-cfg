@@ -1,0 +1,162 @@
+# 09 性能调优
+
+## 1. 为什么需要性能调优 *why-perf-matters*
+
+此配置功能丰富，集成了 90+ 插件、20+ LSP 服务器、完整调试
+和 AI 工具链。启动时间较长是已知问题（见 README）。通过本
+章的学习，你将掌握分析和优化启动性能的方法，让 Neovim 在
+不同场景下都能快速响应。
+
+## 2. Lite 模式 *lite-mode*
+
+当你不需要完整功能时，使用 Lite 模式可以获得近乎即时的启
+动体验：
+
+~~~bash
+nvim --cmd "let g:lite_mode=v:true"
+~~~
+
+特性对比：
+
+- **启动时间** — Full: ~300-800ms / Lite: ~50-150ms
+- **LSP 服务器** — Full: 全部启用 / Lite: 基础支持
+- **Treesitter** — Full: 全部解析器 / Lite: 核心解析器
+- **AI 工具 (OpenCode/Avante)** — Full: ✅ / Lite: ❌
+- **调试 (DAP)** — Full: ✅ / Lite: ❌
+- **状态栏/标签栏** — Full: ✅ / Lite: 仅 Catppuccin 主题
+- **文件浏览器** — Full: Neo-tree/Oil / Lite: ❌
+- **模糊搜索 (Telescope)** — Full: ✅ / Lite: ❌
+- **Git 集成** — Full: ✅ / Lite: ❌
+- **撤销树** — Full: ✅ / Lite: ✅
+
+适用于：快速编辑配置文件、远程服务器、Windows 平台、低配
+机器。
+
+## 3. Snacks Profiler *snacks-profiler*
+
+此配置内置了 `folke/snacks.nvim` 的性能分析器：
+
+- `<leader>pt` — 切换 Profiler 面板
+- `<leader>ps` — 创建分析草稿缓冲区
+
+使用流程：
+1. 启动 Neovim 后按 `<leader>pt` 打开 Profiler
+2. Profiler 会展示启动过程中每个阶段的耗时
+3. 按 `<leader>ps` 将分析数据写入临时缓冲区方便保存和
+   分析
+4. 关注 `LazyLoading`、`UIEnter`、`ColorScheme` 等关键
+   事件
+
+## 4. lazy.nvim 延迟加载 *lazy-loading*
+
+插件加载由 lazy.nvim 管理，通过以下条件实现延迟加载：
+
+- `keys` — 按下指定按键时加载，例如
+  `keys = { "<leader>pt" }`
+- `cmd` — 首次执行命令时加载，例如 `cmd = "Telescope"`
+- `event` — 触发事件时加载，例如 `event = "BufReadPre"`
+- `ft` — 打开特定文件类型时加载，例如 `ft = "lua"`
+
+在 `:Lazy` UI 中可以看到每个插件的加载状态和加载时间
+——`Lazy` 列显示延迟加载配置，`Time` 列显示加载耗时。关
+注那些标记为 `(manual)` 却意外被加载的插件。
+
+## 5. 分析启动日志 *startup-log*
+
+更深入的排查需要 Neovim 内置的 `--startuptime` 参数：
+
+~~~bash
+nvim --startuptime /tmp/startup.log -c "q"
+~~~
+
+分析关键指标：
+- **总计耗时** — 文件最末尾的 `Total` 行
+- **最慢的操作** — 用 `grep` 排序找到耗时最高的条目
+- **Sourcing** — 配置文件的加载时间（关注 `init.lua` 和
+  相关模块）
+- **LSP 启动** — 每个 LSP 服务器的初始化时间
+
+结合 `:Lazy profile` 命令可以查看插件加载的详细瀑布图。
+
+## 6. 优化建议 *optimization-tips*
+
+**禁用不需要的 LSP 服务器** — 编辑 `lua/core/lsp.lua`，注
+释掉不需要的 `vim.lsp.enable()` 行：
+
+~~~lua
+-- 只保留你实际使用的语言
+Enable('lua_ls')
+Enable('pyright')
+Enable('ts_ls')
+-- Enable('solargraph')    -- 不用 Ruby 就注释掉
+-- Enable('gopls')         -- 不用 Go 就注释掉
+-- Enable('clangd')        -- 不用 C/C++ 就注释掉
+~~~
+
+**禁用不需要的插件** — 在
+`lua/plugin/require/require.lua` 中注释掉：
+
+~~~lua
+-- return {
+--   ...
+--   require 'plugin.require.tool.obsidian',
+--   require 'plugin.require.tool.wakatime',
+--   ...
+-- }
+~~~
+
+**调整 Treesitter** — 编辑 Treesitter 配置，将
+`ensure_installed` 设为按需安装：
+
+~~~lua
+ensure_installed = {
+  "lua", "vim", "vimdoc", "query",
+  -- 只保留你需要的语言
+}
+~~~
+
+## 7. Windows 特别优化 *windows-optimization*
+
+Windows 平台因文件系统和进程模型差异，启动速度天然较慢：
+
+- **推荐直接使用 Lite 模式** —
+  `nvim --cmd "let g:lite_mode=v:true"`
+- **考虑 WSL2** — 在 WSL2 中运行 Neovim 可显著提升性能
+- **杀毒软件排除** — 将 Neovim 安装目录和配置目录加入
+  杀毒软件排除列表
+- **使用终端模拟器** — WezTerm 或 Alacritty 比 Windows
+  Terminal 更快
+- **避免过多的路径映射** — Windows 下网络映射驱动器会
+  拖慢文件操作
+
+## 8. Snacks Dim 模式 *dim-mode*
+
+Dim 模式减少非焦点区域的视觉干扰，提升编码专注度：
+
+- `<leader>de` — 启用 Dim 模式（当前窗口之外的区域变暗）
+- `<leader>dd` — 禁用 Dim 模式
+
+配合 Snacks Profiler，你可以在调试性能的同时优化阅读体验。
+
+## 9. 定期维护 *maintenance*
+
+- **清理未使用插件** — `:Lazy clean` — 每次移除插件后
+- **更新插件** — `:Lazy update` — 每周
+- **更新 Treesitter** — `:TSUpdate` — 每月
+- **更新 Mason 工具** — `:MasonUpdate` — 每月
+- **诊断检查** — `:checkhealth` — 出现异常时
+
+## 10. 小结 *summary*
+
+根据使用场景选择合适的配置策略：
+
+- **日常开发** — Full 模式 — 完整功能：LSP、调试、AI
+  辅助
+- **快速编辑单文件** — Lite 模式 — 瞬时启动，零等待
+- **远程服务器** — Lite 模式 — 减少带宽和依赖
+- **Windows 桌面** — Lite 模式 — 避开文件系统瓶颈
+- **性能诊断** — Full + Profiler — 找出瓶颈后针对性优
+  化
+
+下一步：学习 **10 — 深入架构与扩展**，理解完整初始化流程
+和如何为配置添加新功能。

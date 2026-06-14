@@ -1,0 +1,228 @@
+# 10 — Deep Architecture & Extension
+
+## 1. Overall Architecture *architecture*
+
+This configuration follows a layered design where each layer
+has a clear responsibility:
+
+~~~text
+init.lua (entry point)
+  │
+  ├── env_init.lua         ← Environment detection
+  │
+  ├── Branch on g:lite_mode
+  │     ├── true  → lite_init.lua
+  │     └── false → full_init.lua
+  │
+  ├── lua/core/            ← Core settings
+  │     ├── vimpreconfig.lua  Pre-configuration
+  │     ├── vimconfig.lua     General configuration
+  │     ├── lsp.lua           LSP registration & attach
+  │     ├── keymap/           Key mapping system
+  │     └── lite_init.lua     Lite mode core setup
+  │
+  ├── lua/options/         ← Neovim global options
+  │
+  ├── lua/plugin/          ← Plugin specs (lazy.nvim)
+  │     └── require/          ← Categorized config loading
+  │           ├── ui/         Visual plugins
+  │           ├── tool/       Tool integrations
+  │           ├── editor/     Editing enhancements
+  │           └── language/   Language support
+  │
+  ├── lua/global/          ← Global utilities (LSP, UI)
+  ├── lua/util/            ← Shared helper functions
+  ├── lua/configs/         ← Secondary plugin config
+  │
+  └── lsp/                 ← Per-language LSP configs
+        ├── lua_ls.lua
+        ├── pyright.lua
+        ├── ts_ls.lua
+        └── ... (32 languages)
+~~~
+
+Data flow: entry bootstrap → environment detection → mode
+selection → core setup → plugin registration → config
+loading.
+
+## 2. Initialization Flow in Detail *init-flow*
+
+The startup sequence step by step:
+
+1. **`init.lua`** — loads paths and options → runs
+   environment detection → checks `g:lite_mode` →
+   dispatches
+2. **`env_init.lua`** — detects the OS, checks required
+   tools (git, node, rg, etc.), sets environment variables
+3. **`full_init.lua` / `lite_init.lua`** — disables netrw →
+   loads `lua/plugin/` (lazy.nvim specs) → loads
+   `lua/configs/` (plugin configs)
+4. **lazy.nvim** — auto-loads plugins on demand based on
+   `keys`/`cmd`/`event`/`ft` conditions
+5. **`LspAttach` autocmd** — sets per-buffer keymaps when
+   an LSP client attaches
+
+Key insight: **plugin specs** (which plugins, how to load)
+are separate from **plugin configs** (how they behave).
+Specs go in `lua/plugin/`, configs go in
+`lua/plugin/require/`.
+
+## 3. Plugin Category System *plugin-categories*
+
+All plugin configs live under `lua/plugin/require/`,
+organized into four categories:
+
+- **ui** — `ui/` directory — Catppuccin theme, lualine
+  statusline, bufferline tabs, edgy sidebar, dashboard
+- **tool** — `tool/` directory — Telescope search, Git
+  integration, Overseer tasks, AI tools (OpenCode, Avante,
+  Claude, Minuet), Snacks collection
+- **editor** — `editor/` directory — nvim-surround,
+  auto-pairs, trouble diagnostics, which-key, flash jump
+- **language** — `language/` directory — LSP config, DAP
+  debugging, blink.cmp completion, Treesitter highlighting,
+  per-language tooling
+
+`require.lua` (Full mode) and `lite_require.lua` (Lite mode)
+control which categories get loaded. Full mode loads 90+
+entries; Lite mode loads just 4 core plugins.
+
+## 4. Adding a New Language *add-language*
+
+Here's the general workflow, demonstrated with Rust (already
+built-in — this shows the pattern):
+
+**Step 1: Install the LSP server**
+
+~~~
+:MasonInstall rust-analyzer
+~~~
+
+**Step 2: Create an LSP config file (optional)**
+
+Create `lsp/rust.lua` with language-specific settings:
+
+~~~lua
+vim.lsp.config.rust_analyzer = {
+  cmd = { "rust-analyzer" },
+  filetypes = { "rust" },
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = { command = "clippy" },
+    },
+  },
+}
+~~~
+
+**Step 3: Register the LSP server**
+
+Add to `lua/core/lsp.lua`:
+
+~~~lua
+Enable('rust_analyzer')
+~~~
+
+**Step 4: Add filetype settings (optional)**
+
+Create `ftplugin/rust.lua`:
+
+~~~lua
+vim.bo.tabstop = 4
+vim.bo.shiftwidth = 4
+~~~
+
+**Step 5: Verify**
+
+Open a `.rs` file and run `:LspInfo` to confirm the server
+is attached. Test hover with `K`, and go-to-definition with
+`<C-]>`.
+
+## 5. Understanding Plugin Specs *plugin-specs*
+
+lazy.nvim plugin specs control *when* and *how* each plugin
+loads. Key fields:
+
+- `keys` — Load on keypress, e.g.
+  `keys = { "<leader>pt" }`
+- `cmd` — Load on first command, e.g. `cmd = "Telescope"`
+- `event` — Load on event, e.g. `event = "VeryLazy"`
+- `ft` — Load on filetype, e.g. `ft = "markdown"`
+- `opts` — Config table (auto-calls config),
+  e.g. `opts = { ... }`
+- `config` — Custom config function,
+  e.g. `config = function() ... end`
+- `dependencies` — Dependent plugins,
+  e.g. `dependencies = { "nvim-lua/plenary.nvim" }`
+- `enabled` — Conditional enable/disable,
+  e.g. `enabled = function() return not vim.g.lite_mode end`
+
+## 6. Understanding the Keymap System *keymap-system*
+
+All keymaps are defined in `lua/core/keymap/init.lua`, with
+two approaches:
+
+**Approach 1: LazyKeysSpec table (lazy.nvim managed)**
+
+~~~lua
+{ "<leader>pt", function()
+  Snacks.profiler.toggle()
+end, desc = "Profiler Toggle" }
+~~~
+
+When you press `<leader>pt`, lazy.nvim auto-loads the plugin
+(if not yet loaded), then executes the function.
+
+**Approach 2: Direct `vim.keymap.set()` (no lazy-loading)**
+
+~~~lua
+vim.keymap.set('n', '<C-]>',
+  require('telescope.builtin').lsp_definitions,
+  { buffer = event.buf, desc = 'LSP: Go To Define' })
+~~~
+
+Used inside `LspAttach` and other callbacks where direct
+binding is needed.
+
+**Hydra Menus** — this config uses Hydra for grouped,
+persistent menus:
+
+- `<C-w>W` + hjkl — Window resize — Continuously resize
+  windows
+- `<C-w>c` + hjkl — Window navigation — Jump between
+  windows repeatedly
+- `<leader>dp` — DAP control — Debug operation menu
+
+Once a Hydra is active, you can press direction keys
+repeatedly without repressing the prefix — fluid, modal
+navigation.
+
+## 7. Using the Companion Docs *companion-docs*
+
+- `DEVELOP.md` — Full development guide for adding new
+  features
+- `FEATURES.md` — Feature inventory and detailed walkthrough
+- `AGENTS.md` — Architecture documentation and complete
+  keymap reference
+- `tutor/README.md` — Tutorial series overview and
+  recommended reading path
+
+This tutorial is a practical companion — use it alongside
+the other docs for the full picture.
+
+## 8. Summary *summary*
+
+You now understand the complete architecture: initialization
+flow → plugin category system → LSP extension workflow →
+plugin spec anatomy → keymap system design. This design
+keeps the configuration maintainable and extensible.
+
+Core philosophy: **configuration is code** — every plugin,
+every keymap, every LSP server has an explicit home. Don't
+be afraid to fork and customize; that's why it's built this
+way.
+
+What to learn next:
+- Read `DEVELOP.md` for the complete development guide
+- Fork this repository and tailor it to your needs
+- Watch for upstream updates and merge optimizations
+  regularly

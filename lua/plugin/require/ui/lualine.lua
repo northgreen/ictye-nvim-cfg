@@ -22,7 +22,7 @@ end
 return {
     'nvim-lualine/lualine.nvim',
     event = 'BufReadPre',
-    -- enabled = false,
+    -- enabled = (not vim.g.started_by_firenvim) and options.ui.ui_options.noise,
     opts = {
         options = {
             icons_enabled = true,
@@ -106,7 +106,7 @@ return {
         local theme = require 'catppuccin.utils.lualine' ()
         local catppuccin = require 'catppuccin.palettes'.get_palette()
 
-        opts.options.theme = theme
+        opts.options.theme = "catppuccin-nvim"
         theme.normal.c.bg = catppuccin.base
         theme.inactive.a.bg = catppuccin.base
         theme.inactive.b.bg = catppuccin.base

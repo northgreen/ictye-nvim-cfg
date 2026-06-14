@@ -1,12 +1,14 @@
 local twc = require 'util.functions'.three_way_compare
 
-local ret = {
-	os = {
+local ret = {}
+
+ret.os = {
 		win = vim.fn.has("win32"),
 		linux = vim.fn.has("unix"),
 		mac = vim.fn.has("mac"),
 	}
-}
+
+ret.term = require("global.env_assessment.term")
 
 ret.required = {
 	chack = function (self)

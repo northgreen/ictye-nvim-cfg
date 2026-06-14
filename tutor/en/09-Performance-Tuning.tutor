@@ -1,0 +1,184 @@
+# 09 — Performance Tuning
+
+## 1. Why Performance Tuning Matters *why-perf-matters*
+
+This configuration is feature-rich — 90+ plugins, 20+ LSP
+servers, full debugging toolchain, and AI integration. A
+longer startup time is a known trade-off (documented in the
+README). This tutorial will teach you how to analyze and
+optimize startup performance so Neovim stays snappy in every
+scenario.
+
+## 2. Lite Mode *lite-mode*
+
+When you don't need the full feature set, Lite Mode provides
+a nearly instant startup experience:
+
+~~~bash
+nvim --cmd "let g:lite_mode=v:true"
+~~~
+
+Feature comparison:
+
+- **Startup time** — Full: ~300-800ms / Lite: ~50-150ms
+- **LSP servers** — Full: All enabled / Lite: Basic support
+- **Treesitter** — Full: Full parser set / Lite: Core
+  parsers only
+- **AI tools (OpenCode/Avante)** — Full: ✅ / Lite: ❌
+- **Debugging (DAP)** — Full: ✅ / Lite: ❌
+- **Statusline / Bufferline** — Full: ✅ / Lite: Catppuccin
+  theme only
+- **File explorer** — Full: Neo-tree / Oil / Lite: ❌
+- **Fuzzy finder (Telescope)** — Full: ✅ / Lite: ❌
+- **Git integration** — Full: ✅ / Lite: ❌
+- **Undotree** — Full: ✅ / Lite: ✅
+
+Best for: editing a single config file, working on a remote
+server, Windows machines, or low-spec hardware.
+
+## 3. Snacks Profiler *snacks-profiler*
+
+This configuration ships with `folke/snacks.nvim` and its
+built-in profiler:
+
+- `<leader>pt` — Toggle Profiler panel
+- `<leader>ps` — Create a profiler scratch buffer
+
+Workflow:
+1. Start Neovim and press `<leader>pt` to open the Profiler
+2. The Profiler shows the time spent in each stage of
+   startup
+3. Press `<leader>ps` to dump profile data into a scratch
+   buffer for analysis
+4. Watch for key events: `LazyLoading`, `UIEnter`,
+   `ColorScheme`
+
+## 4. lazy.nvim Lazy Loading *lazy-loading*
+
+Plugin loading is managed by lazy.nvim, which defers loading
+until needed:
+
+- `keys` — Loads on keypress, e.g.
+  `keys = { "<leader>pt" }`
+- `cmd` — Loads on first command, e.g. `cmd = "Telescope"`
+- `event` — Loads on event, e.g. `event = "BufReadPre"`
+- `ft` — Loads on filetype, e.g. `ft = "lua"`
+
+In the `:Lazy` UI, the `Lazy` column shows each plugin's
+lazy-load configuration, and the `Time` column shows its
+loading duration. Watch for plugins marked `(manual)` that
+are being loaded unexpectedly.
+
+## 5. Analyzing the Startup Log *startup-log*
+
+For deeper investigation, use Neovim's built-in
+`--startuptime` flag:
+
+~~~bash
+nvim --startuptime /tmp/startup.log -c "q"
+~~~
+
+Key metrics to examine:
+- **Total time** — the last line of the file
+- **Slowest operations** — use `grep`/`sort` to find the
+  top time consumers
+- **Sourcing** — how long each config file takes to load
+- **LSP initialization** — each server's startup time
+
+Combine with the `:Lazy profile` command for a waterfall
+view of plugin loading.
+
+## 6. Optimization Tips *optimization-tips*
+
+**Disable unused LSP servers** — edit `lua/core/lsp.lua` and
+comment out servers you don't use:
+
+~~~lua
+-- Keep only the languages you actually work with
+Enable('lua_ls')
+Enable('pyright')
+Enable('ts_ls')
+-- Enable('solargraph')   -- Comment out if no Ruby
+-- Enable('gopls')        -- Comment out if no Go
+-- Enable('clangd')       -- Comment out if no C/C++
+~~~
+
+**Disable unused plugins** — edit
+`lua/plugin/require/require.lua`:
+
+~~~lua
+-- return {
+--   ...
+--   require 'plugin.require.tool.obsidian',
+--   require 'plugin.require.tool.wakatime',
+--   ...
+-- }
+~~~
+
+**Tune Treesitter** — edit the Treesitter config to only
+install what you need:
+
+~~~lua
+ensure_installed = {
+  "lua", "vim", "vimdoc", "query",
+  -- Keep only the languages you actually write
+}
+~~~
+
+## 7. Windows-Specific Optimizations *windows-optimization*
+
+Windows is inherently slower for Neovim startup due to
+filesystem differences:
+
+- **Use Lite Mode by default** —
+  `nvim --cmd "let g:lite_mode=v:true"`
+- **Consider WSL2** — running Neovim inside WSL2 is
+  noticeably faster
+- **Antivirus exclusions** — add your Neovim binary and
+  config directories to the exclusion list
+- **Terminal emulator** — WezTerm or Alacritty outperform
+  Windows Terminal
+- **Avoid network drives** — mapped network drives slow
+  down file operations significantly
+
+## 8. Snacks Dim Mode *dim-mode*
+
+Dim mode reduces visual clutter by darkening non-focused
+areas:
+
+- `<leader>de` — Enable Dim mode (areas outside current
+  window dim)
+- `<leader>dd` — Disable Dim mode
+
+Use Dim mode alongside the Profiler to optimize both
+performance and visual comfort.
+
+## 9. Routine Maintenance *maintenance*
+
+- **Remove unused plugins** — `:Lazy clean` — After
+  removing any plugin
+- **Update plugins** — `:Lazy update` — Weekly
+- **Update Treesitter** — `:TSUpdate` — Monthly
+- **Update Mason tools** — `:MasonUpdate` — Monthly
+- **Health check** — `:checkhealth` — When something feels
+  off
+
+## 10. Summary *summary*
+
+Choose your configuration strategy based on the task at hand:
+
+- **Daily development** — Full Mode — Full LSP, debugging,
+  AI features
+- **Quick file edit** — Lite Mode — Instant startup, zero
+  wait
+- **Remote server** — Lite Mode — Reduced bandwidth and
+  dependencies
+- **Windows desktop** — Lite Mode — Avoid filesystem
+  bottlenecks
+- **Performance diagnosis** — Full + Profiler — Identify
+  specific bottlenecks
+
+What to learn next:
+- **Tutorial 10**: Deep Architecture & Extension — understand
+  init flow, plugin system, and how to add new language
+  support

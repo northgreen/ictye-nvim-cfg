@@ -1,0 +1,101 @@
+# 05 LSP & Code Intelligence *05-lsp*
+
+## 1. What is LSP *lsp-intro*
+
+The Language Server Protocol (LSP) powers all code
+intelligence in this configuration. It provides:
+autocompletion, live diagnostics (errors/warnings),
+go-to-definition, project-wide rename, formatting,
+and hover type information. Each language you work
+with has a dedicated LSP server (rust-analyzer,
+pyright, ts_ls, lua_ls, etc.).
+
+## 2. Installing LSP Servers *install-lsp*
+
+Open `:Mason`, search for the language server you
+need, and press `i` to install. For example, search
+`pyright` to add Python support.
+
+After installation, open a file in that language
+and run `:LspInfo` to verify the server is attached.
+If you see "No client attached", check that Mason
+has the server installed.
+
+## 3. Autocompletion (blink.cmp) *autocompletion*
+
+The completion menu appears automatically as you
+type. Key controls:
+
+- `<Tab>` — Select next item
+- `<S-Tab>` — Select previous item
+- `<CR>` — Confirm selection
+- Auto — Documentation preview pane
+
+Snippet expansion and signature help work out of
+the box — function parameter hints appear when you
+type `(`.
+
+## 4. Diagnostics (Trouble) *diagnostics*
+
+- `<leader>xx` — Open full diagnostic list
+- `<leader>xX` — Buffer-level diagnostics only
+
+Press Enter to jump to the error location. Press `q`
+to close. Diagnostics are grouped by severity —
+Errors and Warnings are clearly separated.
+
+## 5. Navigation & Jumping *navigation*
+
+- `<C-]>` — Go to definition
+- `K` — Hover to show type signature and docs
+- `:IcUseage` — Show incoming calls for the symbol
+
+Press `Ctrl+o` to jump back after navigating.
+
+## 6. Code Actions *code-actions*
+
+Press `<C-x>a` to open the LSP Actions menu. This
+gives you quick fixes (auto-import missing modules),
+code generation (getters/setters), and refactoring
+operations. Select an action and press Enter to
+apply it.
+
+## 7. Formatting & Renaming *format-rename*
+
+- `:IcFormat` — Format the current file
+- `:IcRename` — Rename symbol project-wide
+
+Renaming is cross-file — all references update
+automatically.
+
+## 8. Symbol Search *symbol-search*
+
+- `<leader>cs` — Document/workspace symbol search
+  (Trouble)
+- `<F3>` — Toggle Outline symbol tree
+
+Use `<leader>cs` in large files to quickly locate
+classes, functions, and definitions.
+
+## 9. LSP Restart *lsp-restart*
+
+If an LSP server hangs or you've changed its
+configuration, run `:IcLspRestart` to restart the
+server for the current buffer. No need to restart
+Neovim.
+
+## 10. Advanced Trouble Usage *trouble-advanced*
+
+- `<leader>cl` — View LSP references/definitions
+- `:Trouble qflist toggle` — Toggle quickfix list
+- `r` — Rename symbol from Trouble
+
+Trouble is more than a diagnostic viewer — it's the
+unified panel for all LSP results.
+
+## 11. Summary *summary*
+
+You now have the full LSP workflow: install servers
+→ autocomplete → check diagnostics → navigate code
+→ apply code actions → format and rename. This covers
+90% of code intelligence needs in daily development.
