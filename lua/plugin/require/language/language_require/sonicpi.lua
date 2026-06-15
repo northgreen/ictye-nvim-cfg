@@ -9,6 +9,5 @@ return {
     requires = {
         'hrsh7th/nvim-cmp',
         'kyazdani42/nvim-web-devicons',
-        'nvim-treesitter/nvim-treesitter'
     }
 }

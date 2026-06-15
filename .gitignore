@@ -1,7 +1,8 @@
 ./ctags
 .spl
-./lazy-lock.json
+lazy-lock.json
 *.dll
 *.exe
-./.mcphub/*
+.mcphub/*
+native_sources/rust/target/*
 .envrc

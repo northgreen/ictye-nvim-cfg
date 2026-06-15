@@ -4,16 +4,9 @@ return {
     'rafamadriz/friendly-snippets',
     'xzbdmw/colorful-menu.nvim',
     'Kaiser-Yang/blink-cmp-avante',
+    'PaterJason/cmp-conjure',
     { 'L3MON4D3/LuaSnip', version = 'v2.*' },
-    {
-      'saghen/blink.compat',
-      -- use v2.* for blink.cmp v1.*
-      version = '2.*',
-      -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-      lazy = true,
-      -- make sure to set opts so that lazy.nvim calls blink.compat's setup
-      opts = {},
-    },
+    { 'saghen/blink.compat', version = '2.*', lazy = true, opts = {} },
   },
 
   version = '1.*',
@@ -36,7 +29,7 @@ return {
       nerd_font_variant = 'mono'
     },
     sources = {
-      default = {  'nvlime','avante', 'snippets', 'lsp', 'path', 'buffer', },
+      default = { 'conjure', 'nvlime','avante', 'snippets', 'lsp', 'path', 'buffer', },
       providers = {
         avante = {
           module = 'blink-cmp-avante',
@@ -46,6 +39,10 @@ return {
         nvlime = {
           name = 'nvlime',
           module = 'nvlime.blink',
+        },
+        conjure = {
+          name = 'conjure',
+          module = 'blink.compat.source'
         }
       }
     },

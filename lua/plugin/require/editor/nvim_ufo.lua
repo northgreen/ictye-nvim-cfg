@@ -15,7 +15,9 @@ return {
 			lineFoldingOnly = true
 		}
 
-		require('ufo').setup()
+		require('ufo').setup({})
 	end,
-	dependencies = { 'kevinhwang91/promise-async' }
+	dependencies = {
+    'kevinhwang91/promise-async',
+  }
 }

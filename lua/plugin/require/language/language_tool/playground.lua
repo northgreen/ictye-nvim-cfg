@@ -1,7 +1,7 @@
 --- @return LazyPluginSpec
 return {
     'nvim-treesitter/playground',
-	enabled = false,
+	-- enabled = false,
 	event = 'BufEnter',
     opt = {
         playground = {

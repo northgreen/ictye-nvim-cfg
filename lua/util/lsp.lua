@@ -69,19 +69,19 @@ function M.root_markers_with_field(root_files, new_names, field, fname, match_mo
           return line:find(s)
         end)
       end
-    or function(line)
-      to_find = vim
-        .iter(to_find)
-        :filter(function(s)
-          return not line:find(s)
-        end)
-        :totable()
-      if #to_find == 0 then
-        to_find = vim.deepcopy(files)
-        return true
+      or function(line)
+        to_find = vim
+            .iter(to_find)
+            :filter(function(s)
+              return not line:find(s)
+            end)
+            :totable()
+        if #to_find == 0 then
+          to_find = vim.deepcopy(files)
+          return true
+        end
+        return false
       end
-      return false
-    end
   for _, f in ipairs(found or {}) do
     -- Match the given `field`.
     local file = assert(io.open(f, 'r'))
@@ -276,7 +276,6 @@ function M.get_active_clients_list_by_ft(filetype)
   return clients_list
 end
 
-
 --- @deprecated Use vim.lsp.get_clients instead.
 function M.get_lsp_clients(filter)
   --- @diagnostic disable-next-line:deprecated
@@ -374,6 +373,56 @@ function M.bufname_valid(bufname)
     return true
   end
   return false
+end
+
+function M.lsp_restart()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+  if #clients == 0 then
+    vim.notify('No LSP server attached to current buffer', vim.log.levels.WARN)
+    return
+  end
+
+  local restarted = {}
+  local failed = {}
+
+  for _, client in ipairs(clients) do
+    local ok, err = pcall(function()
+      local config = client.config or vim.lsp.config[client.name]
+      if not config then
+        table.insert(failed, string.format('%s (no config)', client.name))
+        return
+      end
+
+      -- Stop client and wait for it to fully shut down
+      client.stop(true)
+      vim.wait(2000, function()
+        local remaining = vim.lsp.get_clients({ bufnr = bufnr, id = client.id })
+        return #remaining == 0
+      end)
+
+      vim.lsp.start(config)
+      table.insert(restarted, client.name)
+    end)
+
+    if not ok then
+      table.insert(failed, string.format('%s (%s)', client.name, tostring(err)))
+    end
+  end
+
+  -- Report results with appropriate log level
+  if #restarted > 0 and #failed > 0 then
+    vim.notify(string.format('Restarted: %s\nFailed: %s',
+        table.concat(restarted, ', '), table.concat(failed, ', ')),
+      vim.log.levels.WARN)
+  elseif #failed > 0 then
+    vim.notify(string.format('Failed: %s', table.concat(failed, ', ')),
+      vim.log.levels.ERROR)
+  else
+    vim.notify(string.format('Restarted LSP servers: %s', table.concat(restarted, ', ')),
+      vim.log.levels.INFO)
+  end
 end
 
 --- @deprecated Will be removed. Do not use.

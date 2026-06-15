@@ -5,9 +5,7 @@
   (Autocmd :VimLeave 
     {:callback (fn []
       (local data-path (vim.fn.stdpath :data))
-        (local sdata-path
-          (vim.fs.joinpath (tostring data-path)
-            :shada :main.shada.tmp.X))
+        (local sdata-path (vim.fs.joinpath (tostring data-path) :shada :main.shada.tmp.X))
           (when (= (vim.fn.filereadable sdata-path) 1)
                 (vim.fn.delete sdata-path)))
           :pattern "*"})
@@ -44,5 +42,6 @@
         (vim.defer_fn (fn []
             (collectgarbage :restart)
             (collectgarbage :collect))
-          1000)))}))
+          1000)))})
+  )
 }

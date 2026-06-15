@@ -36,12 +36,16 @@ end
 
 -- paths
 local _path = vim.env.PATH
+if _path==nil then
+  _path = ''
+end
 
-local bin_path = vim.fs.joinpath(cfg_dir, "bin", "windows")
-
+local bin_path = vim.fs.joinpath(cfg_dir, "bin", (is_windows and "windows" or "unix"))
+local dotnet_tool_path = vim.fs.joinpath(vim.env.HOME,".dotnet", "tools")
 _path = bin_path .. (is_windows and ";" or ":") .. _path
-_path = "~/.dotnet/tools" .. (is_windows and ";" or ":") .. _path
+_path = dotnet_tool_path .. (is_windows and ";" or ":") .. _path
 vim.env.PATH = _path
+
 
 local function ensure_installed(plugin, branch)
   local user, repo = string.match(plugin, "(.+)/(.+)")

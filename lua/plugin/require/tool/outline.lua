@@ -8,7 +8,7 @@ return {
     },
     opts = {
         providers = {
-            priority = { 'lsp', 'coc', 'markdown', 'norg', 'treesitter', 'man' },
+            priority = { 'lsp', 'markdown', 'norg', 'treesitter', 'man' },
         },
         symbols = {
             icons = {

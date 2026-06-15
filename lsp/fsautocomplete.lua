@@ -7,18 +7,21 @@ return {
   cmd = { 'fsautocomplete' },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
-    on_dir(vim.fs.root('*.fsproj', '*.sln', '.git')(fname))
+    local root_markers = { '*.fsproj', '*.sln', '.git' }
+    local root = vim.fs.dirname(
+      vim.fs.find(root_markers, { path = fname, upward = true })[1] or '')
+    on_dir(root ~= '' and root or nil)
   end,
   filetypes = { 'fsharp' },
   init_options = {
-    AutomaticWorkspaceInit = true,  -- 启用自动工作区初始化
+    AutomaticWorkspaceInit = true, -- 启用自动工作区初始化
   },
   log_level = "WARN",
 
   -- 覆盖 LSP 服务器的能力，防止 blink.cmp 错误
   capabilities = vim.tbl_extend('force', require('blink-cmp').get_lsp_capabilities(), {
     textDocument = {
-      semanticTokens = nil,  -- 完全禁用语义令牌
+      semanticTokens = nil, -- 完全禁用语义令牌
     },
   }),
 

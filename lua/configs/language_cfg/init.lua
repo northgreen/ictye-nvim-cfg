@@ -19,23 +19,6 @@ local function init()
     require(t .. '.toolchain_init')
 end
 
-local attach_lsp_to_existing_buffers = vim.schedule_wrap(function()
-    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-        local valid = vim.api.nvim_buf_is_valid(bufnr) and
-                          vim.bo[bufnr].buflisted
-        if valid and vim.bo[bufnr].buftype == "" then
-            local clients = vim.lsp.get_clients({bufnr = bufnr})
-            if #clients == 0 then
-                vim.api.nvim_exec_autocmds("FileType", {buffer = bufnr})
-            end
-        end
-    end
-end)
-
---- lsp configed
-_G.configed = {}
---- lsp attached
-_G.attached = {}
 
 Autocmd('BufRead', {
     callback = function(arg)
@@ -45,11 +28,6 @@ Autocmd('BufRead', {
         if i then
             i()
             init_table[ft] = nil
-        end
-
-        if not _G.attached[ft] then
-            attach_lsp_to_existing_buffers()
-            _G.attached[ft] = true
         end
     end
 })

@@ -1,11 +1,8 @@
-vim.g.nvlime_config = {
-  cmp = { enabled = true }
-}
-
 return {
   "northgreen/nvlime",
-  dev = true,
+  -- dev = true,
+  build = "make",
   dependencies = {
-    "monkoose/parsley"
+    "northgreen/parsley"
   },
 }

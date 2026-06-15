@@ -4,8 +4,7 @@ return {
   dependencies = {
     "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
-    "antoinemadec/FixCursorHold.nvim",
-    "nvim-treesitter/nvim-treesitter",
+    -- "antoinemadec/FixCursorHold.nvim",
     "nsidorenco/neotest-vstest"
   },
   enable = false,

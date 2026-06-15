@@ -55,10 +55,8 @@ M.undotree = {
 
 ---@type LazyKeysSpec[]
 M.telescope = {
-  { '<C-x><C-b>', '<Cmd>Telescope buffers<CR>',   mode = { 'n', 't' }, noremap = true, silent = true,            desc = 'Show buffer list' },
-  { '<C-x>bf',    '<Cmd>Telescope buffers<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
-  { '<C-c>',    '<Cmd>Telescope buffers<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
-  { '<C-f>',      '<Cmd>Telescope find_files<CR>' },
+  { '<C-c>',      '<Cmd>Telescope buffers theme=get_ivy<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
+  { '<C-f>',      '<Cmd>Telescope find_files theme=get_dropdown<CR>' },
   { '<C-p>',      '<Cmd>Telescope<CR>' },
 }
 
@@ -110,6 +108,8 @@ M.snacks = {
   { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
   { "<leader>gp", function() Snacks.picker.gh_pr() end,                     desc = "GitHub Pull Requests (open)" },
   { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,    desc = "GitHub Pull Requests (all)" },
+  { "<leader>z",  function() Snacks.zen() end,                              desc = "zen" },
+
 }
 
 ---@type LazyKeysSpec[]
@@ -145,6 +145,44 @@ M.opencode = {
   { "<S-C-d>", function() require("opencode").command("session.half.page.down") end, mode = "n", desc = "Scroll opencode down" },
 }
 
+M.quickbuf = {
+  { "<Tab>",      "<cmd>QuickBuf<CR>",          desc = "QuickBuf",   mode = "n" },
+  { "<leader>qt", "<cmd>QuickBufPinToggle<CR>", desc = "Pin toggle", mode = "n" },
+  -- { "<S-h>",      "<cmd>QuickBufPrevPinned<CR>", desc = "Prev pinned buffer", mode = "n" },
+  -- { "<S-l>",      "<cmd>QuickBufNextPinned<CR>", desc = "Next pinned buffer", mode = "n" }
+}
+
+M.refactoring = {
+  { "<leader>re",  function() return require("refactoring").extract_func() end,                                        desc = "Extract Function",         mode = { "n", "x" }, expr = true, },
+  { "<leader>ree", function() return require("refactoring").extract_func() .. "_" end,                                 desc = "Extract Function (line)",  mode = "n",          expr = true, },
+  { "<leader>rE",  function() return require("refactoring").extract_func_to_file() end,                                desc = "Extract Function To File", mode = { "n", "x" }, expr = true, },
+  { "<leader>rv",  function() return require("refactoring").extract_var() end,                                         desc = "Extract Variable",         mode = { "n", "x" }, expr = true, },
+  { "<leader>rvv", function() return require("refactoring").extract_var() .. "_" end,                                  desc = "Extract Variable (line)",  mode = "n",          expr = true, },
+  { "<leader>ri",  function() return require("refactoring").inline_var() end,                                          desc = "Inline Variable",          mode = { "n", "x" }, expr = true, },
+  { "<leader>rI",  function() return require("refactoring").inline_func() end,                                         desc = "Inline function",          mode = { "n", "x" }, expr = true, },
+  { "<leader>rs",  function() return require("refactoring").select_refactor() end,                                     desc = "Select refactor",          mode = { "n", "x" }, expr = true, },
+  { "<leader>pv",  function() return require("refactoring.debug").print_var { output_location = "below" } .. "iw" end, desc = "Debug print var below",    mode = "n",          expr = true, },
+  { "<leader>pv",  function() return require("refactoring.debug").print_var { output_location = "below" } end,         desc = "Debug print var below",    mode = "x",          expr = true, },
+  { "<leader>pV",  function() return require("refactoring.debug").print_var { output_location = "above" } .. "iw" end, desc = "Debug print var above",    mode = "n",          expr = true, },
+  { "<leader>pV",  function() return require("refactoring.debug").print_var { output_location = "above" } end,         desc = "Debug print var above",    mode = "x",          expr = true, },
+  { "<leader>pe",  function() return require("refactoring.debug").print_exp { output_location = "below" } end,         desc = "Debug print exp below",    mode = { "x", "n" }, expr = true, },
+  { "<leader>pee", function() return require("refactoring.debug").print_exp { output_location = "below" } .. "_" end,  desc = "Debug print exp below",    mode = "n",          expr = true, },
+  { "<leader>pE",  function() return require("refactoring.debug").print_exp { output_location = "above" } end,         desc = "Debug print exp above",    mode = { "x", "n" }, expr = true, },
+  { "<leader>pEE", function() return require("refactoring.debug").print_exp { output_location = "above" } .. "_" end,  desc = "Debug print exp above",    mode = "n",          expr = true, },
+  { "<leader>pP",  function() return require("refactoring.debug").print_loc { output_location = "above" } end,         desc = "Debug print location",     mode = "n",          expr = true, },
+  { "<leader>pp",  function() return require("refactoring.debug").print_loc { output_location = "below" } end,         desc = "Debug print location",     mode = "n",          expr = true, },
+  { "<leader>pc",  function() return require("refactoring.debug").cleanup { restore_view = true } end,                 desc = "Debug print clean",        mode = { "x", "n" }, expr = true, remap = true, }
+}
+
+M.ssr = {
+  { "<leader>sr", function() require("ssr").open() end, mode = { "n", "x" } }
+}
+
+M.treesj = {
+  { '<leader>m', function() require('treesj').toggle() end,                                 mode = 'n' },
+  { '<leader>M', function() require('treesj').toggle({ split = { recursive = true } }) end, mode = 'n' }
+}
+
 function M.setup_keymap()
   if vim.g.neovide then
     require 'core.keymap.neovide'
@@ -158,6 +196,7 @@ function M.setup_keymap()
   local Keymap = vim.keymap.set
   local Command = vim.api.nvim_create_user_command
   local Menu = require("util.quickmenu")
+  local Lsp = require("util.lsp")
 
 
   -- ENDREGION
@@ -196,55 +235,7 @@ function M.setup_keymap()
     Command('IcRename', function() vim.lsp.buf.rename() end, {})
     Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
     Command('IcDefine', function() vim.lsp.buf.definition() end, {})
-    Command('IcLspRestart', function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local clients = vim.lsp.get_clients({ bufnr = bufnr })
-
-      if #clients == 0 then
-        vim.notify('No LSP server attached to current buffer', vim.log.levels.WARN)
-        return
-      end
-
-      local restarted = {}
-      local failed = {}
-
-      for _, client in ipairs(clients) do
-        local ok, err = pcall(function()
-          local config = client.config or vim.lsp.config[client.name]
-          if not config then
-            table.insert(failed, string.format('%s (no config)', client.name))
-            return
-          end
-
-          -- Stop client and wait for it to fully shut down
-          vim.lsp.stop_client(client.id, true)
-          vim.wait(2000, function()
-            local remaining = vim.lsp.get_clients({ bufnr = bufnr, id = client.id })
-            return #remaining == 0
-          end)
-
-          vim.lsp.start(config)
-          table.insert(restarted, client.name)
-        end)
-
-        if not ok then
-          table.insert(failed, string.format('%s (%s)', client.name, tostring(err)))
-        end
-      end
-
-      -- Report results with appropriate log level
-      if #restarted > 0 and #failed > 0 then
-        vim.notify(string.format('Restarted: %s\nFailed: %s',
-          table.concat(restarted, ', '), table.concat(failed, ', ')),
-          vim.log.levels.WARN)
-      elseif #failed > 0 then
-        vim.notify(string.format('Failed: %s', table.concat(failed, ', ')),
-          vim.log.levels.ERROR)
-      else
-        vim.notify(string.format('Restarted LSP servers: %s', table.concat(restarted, ', ')),
-          vim.log.levels.INFO)
-      end
-    end, { desc = 'Restart LSP servers for current buffer' })
+    Command('IcLspRestart', Lsp.lsp_restart, { desc = 'Restart LSP servers for current buffer' })
     Command('IcDAP', function() require 'osv'.launch({ port = 8086 }) end, {})
     Command('IcDAPUIOpen', function() require('dapui').open() end, {})
     Command('IcDAPUIClose', function() require('dapui').close() end, {})
@@ -262,6 +253,8 @@ function M.setup_keymap()
   -- #endregion
 
   local keymap_opt = { noremap = true, silent = true }
+
+  -- Keymap("n",'<C-c>','<Cmd>Pick buffers<CR>'   ,{desc="",noremap=true})
 
   -- Navigation and files
   Keymap('n', '<F3>', '<Cmd>Outline<CR>', keymap_opt)
@@ -296,6 +289,7 @@ function M.setup_keymap()
 
 
   Keymap('n', '<C-x>f', "<Cmd>Pick files<CR>", { noremap = true, silent = true, desc = "Pick a file" })
+  Keymap('n', '<C-x>tlt', "<Cmd>TunnelVision toggle<CR>", { noremap = true, silent = true, desc = "Toggle TunnelVision" })
 
   Keymap('n', '<C-x><C-f>', function() require("mini.files").open() end,
     { noremap = true, silent = true, desc = "Open a file" })
@@ -303,9 +297,7 @@ function M.setup_keymap()
     { noremap = true, silent = true, desc = "Show LSP actions" })
 
   Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
-
-
-  Keymap('n', '<C-x>t', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
+  Keymap('n', '<C-x>tm', '<Cmd>IcTestMenu<CR>', { noremap = true, silent = true, desc = "Test:Show Test Menu" })
 
   Keymap('n', '<C-x>ft', require("global.ui_util.ui.float_term"),
     { noremap = true, silent = true, desc = "Test:Show Test Menu" })
@@ -316,7 +308,6 @@ function M.setup_keymap()
   Keymap('n', '<C-x>oo', '<Cmd>OverseerToggle<CR>', { noremap = true, silent = true, desc = 'Toggle Overseer' })
   Keymap('n', '<C-x>or', '<Cmd>OverseerRun<CR>', { noremap = true, silent = true, desc = 'Run Task' })
 
-  Keymap('n', '<A-x>', ":", { desc = 'Command line' })
 
   -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
   Keymap("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
@@ -327,6 +318,7 @@ function M.setup_keymap()
 
   -- Oh Baby
   Keymap({ "n", "x" }, "cxk", function() vim.notify("只因你太美") end)
+  Keymap({ "n", "x" }, "<leader>ts", "<Cmd>Translate zh-CN<CR>")
 
 
   --- Add or skip cursor above/below the main cursor.
