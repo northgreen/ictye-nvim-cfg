@@ -19,6 +19,7 @@ local function init()
     require(t .. '.toolchain_init')
 end
 
+_G.configed={}
 
 Autocmd('BufRead', {
     callback = function(arg)

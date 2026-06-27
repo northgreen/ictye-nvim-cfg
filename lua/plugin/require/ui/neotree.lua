@@ -18,6 +18,24 @@ return {
             { event = events.FILE_MOVED,   handler = on_move },
             { event = events.FILE_RENAMED, handler = on_move },
         })
+
+        opts.sources = {
+            "filesystem",
+            "buffers",
+            "git_status",
+            "document_symbols"
+          }
+
+        opts.document_symbols = {
+          follow_cursor = true,
+          kinds = {
+            "Class",
+            "Function",
+            "Method",
+            "Struct",
+            "Interface"
+          }
+        }
         opts.filesystem = {
                 hijack_netrw_behavior = "disabled",
                 window = {
