@@ -4,7 +4,7 @@ vim.g.loaded_netrw       = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- load modules
-ploadmodule 'plugin'
+ploadmodule "config"
 
 -- configs
 ploadmodule 'configs'

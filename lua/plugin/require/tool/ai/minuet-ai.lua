@@ -1,5 +1,6 @@
 return {
   'milanglacier/minuet-ai.nvim',
+  event="BufReadPre",
   opts = {
     provider = 'openai_compatible ',
     request_timeout = 2.5,

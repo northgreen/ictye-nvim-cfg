@@ -55,9 +55,9 @@ M.undotree = {
 
 ---@type LazyKeysSpec[]
 M.telescope = {
-  { '<C-c>',      '<Cmd>Telescope buffers theme=get_ivy<CR>',   noremap = true,      silent = true,  desc = 'Show buffer list' },
-  { '<C-f>',      '<Cmd>Telescope find_files theme=get_dropdown<CR>' },
-  { '<C-p>',      '<Cmd>Telescope<CR>' },
+  { '<C-c>', '<Cmd>Telescope buffers theme=get_ivy<CR>',        noremap = true, silent = true, desc = 'Show buffer list' },
+  { '<C-f>', '<Cmd>Telescope find_files theme=get_dropdown<CR>' },
+  { '<C-p>', '<Cmd>Telescope<CR>' },
 }
 
 ---@type LazyKeysSpec[]
@@ -80,14 +80,12 @@ M.muti_cursor = {
 M.lazygit = { { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' } }
 
 ---@type LazyKeysSpec[]
-M.rip_substitute = {
-  {
-    '<leader>fs',
-    function() require('rip-substitute').sub() end,
-    mode = { 'n', 'x' },
-    desc = ' rip substitute',
-  },
-}
+-- disabled
+-- M.rip_substitute = {
+--   {
+--     '<leader>fs', function() require('rip-substitute').sub() end, mode = { 'n', 'x' }, desc = ' rip substitute',
+--   },
+-- }
 
 ---@type LazyKeysSpec[]
 M.flash = {
@@ -100,7 +98,7 @@ M.flash = {
 
 ---@type LazyKeysSpec[]
 M.snacks = {
-  { "<leader>ps", function() Snacks.profiler.scratch() end,                 desc = "Profiler Scratch Bufer" },
+  { "<leader>ps", function() Snacks.profiler.scratch() end,                 desc = "Profiler Scratch Buffer" },
   { "<leader>pt", function() Snacks.profiler.toggle() end,                  desc = "Profiler Toggle" },
   { "<leader>de", function() Snacks.dim.enable() end,                       desc = "Enable Dim" },
   { "<leader>dd", function() Snacks.dim.disable() end,                      desc = "Disable Dim" },
@@ -119,8 +117,7 @@ M.trouble = {
   { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                desc = "Symbols (Trouble)" },
   { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
   { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)" },
-  { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)"
-  }
+  { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)" }
 }
 
 ---@type LazyKeysSpec[]
@@ -136,9 +133,9 @@ M.resession = {
 
 ---@type LazyKeysSpec[]
 M.opencode = {
-  { "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, mode = { "n", "x" }, desc = "Ask opencode…" },
   -- { "<C-x>", function() require("opencode").select() end, mode = { "n", "x" }, desc = "Execute opencode action…" },
-  { "<leader>oC", function() require("opencode").select() end, mode = { "n", "t" }, desc = "Toggle opencode" },
+  { "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, mode = { "n", "x" }, desc = "Ask opencode…" },
+  { "<leader>oC", function() require("opencode").select() end, mode = { "n", "t" }, desc = "Select opencode" },
   { "go", function() return require("opencode").operator("@this ") end, mode = { "n", "x" }, desc = "Add range to opencode", expr = true },
   { "goo", function() return require("opencode").operator("@this ") .. "_" end, mode = "n", desc = "Add line to opencode", expr = true },
   { "<S-C-u>", function() require("opencode").command("session.half.page.up") end, mode = "n", desc = "Scroll opencode up" },
@@ -148,14 +145,12 @@ M.opencode = {
 M.quickbuf = {
   { "<Tab>",      "<cmd>QuickBuf<CR>",          desc = "QuickBuf",   mode = "n" },
   { "<leader>qt", "<cmd>QuickBufPinToggle<CR>", desc = "Pin toggle", mode = "n" },
-  -- { "<S-h>",      "<cmd>QuickBufPrevPinned<CR>", desc = "Prev pinned buffer", mode = "n" },
-  -- { "<S-l>",      "<cmd>QuickBufNextPinned<CR>", desc = "Next pinned buffer", mode = "n" }
 }
 
 M.refactoring = {
   { "<leader>re",  function() return require("refactoring").extract_func() end,                                        desc = "Extract Function",         mode = { "n", "x" }, expr = true, },
   { "<leader>ree", function() return require("refactoring").extract_func() .. "_" end,                                 desc = "Extract Function (line)",  mode = "n",          expr = true, },
-  { "<leader>rE",  function() return require("refactoring").extract_func_to_file() end,                                desc = "Extract Function To File", mode = { "n", "x" }, expr = true, },
+  { "<leader>rE",  function() return require("roperatoroperatoroperatorefactoring").extract_func_to_file() end,        desc = "Extract Function To File", mode = { "n", "x" }, expr = true, },
   { "<leader>rv",  function() return require("refactoring").extract_var() end,                                         desc = "Extract Variable",         mode = { "n", "x" }, expr = true, },
   { "<leader>rvv", function() return require("refactoring").extract_var() .. "_" end,                                  desc = "Extract Variable (line)",  mode = "n",          expr = true, },
   { "<leader>ri",  function() return require("refactoring").inline_var() end,                                          desc = "Inline Variable",          mode = { "n", "x" }, expr = true, },
@@ -183,6 +178,25 @@ M.treesj = {
   { '<leader>M', function() require('treesj').toggle({ split = { recursive = true } }) end, mode = 'n' }
 }
 
+M.cppassist = {
+  { '<A-o>',      '<Cmd>SwitchSourceAndHeader<CR>',                                  mode = 'n', },
+  { '<leader>cf', '<Cmd>ImplementInSource<CR>',                                      mode = 'n', },
+  { '<leader>cv', '<Cmd>ImplementOutOfClass<CR>',                                    mode = 'n', },
+  { '<leader>gh', '<Cmd>GotoHeaderFile<CR>',                                         mode = 'n', },
+  { '<leader>cf', '<Cmd>lua require("cppassist").ImplementInSourceInVisualMode<CR>', mode = 'v', },
+}
+
+M.treewalker = {
+  -- { '<C-k>',   '<Cmd>Treewalker Up<CR>',        mode = { 'n', 'x' }, },
+  -- { '<C-j>',   '<Cmd>Treewalker Down<CR>',      mode = { 'n', 'x' }, },
+  -- { '<C-h>',   '<Cmd>Treewalker Right<CR>',     mode = { 'n', 'x' }, },
+  -- { '<C-l>',   '<Cmd>Treewalker Left<CR>',      mode = { 'n', 'x' }, },
+  -- { '<C-S-j>', '<Cmd>Treewalker SwapDown<CR>',  mode = 'n', },
+  -- { '<C-S-k>', '<Cmd>Treewalker SwapUp<CR>',    mode = 'n', },
+  -- { '<C-S-h>', '<Cmd>Treewalker SwapLeft<CR>',  mode = 'n', },
+  -- { '<C-S-l>', '<Cmd>Treewalker SwapRight<CR>', mode = 'n', },
+}
+
 function M.setup_keymap()
   if vim.g.neovide then
     require 'core.keymap.neovide'
@@ -197,8 +211,6 @@ function M.setup_keymap()
   local Command = vim.api.nvim_create_user_command
   local Menu = require("util.quickmenu")
   local Lsp = require("util.lsp")
-
-
   -- ENDREGION
 
   -- Test Menu
@@ -231,8 +243,6 @@ function M.setup_keymap()
 
   -- #region Commands
   do
-    Command('IcFormat', function() vim.lsp.buf.format() end, {})
-    Command('IcRename', function() vim.lsp.buf.rename() end, {})
     Command('IcUseage', function() vim.lsp.buf.incoming_calls() end, {})
     Command('IcDefine', function() vim.lsp.buf.definition() end, {})
     Command('IcLspRestart', Lsp.lsp_restart, { desc = 'Restart LSP servers for current buffer' })
@@ -318,8 +328,89 @@ function M.setup_keymap()
 
   -- Oh Baby
   Keymap({ "n", "x" }, "cxk", function() vim.notify("只因你太美") end)
-  Keymap({ "n", "x" }, "<leader>ts", "<Cmd>Translate zh-CN<CR>")
+  Keymap({ "n", "x" }, "<leader>ts", "<Cmd>Translate zh-CN<CR>", { desc = "Translate to CN" })
 
+  -- movement
+  Keymap({ 'n', 'v' }, '<C-k>', '<cmd>Treewalker Up<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-j>', '<cmd>Treewalker Down<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-h>', '<cmd>Treewalker Left<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-l>', '<cmd>Treewalker Right<cr>', { silent = true })
+  Keymap('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
+  Keymap('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
+  Keymap('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
+  Keymap('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
+
+
+  Keymap({ "x", "o" }, "am", function()
+    require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
+  end, { desc = "Outer Function" })
+  Keymap({ "x", "o" }, "im", function()
+    require "nvim-treesitter-textobjects.select".select_textobject("@function.inner", "textobjects")
+  end, { desc = "Inner Function" })
+  Keymap({ "x", "o" }, "ac", function()
+    require "nvim-treesitter-textobjects.select".select_textobject("@class.outer", "textobjects")
+  end, { desc = "Outer Class" })
+  Keymap({ "x", "o" }, "ic", function()
+    require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
+  end, { desc = "Inner Class" })
+  Keymap({ "x", "o" }, "as", function()
+    require "nvim-treesitter-textobjects.select".select_textobject("@local.scope", "locals")
+  end, { desc = "Scope Textobject" })
+  -- You can use the capture groups defined in `textobjects.scm`
+  Keymap({ "n", "x", "o" }, "]m", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+  end, { desc = "Next function start" })
+  Keymap({ "n", "x", "o" }, "]]", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
+  end, { desc = "Next class start" })
+  -- You can also pass a list to group multiple queries.
+  Keymap({ "n", "x", "o" }, "]o", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start({ "@loop.inner", "@loop.outer" }, "textobjects")
+  end, { desc = "Next loop start" })
+  -- You can also use captures from other query groups like `locals.scm` or `folds.scm`
+  Keymap({ "n", "x", "o" }, "]s", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@local.scope", "locals")
+  end, { desc = "Next scope start" })
+  Keymap({ "n", "x", "o" }, "]z", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@fold", "folds")
+  end, { desc = "Next fold start" })
+
+  Keymap({ "n", "x", "o" }, "]M", function()
+    require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
+  end, { desc = "Next function end" })
+  Keymap({ "n", "x", "o" }, "][", function()
+    require("nvim-treesitter-textobjects.move").goto_next_end("@class.outer", "textobjects")
+  end, { desc = "Next class end" })
+
+  Keymap({ "n", "x", "o" }, "[m", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+  end, { desc = "Prev function start" })
+  Keymap({ "n", "x", "o" }, "[[", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
+  end, { desc = "Prev class start" })
+
+  Keymap({ "n", "x", "o" }, "[M", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
+  end, { desc = "Prev function end" })
+  Keymap({ "n", "x", "o" }, "[]", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_end("@class.outer", "textobjects")
+  end, { desc = "Prev class end" })
+
+  -- Go to either the start or the end, whichever is closer.
+  -- Use if you want more granular movements
+  Keymap({ "n", "x", "o" }, "]d", function()
+    require("nvim-treesitter-textobjects.move").goto_next("@conditional.outer", "textobjects")
+  end, { desc = "Next conditional" })
+  Keymap({ "n", "x", "o" }, "[d", function()
+    require("nvim-treesitter-textobjects.move").goto_previous("@conditional.outer", "textobjects")
+  end, { desc = "Prev conditional" })
+
+  Keymap("n", "<leader>a", function()
+    require("nvim-treesitter-textobjects.swap").swap_next "@parameter.inner"
+  end, { desc = "Swap param next" })
+  Keymap("n", "<leader>A", function()
+    require("nvim-treesitter-textobjects.swap").swap_previous "@parameter.outer"
+  end, { desc = "Swap param prev" })
 
   --- Add or skip cursor above/below the main cursor.
 

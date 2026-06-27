@@ -21,7 +21,7 @@
     {:callback (fn [event]
       (when (= (. event.data.actions 1 :type)
                 :move)
-        (Snacks.rename.on_rename_file (. event.data.actions 1 :src_url)
+        (_G.Snacks.rename.on_rename_file (. event.data.actions 1 :src_url)
           (. event.data.actions 1 :dest_url))))
       :pattern :OilActionsPost})
 

@@ -23,6 +23,7 @@ return {
   'nvim-lualine/lualine.nvim',
   event = 'BufReadPre',
   -- enabled = (not vim.g.started_by_firenvim) and options.ui.ui_options.noise,
+  -- enabled = false,
   opts = {
     options = {
       icons_enabled = true,
@@ -56,7 +57,13 @@ return {
       }
     },
     sections = {
-      lualine_a = {},
+      lualine_a = {
+        {
+          'mode',
+          separator = { left = '', right = '' },
+          right_padding = 2
+        }
+      },
       lualine_b = {
         {
           'branch',
@@ -81,28 +88,28 @@ return {
       lualine_y = {},
       lualine_z = {}
     },
-    winbar = {
-      lualine_a = {
-        {
-          'mode',
-          separator = { left = '', right = '' },
-          right_padding = 2
-        }
-      },
-      lualine_b = {},
-      lualine_c = { 'filesize' },
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    inactive_winbar = {
-      lualine_a = { 'filename' },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {}
-    }
+    -- winbar = {
+    --   lualine_a = {
+    --     {
+    --       'mode',
+    --       separator = { left = '', right = '' },
+    --       right_padding = 2
+    --     }
+    --   },
+    --   lualine_b = {},
+    --   lualine_c = { 'filesize' },
+    --   lualine_x = {},
+    --   lualine_y = {},
+    --   lualine_z = {}
+    -- },
+    -- inactive_winbar = {
+    --   lualine_a = { 'filename' },
+    --   lualine_b = {},
+    --   lualine_c = {},
+    --   lualine_x = {},
+    --   lualine_y = {},
+    --   lualine_z = {}
+    -- }
   },
   config = function(_, opts)
     local theme = require 'catppuccin.utils.lualine' ()
@@ -117,7 +124,7 @@ return {
     do
       local ok, noice = pcall(require, 'noice')
       if ok then
-        table.insert(opts.winbar.lualine_x, {
+        table.insert(opts.sections.lualine_x, {
           --- @diagnostic disable-next-line undefined-field
           noice.api.status.message.get_hl,
           --- @diagnostic disable-next-line undefined-field
@@ -157,17 +164,20 @@ return {
       end
     end
 
-    opts.winbar.lualine_y = {
-      {
-        f_nav().fun,
-        cond = f_nav().cond,
-        navic_opts = nil,
-        separator = { left = '', right = '' },
-        right_padding = 2
+    -- disable bread nav
+    if false then
+      opts.sections.lualine_y = {
+        {
+          f_nav().fun,
+          cond = f_nav().cond,
+          navic_opts = nil,
+          separator = { left = '', right = '' },
+          right_padding = 2
+        }
       }
-    }
+    end
 
-    table.insert(opts.winbar.lualine_a,
+    table.insert(opts.sections.lualine_a,
       {
         muti_cursor_state().fun,
         cond = muti_cursor_state().cond,

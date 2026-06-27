@@ -75,7 +75,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local Telescope = require('telescope.builtin')
     local themes = require('telescope.themes')
     local theme_opt = {}
-    Keymap('n', '<C-]>',
+    Keymap('n', 'gd',
       function() Telescope.lsp_definitions(themes.get_cursor(theme_opt)) end
       , { buffer = event.buf, desc = 'LSP: Go To Define' })
 
@@ -83,9 +83,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
       function() Telescope.lsp_document_symbols(themes.get_cursor(theme_opt)) end,
       { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
 
+    Keymap('n', 'gD', vim.lsp.buf.declaration,
+    { buffer = event.buf, desc = 'Go to Declaration' })
+
+    Keymap('n', 'gi', vim.lsp.buf.implementation,
+    { buffer = event.buf, desc = 'Go to Implementation' })
+
     Keymap('n', 'grt',
       function() Telescope.lsp_type_definitions(themes.get_cursor(theme_opt)) end,
       { buffer = event.buf, desc = 'LSP: Show Type Definitions' })
+
+    Keymap('n', 'grc',
+      function() Telescope.lsp_incoming_calls(themes.get_cursor(theme_opt)) end,
+      { buffer = event.buf, desc = 'LSP: Show Incoming Calls' })
+
+    Keymap('n', 'gro',
+      function() Telescope.lsp_outgoing_calls(themes.get_cursor(theme_opt)) end,
+      { buffer = event.buf, desc = 'LSP: Show Outgoing Calls' })
 
     Keymap('n', 'grr',
       function() Telescope.lsp_references(themes.get_cursor(theme_opt)) end,

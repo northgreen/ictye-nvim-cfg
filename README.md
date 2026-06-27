@@ -125,11 +125,6 @@ nvim --cmd "let g:lite_mode=v:true"
 
 ### Common Issues
 
-#### Slow Startup on Windows
-- Try using lite mode: `nvim --cmd "let g:lite_mode=v:true"`
-- Ensure antivirus software isn't scanning Neovim files excessively
-- Consider using WSL2 instead of native Windows
-
 #### LSP Server Not Starting
 - Install language servers via Mason: `:Mason`
 - Check LSP status with `:LspInfo`

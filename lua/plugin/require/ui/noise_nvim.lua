@@ -1,3 +1,6 @@
+print(options.env.term)
+-- vim.env.WT_SESSION ~= nil
+local twc = require "util.functions".three_way_compare
 return {
   -- enabled = (not vim.g.started_by_firenvim) and options.ui.ui_options.noise,
   -- enabled = false,
@@ -45,10 +48,10 @@ return {
     redirect = { view = "popup", filter = { event = "msg_show" } },
     views = {
       notify = {
-        render = 'compact',
+        render = 'wrapped-compact',
         timeout = 500,
         top_down = false,
-        stages = "slide",
+        stages = twc(options.env.term=="WINTERM", "static" ,"slide" ),
         animate = false,
       },
       cmdline_popup = {

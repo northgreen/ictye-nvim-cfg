@@ -2,6 +2,7 @@
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
+
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
 
 -- exit when ori mod
@@ -22,6 +23,7 @@ if not ok then
   print('Error loading env_init,this config may not work properly: ' .. err)
 end
 
+
 ploadmodule 'core.vimpreconfig'
 
 
@@ -30,4 +32,3 @@ if vim.g.lite_mode then
 else
   ploadmodule 'full_init'
 end
-

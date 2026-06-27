@@ -1,6 +1,6 @@
 return {
   "northgreen/project_toolchain.nvim",
-  -- enabled = false,
+  enabled = false,
   opts = {
     log_level = "warn",
     manual_mode = false,
