@@ -11,6 +11,13 @@ local function check_command(command)
 end
 
 function M.check()
+  vim.health.start("Check nvim environment")
+  local current = vim.version()
+  local target = vim.version.parse('0.12.0')
+
+  if current >= target then
+    vim.health.ok("nvim version:" .. vim.version():__tostring() .. " is ok")
+  end
   vim.health.start("Check Required Command")
   for _, bin in ipairs(options.env.required.required) do
     check_command(bin)

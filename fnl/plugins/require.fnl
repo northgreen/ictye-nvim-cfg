@@ -1,6 +1,5 @@
 [
-
-;- dependencies of configs
+  ;- dependencies of configs
 
   (require :plugin.require.ui.colortheme.catppuccin)                       ; Catppuccin主题: 柔和 pastel 配色的 Neovim 主题
   (require :plugin.require.ui.indent_blankline)                            ; 缩进线: 显示代码缩进对齐线
@@ -89,6 +88,9 @@
   (require :plugin.require.ui.wombient)
   (require :plugin.require.ui.drop-bar)
   (require :plugin.require.tool.meow-yarn)
+
+  ; (require :plugin.require.language.language_tool.playground) ; Treesitter playground: 已废弃
+
   (require :plugins.require.quickbuf)
   (require :plugins.require.vcs.diffview)
   (require :plugins.require.vcs.codediff)
@@ -107,7 +109,6 @@
   ; require 'plugin.require.tool.ai.claude',
 
   ;;;;disabled
-  ; (require :plugin.require.language.language_tool.playground) ; Treesitter playground: 已废弃
   ; (require :plugin.require.editor.fcitx5ui)                                ; Fcitx5 UI: 输入法状态显示
   ; require :plugin.require.editor.unity()
   ; (require :plugin.require.tool.ai.bink-mcp-avante) ; Avante MCP: 已禁用
