@@ -5,12 +5,26 @@
 return {
   -- 使用标准模式而非 adaptive 模式
   cmd = { 'fsautocomplete' },
+  -- NOTE: vim.fs.find 不支持 glob 通配符（如 *.fsproj），
+  -- 因此手动向上搜索项目根，否则 root 会退化为 '.' 导致 fsautocomplete 初始化崩溃
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
-    local root_markers = { '*.fsproj', '*.sln', '.git' }
-    local root = vim.fs.dirname(
-      vim.fs.find(root_markers, { path = fname, upward = true })[1] or '')
-    on_dir(root ~= '' and root or nil)
+    local cur = vim.fs.dirname(fname)
+    local root = nil
+    while cur and cur ~= '' do
+      if vim.fn.glob(cur .. '/*.fsproj') ~= ''
+          or vim.fn.glob(cur .. '/*.sln') ~= ''
+          or vim.fn.isdirectory(cur .. '/.git') == 1 then
+        root = cur
+        break
+      end
+      local parent = vim.fs.dirname(cur)
+      if parent == cur then
+        break
+      end
+      cur = parent
+    end
+    on_dir(root)
   end,
   filetypes = { 'fsharp' },
   init_options = {
