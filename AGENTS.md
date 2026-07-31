@@ -13,6 +13,7 @@ Conventions
 
 Use Chinese for communication, English for code comments.
 
+
 ## Project Overview
 
 Personal Neovim configuration (~/.config/nvim) with modular architecture supporting:
@@ -33,6 +34,14 @@ nvim --cmd "let g:lite_mode=v:true"  # Lite mode (minimal)
 ```bash
 nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('checkhealth')" -c "q" 2>&1
 ```
+
+### E2E Tests (real user config)
+```bash
+./tests/e2e/setup.sh   # first run: clone denops.vim to tests/e2e/vendor/
+export PATH=$HOME/.deno/bin:$PATH
+cd tests/e2e && deno test -A --config deno.jsonc scenarios/
+```
+框架基于 denops.vim v8 自带 testutil（cli.ts rpc 转发 + Neovim host），启动**真实用户配置**的 nvim 做断言。共 8 个测试（~30s）：4 个功能场景（startup/keymap/lsp/lite）+ 3 个性能场景（perf_startup：full/lite 启动计时；perf_lsp：Lua attach/documentSymbol/hover/编辑；perf_ts：TS 同样四项）+ lsp_test。性能场景用 nvim 内 hrtime 纳秒级计时，测量值即回归信号。坑：lua_ls root_markers 含 .git，仓库内 fixture 需 `.luarc.json` 钉住 workspace 根，否则 documentSymbol 挂起。详见 `tests/e2e/README.md`。
 
 ### Inside Neovim
 | Command | Description |
@@ -62,6 +71,7 @@ nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('che
 | `lua/global/` | LSP capabilities, UI utilities |
 | `lua/util/` | Shared utilities (keymap, functions) |
 | `lsp/*.lua` | Per-language LSP server configs |
+| `tests/e2e/` | E2E 测试框架（denops testutil + 真实用户配置） |
 
 ### Plugin Loading
 Plugins are specified in `lua/plugin/require/require.lua`, organized by category:
