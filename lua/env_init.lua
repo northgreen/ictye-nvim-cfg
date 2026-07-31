@@ -98,11 +98,10 @@ local function init_fennel()
 
   -- if hotpot cannot compail fennel right,it can also doit
   local fnl = require("fennel")
-  _G.fennel=fnl
+  _G.fennel = fnl
   table.insert(package.loaders, fnl.searcher)
 
-  fnl.path = fnl.path.. ";" .. table.concat(fennel_path , ";")
-
+  fnl.path = fnl.path .. ";" .. table.concat(fennel_path, ";")
 end
 
 local b, r = pcall(init_fennel)

@@ -1,7 +1,10 @@
 return {
   "northgreen/nvlime",
-  -- dev = true,
+  dev = true,
   build = "make",
+  opts = {
+
+  },
   dependencies = {
     "northgreen/parsley"
   },

@@ -2,6 +2,18 @@
 --- Configuration file for Neovim
 --- CopyRight (c) 2025/7/27 Ictye, All Right Reserved
 
+if os.getenv("NVPROFILE") then
+  local p = require("jit.p")
+  p.start("csm0GlFpi1,10","/home/ictye/pref.log")
+
+  vim.api.nvim_create_autocmd(
+    "VimLeave",{
+      callback = function()
+        p.stop()
+      end
+    }
+  )
+end
 
 local ploadmodule = require 'util.module_load_utils'.ploadmodule
 

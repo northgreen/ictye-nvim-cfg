@@ -25,13 +25,20 @@ return {
       }
     },
     notify = {
-      enabled = true,
+      enabled = false,
+      view="mini"
+      -- view="notify_send"
+      -- view="cmdline"
     },
     cmdline = {
       view = "cmdline",
     },
     messages = {
       enabled = true,
+      view="mini"
+      -- view="hover"
+      -- view="notify_send"
+      -- view="cmdline"
     },
     presets = {
       bottom_search = false,

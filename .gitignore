@@ -6,3 +6,4 @@ lazy-lock.json
 .mcphub/*
 native_sources/rust/target/*
 .envrc
+.claude/worktrees/

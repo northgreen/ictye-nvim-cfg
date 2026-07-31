@@ -29,14 +29,15 @@ Enable("gdscript")
 -- Enable("gdshader_lsp") -- not very eazy to use......
 -- Enable("cl-lsp") -- cannot work
 Enable("hyprls")
-Enable("ts_ls")
 
+-- Enable("ts_ls")
 Enable("vtsls")
 Enable("vue_ls")
 
 Enable("emmet_ls")
 Enable("gopls")
 Enable("cssls")
+
 -- Enable("fennel_language_server")
 -- Enable("emmet-language-server")
 Enable("fennel_ls") -- better then fennel_language_server
@@ -95,6 +96,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     Keymap('n', 'grc',
       function() Telescope.lsp_incoming_calls(themes.get_cursor(theme_opt)) end,
+      { buffer = event.buf, desc = 'LSP: Show Incoming Calls' })
+
+    Keymap('n', 'gra',
+      function() vim.lsp.buf.code_action() end,
       { buffer = event.buf, desc = 'LSP: Show Incoming Calls' })
 
     Keymap('n', 'gro',

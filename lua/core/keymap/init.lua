@@ -254,6 +254,12 @@ function M.setup_keymap()
     Command('IcTestMenu', bind(TestMenu.mount, TestMenu), {})
     Command('QuickMenu', bind(QuickMenu.mount, QuickMenu), {})
 
+    local jp = require("jit.p")
+
+    Command('PrefStart', bind(jp.start,"csm0GlFpi1,10","/home/ictye/pref.log"), {})
+
+    Command('PrefStop', bind(jp.stop), {})
+
     -- Adaptation for misstake
     Command('W', bind(vim.cmd, "w"), {})
     Command('Wa', bind(vim.cmd, "wa"), {})
