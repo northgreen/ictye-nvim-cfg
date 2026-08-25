@@ -56,7 +56,7 @@ M.undotree = {
 ---@type LazyKeysSpec[]
 M.telescope = {
   { '<C-c>', '<Cmd>Telescope buffers theme=get_ivy<CR>',        noremap = true, silent = true, desc = 'Show buffer list' },
-  { '<C-f>', '<Cmd>Telescope find_files theme=get_dropdown<CR>' },
+  -- { '<C-f>', '<Cmd>Telescope find_files theme=get_dropdown<CR>' },
   { '<C-p>', '<Cmd>Telescope<CR>' },
 }
 

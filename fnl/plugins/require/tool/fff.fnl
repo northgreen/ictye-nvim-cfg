@@ -6,9 +6,9 @@
   :opts {:debug {:enabled true :show_scores true}}
   :lazy false ; the plugin lazy-initialises itself
   :keys [
-    {1 "ff" 2 (fn [] ((. (require :fff) :find_files))) :desc "FFFind files"}
-    {1 "fg" 2 (fn [] ((. (require :fff) :live_grep))) :desc "LiFFFe grep"}
-    {1 "fz" 2 (fn [] ((. (require :fff) :live_grep) {:grep {:modes ["fuzzy" "plain"]}})) :desc "Live fffuzy grep"}
-    {1 "fw" 2 (fn [] ((. (require :fff) :live_grep_under_cursor))) :mode ["n" "x"] :desc "Search current word / selection"}
+    {1 "<C-f>" 2 (fn [] ((. (require :fff) :find_files))) :desc "FFFind files"}
+    {1 "<C-f>g" 2 (fn [] ((. (require :fff) :live_grep))) :desc "LiFFFe grep"}
+    {1 "<C-f>z" 2 (fn [] ((. (require :fff) :live_grep) {:grep {:modes ["fuzzy" "plain"]}})) :desc "Live fffuzy grep"}
+    {1 "<C-f>w" 2 (fn [] ((. (require :fff) :live_grep_under_cursor))) :mode ["n" "x"] :desc "Search current word / selection"}
   ]
 }

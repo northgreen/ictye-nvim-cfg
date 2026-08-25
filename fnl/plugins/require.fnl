@@ -103,6 +103,7 @@
   (require :plugins.require.treewalker)
   (require :plugins.require.nvim-treesitter-textobjects)
   (require :plugins.require.neoghidra)
+  (require :plugins.require.tool.herdr)
 
   ;;;;others
   (require :plugin.require.tool.firenvim) ; Firenvim: 在浏览器中编辑
