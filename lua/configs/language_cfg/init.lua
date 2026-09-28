@@ -10,6 +10,7 @@ local init_table = {
     c = function() require(p .. '.c_cpp.c_cpp_config') end,
     cpp = function() require(p .. '.c_cpp.c_cpp_config') end,
     fs = function() require(p .. "fsharp.fsharp_config") end,
+    php = function() require(p .. ".php") end,
 }
 
 local function init()

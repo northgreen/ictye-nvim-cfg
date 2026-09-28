@@ -24,6 +24,7 @@ return {
     'svelte',
     'typescriptreact',
     'vue',
+    'php'
   },
   root_markers = { '.git' },
 }

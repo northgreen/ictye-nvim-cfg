@@ -43,6 +43,10 @@ Enable("cssls")
 Enable("fennel_ls") -- better then fennel_language_server
 Enable("ast_grep")
 Enable("clojure-lsp")
+Enable("intelephense")
+Enable("php_lsp")
+-- Enable("tclsp") -- tclint; replaced by tcl-lsp below
+Enable("tcl_lsp")
 
 -- The lsp below is not here, it config with the plugin
 -- Rust
@@ -113,6 +117,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     Keymap('n', 'grf',
       vim.lsp.buf.format,
       { buffer = event.buf, desc = 'LSP: Format Buffer' })
+
+    Keymap('n', 'grn',
+      vim.lsp.buf.rename,
+      { buffer = event.buf, desc = 'LSP: Rrename Refrence' })
   end
 })
 

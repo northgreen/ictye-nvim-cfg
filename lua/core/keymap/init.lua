@@ -265,6 +265,7 @@ function M.setup_keymap()
     Command('Wa', bind(vim.cmd, "wa"), {})
     Command('Q', bind(vim.cmd, "q"), {})
     Command('Qa', bind(vim.cmd, "qa"), {})
+    Command('Wq', bind(vim.cmd, "wq"), {})
   end
   -- #endregion
 
@@ -337,16 +338,17 @@ function M.setup_keymap()
   Keymap({ "n", "x" }, "<leader>ts", "<Cmd>Translate zh-CN<CR>", { desc = "Translate to CN" })
 
   -- movement
-  Keymap({ 'n', 'v' }, '<C-k>', '<cmd>Treewalker Up<cr>', { silent = true })
-  Keymap({ 'n', 'v' }, '<C-j>', '<cmd>Treewalker Down<cr>', { silent = true })
-  Keymap({ 'n', 'v' }, '<C-h>', '<cmd>Treewalker Left<cr>', { silent = true })
-  Keymap({ 'n', 'v' }, '<C-l>', '<cmd>Treewalker Right<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-A-k>', '<cmd>Treewalker Up<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-A-j>', '<cmd>Treewalker Down<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-A-h>', '<cmd>Treewalker Left<cr>', { silent = true })
+  Keymap({ 'n', 'v' }, '<C-A-l>', '<cmd>Treewalker Right<cr>', { silent = true })
   Keymap('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
   Keymap('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
   Keymap('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
   Keymap('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
 
 
+  ---- text object keymaps
   Keymap({ "x", "o" }, "am", function()
     require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
   end, { desc = "Outer Function" })
@@ -443,8 +445,8 @@ function M.setup_keymap()
   end
 
   -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
-  vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
-  vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+  Keymap("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+  Keymap("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
 
   -- #region Hydras
 
