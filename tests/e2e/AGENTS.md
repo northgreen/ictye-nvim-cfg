@@ -17,6 +17,8 @@ listener，经 messagepack-rpc channel 与 nvim 通信——不依赖 denops 服
 
 ## 运行
 
+`bufferline_test.ts` verifies buffer addition, diagnostic highlighting and deletion after coalesced rendering. From the repository root, run `nvim --headless -u NONE -l tests/unit/performance.lua` for single initialization, render coalescing/expiry, preserved return values and idempotent installation.
+
 ```bash
 cd tests/e2e
 deno test -A --config deno.jsonc scenarios/          # 全部（串行，~30s）
@@ -25,6 +27,18 @@ deno test -A --config deno.jsonc scenarios/perf_lsp_test.ts   # 性能场景
 ```
 
 ## 架构
+
+### C# 诊断回归（可选，2026）
+
+指定已还原依赖、Roslyn 可加载的真实项目源码文件：
+
+```bash
+NVIM_ROSLYN_TEST_FILE=/absolute/path/to/Project/File.cs deno test -A --config deno.jsonc scenarios/roslyn_test.ts
+```
+
+不设置变量时跳过。测试等待项目初始化，验证退出插入模式不额外发起诊断请求，
+并在内存中添加未知类型、确认诊断出现、恢复原内容并确认诊断消失；不保存源码。
+这不是大型项目持续负载的性能验收。
 
 ```
 tests/e2e/

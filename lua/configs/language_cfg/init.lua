@@ -18,6 +18,7 @@ local function init()
     require('dapui').setup()
 
     require(t .. '.toolchain_init')
+    initd = true
 end
 
 _G.configed={}
@@ -33,4 +34,3 @@ Autocmd('BufRead', {
         end
     end
 })
-

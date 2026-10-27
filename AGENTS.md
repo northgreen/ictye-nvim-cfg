@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## 2026-10-28 UI and language tool performance
+
+- `lua/util/bufferline_render.lua` coalesces burst rendering to a 100 ms interval while preserving bufferline return values; installation is idempotent. Labels and diagnostic highlights can lag by this bounded interval, but diagnostics themselves are not cached or disabled.
+- `lua/configs/language_cfg/init.lua` marks successful initialization so DAP UI/toolchain setup is not repeated on every BufRead. Failed initialization remains retryable.
+- Unit check: `nvim --headless -u NONE -l tests/unit/performance.lua`. UI integration: `tests/e2e/scenarios/bufferline_test.ts`.
+
+## 2026-10-28 Roslyn diagnostics
+
+- `lsp/roslyn.lua` preserves the one-time attached-document refresh after project initialization; no manual all-buffer refresh on InsertLeave/BufWritePost. Full-solution analysis remains enabled. Sustained large-workspace performance still needs separate investigation.
+- Optional regression (cwd `tests/e2e`): `NVIM_ROSLYN_TEST_FILE=/absolute/path/to/File.cs deno test -A --config deno.jsonc scenarios/roslyn_test.ts`. Tests unknown-type diagnostics appearing/clearing without saving and no immediate InsertLeave diagnostic requests. Large-workspace sustained performance is not certified by this test.
+
 Purpose
 - This document tracks assistant-driven operations and context for this Neovim configuration repository.
 - Update policy: append-only log; do not delete or rewrite history; each entry includes date and a concise description.
@@ -155,4 +166,3 @@ Switch between full and lite modes at runtime:
 -- Toggle full mode (reload config)
 :lua vim.g.lite_mode = not vim.g.lite_mode; source $MYVIMRC
 ```
-

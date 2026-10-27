@@ -22,8 +22,6 @@
 local uv = vim.uv
 local fs = vim.fs
 
-local group = vim.api.nvim_create_augroup('lspconfig.roslyn_ls', { clear = true })
-
 ---@param client vim.lsp.Client
 ---@param target string
 local function on_init_sln(client, target)
@@ -109,6 +107,8 @@ return {
         '--stdio',
     },
     filetypes = { 'cs' },
+    -- Avoid thread-pool/GC oversubscription while full-solution analysis is active.
+    cmd_env = { DOTNET_PROCESSOR_COUNT = '4' },
     handlers = roslyn_handlers(),
 
     commands = {
@@ -181,21 +181,7 @@ return {
         end,
     },
 
-    on_attach = function(client, bufnr)
-        -- avoid duplicate autocmds for same buffer
-        if vim.api.nvim_get_autocmds({ buffer = bufnr, group = group })[1] then
-            return
-        end
-
-        vim.api.nvim_create_autocmd({ 'BufWritePost', 'InsertLeave' }, {
-            group = group,
-            buffer = bufnr,
-            callback = function()
-                refresh_diagnostics(client)
-            end,
-            desc = 'roslyn_ls: refresh diagnostics',
-        })
-    end,
+    -- Native didOpen/didChange pulling handles edits without an all-buffer InsertLeave refresh.
     capabilities = require("global.language.capabilities")({
         -- HACK: Doesn't show any diagnostics if we do not set this to true
         textDocument = {
@@ -206,7 +192,7 @@ return {
     }),
     settings = {
         ['csharp|background_analysis'] = {
-            dotnet_analyzer_diagnostics_scope = 'fullSolution',
+            dotnet_analyzer_diagnostics_scope = 'openFiles',
             dotnet_compiler_diagnostics_scope = 'fullSolution',
         },
         ['csharp|inlay_hints'] = {

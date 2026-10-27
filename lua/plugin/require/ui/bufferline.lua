@@ -36,6 +36,7 @@ return {
         opts.highlights = _h
 
         bufferline.setup(opts)
+        _G.nvim_bufferline = require('util.bufferline_render')(_G.nvim_bufferline)
         vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" },
             {
                 callback = function()
