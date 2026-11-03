@@ -79,7 +79,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     local Telescope = require('telescope.builtin')
     local themes = require('telescope.themes')
-    local theme_opt = {}
+    local theme_opt = {
+      layout_config = {
+        width = 90,
+        height = function(_, _, max_lines)
+          return math.min(max_lines, 25)
+        end
+      },
+    }
     Keymap('n', 'gd',
       function() Telescope.lsp_definitions(themes.get_cursor(theme_opt)) end
       , { buffer = event.buf, desc = 'LSP: Go To Define' })
@@ -89,10 +96,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
 
     Keymap('n', 'gD', vim.lsp.buf.declaration,
-    { buffer = event.buf, desc = 'Go to Declaration' })
+      { buffer = event.buf, desc = 'Go to Declaration' })
 
     Keymap('n', 'gi', vim.lsp.buf.implementation,
-    { buffer = event.buf, desc = 'Go to Implementation' })
+      { buffer = event.buf, desc = 'Go to Implementation' })
 
     Keymap('n', 'grt',
       function() Telescope.lsp_type_definitions(themes.get_cursor(theme_opt)) end,

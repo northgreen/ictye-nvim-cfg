@@ -1,168 +1,107 @@
 # AGENTS.md
+目的
+- 本文档记录助手对本 Neovim 配置仓库所做的操作与相关上下文。
+- 更新策略：只追加的日志，不删除、不改写历史；每条记录包含日期和简明描述。
 
-## 2026-10-28 UI and language tool performance
+禁止在此文件记载项目或者决策历史
 
-- `lua/util/bufferline_render.lua` coalesces burst rendering to a 100 ms interval while preserving bufferline return values; installation is idempotent. Labels and diagnostic highlights can lag by this bounded interval, but diagnostics themselves are not cached or disabled.
-- `lua/configs/language_cfg/init.lua` marks successful initialization so DAP UI/toolchain setup is not repeated on every BufRead. Failed initialization remains retryable.
-- Unit check: `nvim --headless -u NONE -l tests/unit/performance.lua`. UI integration: `tests/e2e/scenarios/bufferline_test.ts`.
+## 项目概览
 
-## 2026-10-28 Roslyn diagnostics
+个人 Neovim 配置（约位于 ~/.config/nvim），采用模块化架构，支持：
+- **双模式系统**：完整模式（默认）与 Lite 模式（启动更快）
+- **AI 集成**：通过 avante.nvim 支持多个提供商（OpenAI、GitHub Models、SiliconFlow）
+- **LSP/DAP**：20+ 语言服务器，含调试与测试支持
+- **跨平台**：针对 Linux、macOS、Windows 优化
 
-- `lsp/roslyn.lua` preserves the one-time attached-document refresh after project initialization; no manual all-buffer refresh on InsertLeave/BufWritePost. Full-solution analysis remains enabled. Sustained large-workspace performance still needs separate investigation.
-- Optional regression (cwd `tests/e2e`): `NVIM_ROSLYN_TEST_FILE=/absolute/path/to/File.cs deno test -A --config deno.jsonc scenarios/roslyn_test.ts`. Tests unknown-type diagnostics appearing/clearing without saving and no immediate InsertLeave diagnostic requests. Large-workspace sustained performance is not certified by this test.
+新模块或者补丁偏好使用fennel
 
-Purpose
-- This document tracks assistant-driven operations and context for this Neovim configuration repository.
-- Update policy: append-only log; do not delete or rewrite history; each entry includes date and a concise description.
+## 开发命令
 
-Conventions
-- Do not include secrets or tokens.
-- Use clear, concise summaries.
-- File naming is standardized; this file is AGENTS.md.
-
-## Language
-
-Use Chinese for communication, English for code comments.
-
-
-## Project Overview
-
-Personal Neovim configuration (~/.config/nvim) with modular architecture supporting:
-- **Dual mode system**: Full mode (default) vs Lite mode for faster startup
-- **AI integration**: Multiple providers (OpenAI, GitHub Models, SiliconFlow) via avante.nvim
-- **LSP/DAP**: 20+ language servers with debugging and testing support
-- **Cross-platform**: Optimized for Linux, macOS, Windows
-
-## Development Commands
-
-### Start Neovim
+### 启动 Neovim
 ```bash
-nvim                    # Full mode (all plugins)
-nvim --cmd "let g:lite_mode=v:true"  # Lite mode (minimal)
+nvim                    # 完整模式（全部插件）
+nvim --cmd "let g:lite_mode=v:true"  # Lite 模式（最小化）
 ```
 
-### Validate Configuration
+### 校验配置
 ```bash
 nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('checkhealth')" -c "q" 2>&1
 ```
 
-### E2E Tests (real user config)
+### E2E 测试（真实用户配置）
 ```bash
-./tests/e2e/setup.sh   # first run: clone denops.vim to tests/e2e/vendor/
+./tests/e2e/setup.sh   # 首次运行：把 denops.vim 克隆到 tests/e2e/vendor/
 export PATH=$HOME/.deno/bin:$PATH
 cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 ```
 框架基于 denops.vim v8 自带 testutil（cli.ts rpc 转发 + Neovim host），启动**真实用户配置**的 nvim 做断言。共 8 个测试（~30s）：4 个功能场景（startup/keymap/lsp/lite）+ 3 个性能场景（perf_startup：full/lite 启动计时；perf_lsp：Lua attach/documentSymbol/hover/编辑；perf_ts：TS 同样四项）+ lsp_test。性能场景用 nvim 内 hrtime 纳秒级计时，测量值即回归信号。坑：lua_ls root_markers 含 .git，仓库内 fixture 需 `.luarc.json` 钉住 workspace 根，否则 documentSymbol 挂起。详见 `tests/e2e/README.md`。
 
-### Inside Neovim
-| Command | Description |
-|---------|-------------|
-| `:Lazy` | Plugin manager UI |
-| `:Mason` | Install LSP servers, formatters, DAP |
-| `:LspInfo` | Check LSP server status |
-| `:TSUpdate` | Update Tree-sitter parsers |
-| `:checkhealth` | Diagnose issues |
-| `:ConfigEdit <type>` | Edit config files (nvim) |
-| `:OverseerRun` | Run a task |
-| `:OverseerToggle` | Toggle task panel |
+### Neovim 内部命令
+| 命令 | 说明 |
+|------|------|
+| `:Lazy` | 插件管理器界面 |
+| `:Mason` | 安装 LSP 服务器、格式化工具、DAP |
+| `:LspInfo` | 查看 LSP 服务器状态 |
+| `:TSUpdate` | 更新 Tree-sitter 解析器 |
+| `:checkhealth` | 诊断问题 |
+| `:ConfigEdit <type>` | 编辑配置文件（nvim） |
+| `:OverseerRun` | 运行任务 |
+| `:OverseerToggle` | 开关任务面板 |
 
-## Architecture
+## 架构
 
-### Entry Points
-- `init.lua` - Main entry, bootstraps lazy.nvim and selects mode
-- `lua/full_init.lua` - Full mode initialization
-- `lua/lite_init.lua` - Lite mode initialization
+### 入口
+- `init.lua` - 主入口，引导 lazy.nvim 并选择模式
+- `lua/full_init.lua` - 完整模式初始化
+- `lua/lite_init.lua` - Lite 模式初始化
 
-### Core Layers
-| Layer | Purpose |
-|-------|---------|
-| `lua/core/` | Settings, LSP, keymaps, autocommands |
-| `lua/options/` | Neovim options configuration |
-| `lua/plugin/` | Plugin specs (lazy.nvim) |
-| `lua/global/` | LSP capabilities, UI utilities |
-| `lua/util/` | Shared utilities (keymap, functions) |
-| `lsp/*.lua` | Per-language LSP server configs |
+### 核心分层
+| 层 | 用途 |
+|----|------|
+| `lua/core/` | 设置、LSP、键位映射、自动命令 |
+| `lua/options/` | Neovim 选项配置 |
+| `lua/plugin/` | 插件规格（lazy.nvim） |
+| `lua/global/` | LSP capabilities、UI 工具 |
+| `lua/util/` | 共享工具（键位、函数） |
+| `lsp/*.lua` | 按语言划分的 LSP 服务器配置 |
 | `tests/e2e/` | E2E 测试框架（denops testutil + 真实用户配置） |
 
-### Plugin Loading
-Plugins are specified in `lua/plugin/require/require.lua`, organized by category:
-- `ui/` - themes, statusline, bufferline, edgy
-- `tool/` - telescope, git, overseer, AI tools (avante, opencode, claude)
-- `editor/` - surround, pairs, trouble, which-key
-- `language/` - LSP, DAP, completion, treesitter, blink.cmp
+### 插件加载
+插件在 `lua/plugin/require/require.lua` 中声明，按类别组织：
+- `ui/` - 主题、状态栏、bufferline、edgy
+- `tool/` - telescope、git、overseer、AI 工具（avante、opencode、claude）
+- `editor/` - surround、pairs、trouble、which-key
+- `language/` - LSP、DAP、补全、treesitter、blink.cmp
 
-## Keymaps
+## 键位映射
 
-All keymaps are defined in `lua/core/keymap/init.lua`:
+所有键位映射定义在 `lua/core/keymap/init.lua`：
 
-| Key | Action |
-|-----|--------|
-| `<C-x>f` / `<C-x><C-f>` | File picking (mini.files) |
-| `<C-x>a` | LSP actions menu |
-| `<C-x>t` | Test menu |
-| `<C-x>q` | QuickMenu |
-| `<C-x>u` / `<leader>u` | Toggle undotree |
-| `<F3>` | Toggle Outline |
-| `<F4>` | Toggle Neotree |
-| `<F5>` | QuickMenu |
-| `<F6>` | DAP UI toggle |
-| `<F9>` | DAP Continue |
-| `<F10>` | DAP Step Over |
-| `<F11>` | DAP Step Into |
-| `<F12>` | DAP Step Out |
-| `<C-b>` | Toggle breakpoint |
-| `<C-w>W` + hjkl | Window sizing (Hydra) |
-| `<C-w>c` + hjkl | Window navigation (Hydra) |
-| `<leader>dp` | DapMenu (Hydra) |
-| `<leader>q` | Close current buffer |
-| `<leader>t` + j/k | Buffer prev/next |
-| `<leader>lg` | Open LazyGit |
-| `<leader>fs` | Rip substitute |
-| `<leader>xx` | Trouble diagnostics |
-| `<leader>?` | Which-key popup |
-| `s` | Flash jump |
-| `zR`/`zM` | UFO fold controls |
-| `jj` | Exit insert mode |
-| `<C-a>` / `<C-x>` | OpenCode AI chat (ask/select) |
-| `go`/`goo` | OpenCode operator |
-| `<leader>oC` | Toggle OpenCode panel |
+## 添加新功能
 
-## Adding New Features
+### 添加新插件
+1. 在 `lua/plugin/init.lua` 中添加插件规格
+2. 在合适的 `lua/plugin/require/` 子目录中创建配置文件
+3. 在 `lua/plugin/require/require.lua` 中添加 require
 
-### Add a new plugin
-1. Add plugin specification in `lua/plugin/init.lua`
-2. Create config file in appropriate `lua/plugin/require/` subdirectory
-3. Add require to `lua/plugin/require/require.lua`
+### 添加新 LSP 服务器
+1. 通过 Mason 安装：`:MasonInstall <server>`
+2. 在 `lua/core/lsp.lua` 中通过 `vim.lsp.enable('<server>')` 启用
+3. 按需添加自定义设置
 
-### Add new LSP server
-1. Install via Mason: `:MasonInstall <server>`
-2. Enable in `lua/core/lsp.lua` via `vim.lsp.enable('<server>')`
-3. Add custom settings if needed
+### 添加新键位映射
+1. 编辑 `lua/core/keymap/init.lua`，或在 `lua/core/keymap/` 下新建文件
+2. 使用 `vim.keymap.set()`，复杂映射用 Hydra
 
-### Add new keymap
-1. Edit `lua/core/keymap/init.lua` or create new file in `lua/core/keymap/`
-2. Use `vim.keymap.set()` or Hydra for complex mappings
+## 限制
 
-### AI Integration
-- **Avante** - Multi-provider AI coding assistant (OpenAI, GitHub Models, SiliconFlow)
-- **OpenCode** - Inline AI chat and code actions
-  - `<C-a>` - Ask AI (with selection auto-prefix)
-  - `<C-x>` - Execute AI action on selection
-  - `go` / `goo` - Operator to feed code to OpenCode
-  - `<leader>oC` - Toggle OpenCode panel
-- **Fitten Code** - AI code completion
-- **MCP** - Model Context Protocol for file integration
+- 依赖外部工具：Neovim 0.9+、Git、Node.js、各语言工具链
+- 完整清单见 DEVELOP.md 的 Dependencies 章节
 
-## Limitations
+## 模式切换
 
-- Windows: slower startup; use lite mode (`g:lite_mode`) if needed
-- External tools required: Neovim 0.9+, Git, Node.js, language toolchains
-- See DEVELOP.md Dependencies section for full list
-
-## Mode Toggle
-
-Switch between full and lite modes at runtime:
+运行时在完整模式与 Lite 模式之间切换：
 ```lua
--- Toggle full mode (reload config)
+-- 切换完整模式（重载配置）
 :lua vim.g.lite_mode = not vim.g.lite_mode; source $MYVIMRC
 ```

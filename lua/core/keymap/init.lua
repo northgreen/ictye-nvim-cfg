@@ -150,7 +150,7 @@ M.quickbuf = {
 M.refactoring = {
   { "<leader>re",  function() return require("refactoring").extract_func() end,                                        desc = "Extract Function",         mode = { "n", "x" }, expr = true, },
   { "<leader>ree", function() return require("refactoring").extract_func() .. "_" end,                                 desc = "Extract Function (line)",  mode = "n",          expr = true, },
-  { "<leader>rE",  function() return require("roperatoroperatoroperatorefactoring").extract_func_to_file() end,        desc = "Extract Function To File", mode = { "n", "x" }, expr = true, },
+  { "<leader>rE",  function() return require("refactoring").extract_func_to_file() end,        desc = "Extract Function To File", mode = { "n", "x" }, expr = true, },
   { "<leader>rv",  function() return require("refactoring").extract_var() end,                                         desc = "Extract Variable",         mode = { "n", "x" }, expr = true, },
   { "<leader>rvv", function() return require("refactoring").extract_var() .. "_" end,                                  desc = "Extract Variable (line)",  mode = "n",          expr = true, },
   { "<leader>ri",  function() return require("refactoring").inline_var() end,                                          desc = "Inline Variable",          mode = { "n", "x" }, expr = true, },
@@ -301,6 +301,7 @@ function M.setup_keymap()
   Keymap('n', '<leader>O', '<Cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Open Oil View' })
 
   Keymap('n', 'gf', require('snacks').image.hover, { noremap = true, silent = true })
+  Keymap('n', 'go', '<Cmd>OutlineFocus<CR>', { noremap = true, silent = true })
 
   Keymap('n', '<C-x>q', '<Cmd>QuickMenu<CR>', { noremap = true, silent = true, desc = 'Open QuickMenu' })
 

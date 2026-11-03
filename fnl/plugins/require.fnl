@@ -89,7 +89,6 @@
   (require :plugin.require.ui.drop-bar)
   (require :plugin.require.tool.meow-yarn)
 
-
   (require :plugins.require.quickbuf)
   (require :plugins.require.vcs.diffview)
   (require :plugins.require.vcs.codediff)
@@ -109,6 +108,10 @@
   (require :plugin.require.tool.firenvim) ; Firenvim: 在浏览器中编辑
 
 
+  (require :plugin.require.tool.ai.avante)                                 ; Avante: AI编程助手
+  (require :plugin.require.tool.ai.pi2)
+
+
   ; require 'plugin.require.tool.ai.claude',
 
   ;;;;disabled
@@ -123,10 +126,9 @@
   ; (require :plugin.require.editor.neorg)                                   ; Neorg: Neovim组织工具
   ; (require :plugin.require.tool.yazi)                                      ; Yazi: 终端文件管理器
   ; (require :plugin.require.language.language_tool.cmp_rime) ; Rime补全: 已废弃
-  ; (require :plugin.require.tool.ai.avante)                                 ; Avante: AI编程助手
   ; (require :plugin.require.language.language_tool.cmp_cmdline) ; 命令行补全: 已废弃
   ; (require :plugin.require.language.language_tool.nvim_cmp) ; 代码补全: 已废弃,使用blink.cmp
-  ; (require :plugin.require.tool.floaterm)                              ; 浮动终端: 悬浮终端窗口
+  ; (require :plugin.require.tool.floaterm)                                 ; 浮动终端: 悬浮终端窗口
   ; (require :plugin.require.ui.nvim_tree)                                   ; 文件浏览器: 左侧文件树导航
   ; (require :plugin.require.ui.codewindow)                                  ; Codewindow: 代码小地图
   ; (require :plugin.require.tool.nvim_rip_substitute)                       ; 批量替换: Ripgrep批量替换

@@ -64,6 +64,7 @@ vim.o.listchars = 'space:·,tab:>-'
 vim.o.wildmenu = true
 
 vim.o.shortmess = vim.o.shortmess .. 'c'
+
 -- 补全显示10行
 vim.o.pumheight = 10
 vim.o.clipboard = 'unnamedplus'

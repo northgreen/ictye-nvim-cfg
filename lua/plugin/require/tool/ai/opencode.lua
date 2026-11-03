@@ -1,6 +1,6 @@
 return {
   "NickvanDyke/opencode.nvim",
-  -- enabled = false,
+  enabled = false,
   keys = require("core.keymap").opencode,
   dependencies = {
     ---@module 'snacks'

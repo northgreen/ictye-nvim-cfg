@@ -1,30 +1,27 @@
 return {
   'milanglacier/minuet-ai.nvim',
-  event="BufReadPre",
+  event = "BufReadPre",
   opts = {
-    provider = 'openai_compatible ',
-    request_timeout = 2.5,
-    throttle = 1500, -- Increase to reduce costs and avoid rate limits
-    debounce = 600,  -- Increase to reduce costs and avoid rate limits
-    blink = {
-      enable_auto_complete = true,
-    },
+    provider = 'openai_fim_compatible',
     provider_options = {
-      openai_compatible = {
+      openai_fim_compatible = {
         api_key = 'DEEPSEEK_API_KEY',
-        end_point = 'https://api.deepseek.com/beta/v1/chat/completions',
-        model = 'deepseek/deepseek-v4-flash',
-        name = 'Openrouter',
+        name = 'deepseek',
         optional = {
-          max_tokens = 56,
+          max_tokens = 256,
           top_p = 0.9,
-          provider = {
-            -- Prioritize throughput for faster completion
-            sort = 'throughput',
-          },
-          -- disable thinking to avoid first token latency
-          reasoning_effort = 'none'
         },
+      },
+    },
+    virtualtext = {
+      auto_trigger_ft = {},
+      keymap = {
+        accept = '<A-A>',
+        accept_line = '<A-a>',
+        accept_n_lines = '<A-z>',
+        prev = '<A-[>',
+        next = '<A-]>',
+        dismiss = '<A-e>',
       },
     },
   }

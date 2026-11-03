@@ -4,6 +4,6 @@ return {
   opts = {
     indent = { char = '┆' }
   },
-  enabled=false,
+  enabled=(options.ui.indent=="indent-blankline"),
   event = 'BufRead'
 }
