@@ -44,3 +44,6 @@ if vim.g.lite_mode then
 else
   ploadmodule 'full_init'
 end
+
+
+require("global.llm_modules")

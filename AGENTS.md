@@ -1,5 +1,4 @@
 # AGENTS.md
-目的
 - 本文档记录助手对本 Neovim 配置仓库所做的操作与相关上下文。
 - 更新策略：只追加的日志，不删除、不改写历史；每条记录包含日期和简明描述。
 
@@ -15,6 +14,12 @@
 
 新模块或者补丁偏好使用fennel
 
+测试可以使用mini.test
+
+twc一般是require('util.functions').three_way_compare的缩写而不是一个全局函数
+
+不使用与模块目录同名的lua文件而是使用init.lua
+
 ## 开发命令
 
 ### 启动 Neovim
@@ -28,13 +33,23 @@ nvim --cmd "let g:lite_mode=v:true"  # Lite 模式（最小化）
 nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('checkhealth')" -c "q" 2>&1
 ```
 
-### E2E 测试（真实用户配置）
+### 运行 Lua 单元回归（mini.test）
+
+```bash
+nvim --headless --noplugin -u tests/minimal_init.lua -c 'lua MiniTest.run()'                 # 全部
+TEST_FILE=tests/unit/meow_yarn.lua nvim --headless --noplugin -u tests/minimal_init.lua -c 'lua MiniTest.run()'
+TEST_HOST=1 nvim --headless --noplugin -u tests/minimal_init.lua -c 'lua MiniTest.run()'    # 真实 Kitty 集成
+```
+
+`tests/minimal_init.lua` 只加载仓库与 `mini.test`，不加载个人配置；mini.nvim 不在默认位置时用 `MINI_TEST_PATH` 指定。测试文件只返回测试集，不再自行 `qa!` 或输出断言计数。
+
+### 端到端测试（真实用户配置）
 ```bash
 ./tests/e2e/setup.sh   # 首次运行：把 denops.vim 克隆到 tests/e2e/vendor/
 export PATH=$HOME/.deno/bin:$PATH
 cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 ```
-框架基于 denops.vim v8 自带 testutil（cli.ts rpc 转发 + Neovim host），启动**真实用户配置**的 nvim 做断言。共 8 个测试（~30s）：4 个功能场景（startup/keymap/lsp/lite）+ 3 个性能场景（perf_startup：full/lite 启动计时；perf_lsp：Lua attach/documentSymbol/hover/编辑；perf_ts：TS 同样四项）+ lsp_test。性能场景用 nvim 内 hrtime 纳秒级计时，测量值即回归信号。坑：lua_ls root_markers 含 .git，仓库内 fixture 需 `.luarc.json` 钉住 workspace 根，否则 documentSymbol 挂起。详见 `tests/e2e/README.md`。
+框架基于 denops.vim v8 自带的 testutil（`cli.ts` 负责 RPC 转发，Neovim 作为被测宿主），启动加载**真实用户配置**的 Neovim 做断言。共 8 个测试（约 30 秒）：4 个功能场景（启动、键位、LSP、轻量模式）、3 个性能场景（完整/轻量模式启动计时，Lua 和 TypeScript 的 LSP 附加、文档符号、悬停及编辑计时）以及 `lsp_test`。性能场景使用 Neovim 内部的 `hrtime` 进行纳秒级计时，测量值用于发现回归。`lua_ls` 的 `root_markers` 含 `.git`，仓库内测试样例需要 `.luarc.json` 固定工作区根目录，否则 `documentSymbol` 请求可能挂起。详见 `tests/e2e/README.md`。
 
 ### Neovim 内部命令
 | 命令 | 说明 |
@@ -61,10 +76,11 @@ cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 | `lua/core/` | 设置、LSP、键位映射、自动命令 |
 | `lua/options/` | Neovim 选项配置 |
 | `lua/plugin/` | 插件规格（lazy.nvim） |
-| `lua/global/` | LSP capabilities、UI 工具 |
+| `lua/global/` | LSP 能力配置、界面工具 |
 | `lua/util/` | 共享工具（键位、函数） |
 | `lsp/*.lua` | 按语言划分的 LSP 服务器配置 |
-| `tests/e2e/` | E2E 测试框架（denops testutil + 真实用户配置） |
+| `lua/experimental/` | 手动启用的实验模块，详见该目录的 `AGENTS.md` |
+| `tests/e2e/` | 端到端测试框架（denops testutil + 真实用户配置） |
 
 ### 插件加载
 插件在 `lua/plugin/require/require.lua` 中声明，按类别组织：
@@ -96,7 +112,7 @@ cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 ## 限制
 
 - 依赖外部工具：Neovim 0.9+、Git、Node.js、各语言工具链
-- 完整清单见 DEVELOP.md 的 Dependencies 章节
+- 完整清单见 `DEVELOP.md` 的依赖项章节（原文标题为 `Dependencies`）
 
 ## 模式切换
 

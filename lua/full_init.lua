@@ -9,5 +9,5 @@ ploadmodule "config"
 -- configs
 ploadmodule 'configs'
 
--- some test code
-ploadmodule 'test'
+-- some experimental code
+ploadmodule 'experimental'

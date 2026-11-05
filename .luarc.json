@@ -1,15 +1,18 @@
 {
-    "$schema": "https://raw.githubusercontent.com/luals/vscode-lua/master/setting/schema-zh-cn.json",
-    "completion.autoRequire": false,
-    "hint.arrayIndex": "Enable",
-    "runtime.version": "LuaJIT",
-    "workspace": {
-        "maxPreload": 1200,
-        "checkThirdParty": false,
-        "library": [
-            "./luvit-meta/library/",
-            "/usr/share/nvim/runtime/lua/",
-            "~/.local/share/nvim/lazy/"
-        ]
-    }
+  "$schema": "https://raw.githubusercontent.com/luals/vscode-lua/master/setting/schema-zh-cn.json",
+  "completion.autoRequire": false,
+  "hint.arrayIndex": "Enable",
+  "runtime.version": "LuaJIT",
+  "diagnostics.workspaceDelay": 10000000,
+  "diagnostics.workspaceEvent": "OnSave",
+  "workspace": {
+    "maxPreload": 1120,
+    "preloadFileSize": 500,
+    "checkThirdParty": false,
+    "library": [
+      "./luvit-meta/library/",
+      "/usr/share/nvim/runtime/lua/",
+      "~/.local/share/nvim/lazy/"
+    ]
+  }
 }

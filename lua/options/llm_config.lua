@@ -1,3 +1,4 @@
 return {
-  use_plugin = "pi2"
+  use_plugin = "avnate"
 }
+
