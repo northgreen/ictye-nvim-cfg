@@ -1,6 +1,6 @@
-(let [ plugin (require :plugins.init)
-       autocommands (require :autocommands)]
+(let [plugin (require :plugins.init)
+    autocommands (require :autocommands)]
   (plugin.setup)
-  (autocommands.setup)
- )
+  (autocommands.setup))
+
 nil

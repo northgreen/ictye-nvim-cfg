@@ -1,10 +1,6 @@
-{
-  1 "romus204/tree-sitter-manager.nvim"
-  :dependencies  {}
+{1 "romus204/tree-sitter-manager.nvim"
+  :dependencies {}
   :opts {
     :auto_install true
-    :noauto_install  [
-      :oil
-    ]
-  }
-}
+    :noauto_install [
+      :oil]}}

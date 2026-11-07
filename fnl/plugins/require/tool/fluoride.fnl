@@ -1,3 +1,1 @@
-{
-  1 "Sang-it/fluoride"
-}
+{1 "Sang-it/fluoride"}

@@ -1,3 +1,1 @@
-{
-  1 "uga-rosa/translate.nvim"
-}
+{1 "uga-rosa/translate.nvim"}

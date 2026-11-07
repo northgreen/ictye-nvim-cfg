@@ -4,7 +4,7 @@
 
 if os.getenv("NVPROFILE") then
   local p = require("jit.p")
-  p.start("csm0GlFpi1,10","/home/ictye/pref.log")
+  p.start("csm0GlFpi1,10",vim.fn.stdpath('config').."/nvim-lua-pref.log")
 
   vim.api.nvim_create_autocmd(
     "VimLeave",{
@@ -25,8 +25,8 @@ end
 ploadmodule 'paths'
 ploadmodule 'options'
 
-if not options.env.required:chack() then
-  print('Some required binarray is not found,and something will not work properly,please chack it')
+if not options.env.required:check() then
+  print('Some required binarray is not found,and something will not work properly,please check it')
 end
 
 -- init environment

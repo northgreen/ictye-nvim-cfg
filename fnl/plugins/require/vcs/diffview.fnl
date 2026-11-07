@@ -1,10 +1,5 @@
-{
-  1 "sindrets/diffview.nvim" 
+{1 "sindrets/diffview.nvim"
   :opts {
     :view {
       :merge_tool {
-        :layout "diff4_mixed"
-      }
-    }
-  }
-}
+        :layout "diff4_mixed"}}}}

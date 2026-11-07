@@ -1,7 +1,4 @@
-{
-  1 "Wansmer/treesj"
-  :keys  (. (require :core.keymap) :treesj)
+{1 "Wansmer/treesj"
+  :keys (. (require :core.keymap) :treesj)
   :opts {
-    :max_join_length 10000
-  }
-}
+    :max_join_length 10000}}

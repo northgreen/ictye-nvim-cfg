@@ -1,4 +1,2 @@
-{ 
-  1 "ChmaraX/herdr-nvim"
-  :opts  {} 
-}
+{1 "ChmaraX/herdr-nvim"
+  :opts {}}

@@ -1,4 +1,2 @@
-{
-  1   "leolaurindo/tunnelvision.nvim"
-  :opts {}
-}
+{1 "leolaurindo/tunnelvision.nvim"
+  :opts {}}

@@ -1,4 +1,2 @@
-{
-  1 "esmuellert/codediff.nvim"
-  :cmd "CodeDiff"
-}
+{1 "esmuellert/codediff.nvim"
+  :cmd "CodeDiff"}

@@ -1,4 +1,3 @@
--- lua/myplugin/health.lua
 local M = {}
 
 local function check_command(command)

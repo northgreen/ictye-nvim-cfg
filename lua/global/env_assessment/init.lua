@@ -1,4 +1,4 @@
-local twc = require 'util.functions'.three_way_compare
+local twc = require("util.functions").three_way_compare
 
 local ret = {}
 
@@ -11,7 +11,7 @@ ret.os = {
 ret.term = require("global.env_assessment.term")
 
 ret.required = {
-  chack = function(self)
+  check = function(self)
     local r = true
     for _, bin in ipairs(self.required) do
       local n = vim.fn.executable(bin)
@@ -24,24 +24,24 @@ ret.required = {
   end,
   required = {
     -- here the required command-line tool
-    'git',
-    'fd',
-    'npm',
-    'gcc',
-    'gh',
-    'rg',
-    'node',
-    'fennel',
-    twc(ret.os.linux + ret.os.mac > 0, 'make', 'pwsh')
+    "git",
+    "fd",
+    "npm",
+    "gcc",
+    "gh",
+    "rg",
+    "node",
+    "fennel",
+    twc(ret.os.linux + ret.os.mac > 0, "make", "pwsh"),
   },
   optional = {
-    'cmake',
-    'pass',
-    'jjui',
-    'jj',
-    'lazygit',
-    'opencode',
-  }
+    "cmake",
+    "pass",
+    "jjui",
+    "jj",
+    "lazygit",
+    "opencode",
+  },
 }
 
 return ret
