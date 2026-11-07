@@ -25,10 +25,14 @@ function M.views(term)
     if vim.api.nvim_win_get_tabpage(win) == vim.api.nvim_get_current_tabpage() then
       local info = vim.fn.getwininfo(win)[1]
       local view = vim.api.nvim_win_call(win, vim.fn.winsaveview)
+      -- getwininfo 的浮窗坐标包含外框；宿主图片必须从边框内的内容区开始。
+      local border = vim.api.nvim_win_get_config(win).border or {}
+      local top = border[2] and border[2] ~= '' and 1 or 0
+      local left = border[8] and border[8] ~= '' and 1 or 0
       views[#views + 1] = {
         win = win,
-        row = info.winrow,
-        col = info.wincol + info.textoff,
+        row = info.winrow + top,
+        col = info.wincol + left + info.textoff,
         cols = info.width - info.textoff,
         rows = info.height,
         topline = view.topline,

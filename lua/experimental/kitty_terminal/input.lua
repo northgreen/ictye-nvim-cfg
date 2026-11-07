@@ -237,4 +237,53 @@ function M.paste(term, text, phase)
   term:send(text)
 end
 
+-- 隐藏输入通道已协商完整 CSI-u：保持事件类型与关联文本，不再按普通按键重编码。
+function M.raw(term, bytes)
+  local state = term._raw_input or { pending = '', pressed = {} }
+  term._raw_input = state
+  state.pending = state.pending .. bytes
+  local output, leave = {}, false
+  while #state.pending > 0 do
+    if state.paste then
+      output[#output + 1] = paste_chunk(state)
+      if state.paste then break end
+    else
+      local token, size, sequence = terminal_token(state.pending, 0, false)
+      if not token then break end
+      state.pending = state.pending:sub(size + 1)
+      if token == paste_start then state.paste, state.escape = true, false end
+      local body, final = token:match('^' .. ESC .. '%[(.*)([@-~])$')
+      local code, modifiers
+      if body then code, modifiers = body:match('^([^;]+);?([^;]*)') end
+      if body == '' and ('ABCDHFPQRS'):find(final, 1, true) then code, modifiers = '1', '1' end
+      if sequence and token ~= paste_start and code and final ~= 'I' and final ~= 'O' and code:match('^%d') then
+        local mods, event = modifiers:match('^(%d*):?(%d*)$')
+        mods, event = tonumber(mods) or 1, tonumber(event) or 1
+        local control = bit.band(mods - 1, 4) ~= 0
+        if event ~= 3 and state.escape and code == '110' and control then
+          state.escape, leave = false, true
+        else
+          if event ~= 3 then state.escape = code == '92' and control end
+          local identity = code .. final
+          if event == 3 then state.pressed[identity] = nil
+          else state.pressed[identity] = ESC .. '[' .. code .. ';' .. mods .. ':3' .. final end
+          output[#output + 1] = token
+        end
+      else
+        output[#output + 1] = token
+      end
+    end
+  end
+  return table.concat(output), leave
+end
+
+function M.release(term)
+  local state = term._raw_input
+  if not state then return '' end
+  local output = {}
+  for _, identity in ipairs(vim.tbl_keys(state.pressed)) do output[#output + 1] = state.pressed[identity] end
+  term._raw_input = nil
+  return table.concat(output)
+end
+
 return M

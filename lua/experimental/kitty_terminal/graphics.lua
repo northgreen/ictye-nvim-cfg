@@ -60,10 +60,15 @@ function M:retire(bytes)
   self.term:refresh()
 end
 
-function M:transmit(bytes, image)
+function M:transmit(bytes, image, reply)
   -- Re-uploading an image ID invalidates its old host placements. Keep the
   -- previous visible frame until replacement bytes AND placements are ready.
-  self.uploads[#self.uploads + 1] = { bytes = bytes, image = image }
+  self.uploads[#self.uploads + 1] = { bytes = bytes, image = image, reply = reply }
+  if reply then
+    image.replies = image.replies or {}
+    image.replies[#image.replies + 1] = reply
+    image.pending_replies = #image.replies
+  end
   self.term:refresh()
 end
 
@@ -98,8 +103,22 @@ function M:place(image, f)
     self:reply_error(f, 'Unicode virtual/relative placements are not implemented'); return false
   end
   local s = self.term.screen
-  local cols = math.max(1, number(f, 'c', math.ceil((image.width or self.term.cell_width) / self.term.cell_width)))
-  local rows = math.max(1, number(f, 'r', math.ceil((image.height or self.term.cell_height) / self.term.cell_height)))
+  local cw, ch = self.term.cell_width, self.term.cell_height
+  local source_w = number(f, 'w', 0)
+  local source_h = number(f, 'h', 0)
+  if source_w <= 0 then source_w = math.max(1, (image.width or cw) - number(f, 'x', 0)) end
+  if source_h <= 0 then source_h = math.max(1, (image.height or ch) - number(f, 'y', 0)) end
+  local width, height = source_w, source_h
+  -- 只指定 c/r 之一时，另一轴必须按源图比例推导，不能保持原始像素高度/宽度。
+  local has_cols, has_rows = number(f, 'c', 0) > 0, number(f, 'r', 0) > 0
+  if has_cols or has_rows then
+    local sx = has_cols and (math.max(1, number(f, 'c', 1) * cw - number(f, 'X', 0)) / source_w) or math.huge
+    local sy = has_rows and (math.max(1, number(f, 'r', 1) * ch - number(f, 'Y', 0)) / source_h) or math.huge
+    local scale = math.min(sx, sy)
+    width, height = source_w * scale, source_h * scale
+  end
+  local cols = math.max(1, math.ceil((width + number(f, 'X', 0)) / cw))
+  local rows = math.max(1, math.ceil((height + number(f, 'Y', 0)) / ch))
   local key = image.key .. ':' .. (f.p or '0')
   local old = self.placements[key]
   -- Replacing an existing placement is an in-place host update. Removing it
@@ -113,6 +132,8 @@ function M:place(image, f)
     col = s.col - 1,
     cols = cols,
     rows = rows,
+    pixel_width = width,
+    pixel_height = height,
     views = old and old.views or {}
   }
   self.placements[key] = placement
@@ -166,7 +187,11 @@ function M:delete(f)
         end end
       if not used and (not target or target == image) then
         self:retire(wire({ a = 'd', d = 'I', i = image.host, q = 2 }))
-        self.images[key], self.host_images[image.host], owners[image.host] = nil, nil, nil
+        self.images[key] = nil
+        -- 删除像素不能撤销上传应答；客户端仍需收到完成通知才能释放共享内存。
+        if (image.pending_replies or 0) == 0 then
+          self.host_images[image.host], owners[image.host] = nil, nil
+        end
       end
     end
   end
@@ -184,7 +209,7 @@ function M:request(body)
         or not ({ ['24'] = true, ['32'] = true, ['100'] = true })[format] then
       self:reply_error(f, 'unsupported graphics transport or format'); return
     end
-    if f.q ~= '2' then self.term:send(wire({ i = f.i, I = f.I, p = f.p }, 'OK')) end
+    if f.q ~= '1' and f.q ~= '2' then self.term:send(wire({ i = f.i, I = f.I, p = f.p }, 'OK')) end
     self.term.stats.local_graphics_queries = (self.term.stats.local_graphics_queries or 0) + 1
     return
   end
@@ -199,7 +224,10 @@ function M:request(body)
     if not image then
       self:reply_error(f, 'unknown image'); return
     end
-    if self:place(image, f) and f.q ~= '2' then self.term:send(wire({ i = f.i, I = f.I, p = f.p }, 'OK')) end
+    -- q=1 只回复错误；提前返回放置成功会被客户端误作上传完成并释放共享内存。
+    if self:place(image, f) and f.q ~= '1' and f.q ~= '2' then
+      self.term:send(wire({ i = f.i, I = f.I, p = f.p }, 'OK'))
+    end
     return
   end
   if self.upload then
@@ -216,7 +244,7 @@ function M:request(body)
       -- One host write per complete upload: anonymous continuation packets
       -- from two simultaneous Lua terminals can never be interleaved.
       if self.images[upload.image.key] ~= upload.image then return end
-      self:transmit(table.concat(upload.packets), upload.image)
+      self:transmit(table.concat(upload.packets), upload.image, upload.reply)
       if upload.action == 'T' then self:place(upload.image, upload.fields) end
     end
     return
@@ -227,8 +255,13 @@ function M:request(body)
   end
   local width, height = dimensions(f, data)
   image.width, image.height = width or image.width, height or image.height
-  image.quiet, image.reply_p = f.q, f.p
+  local reply
+  if f.q ~= '2' then
+    reply = { i = image.child_i, I = image.child_I, p = f.p, quiet = f.q }
+  end
   local host = vim.deepcopy(f)
+  -- 每次上传独立保留应答元数据；q=1 在宿主也请求完整应答，再按该次请求过滤成功。
+  if f.q == '1' then host.q = '0' end
   host.i, host.I = tostring(image.host), nil
   if action == 'T' then host.a = 't' end
   -- 上传与放置分开：宿主不能按自己的光标执行隐式放置，位置由 draw 计算。
@@ -237,9 +270,9 @@ function M:request(body)
   host.p = nil
   local bytes = wire(host, data)
   if f.m == '1' then
-    self.upload = { image = image, fields = f, action = action, packets = { bytes }, size = #bytes }
+    self.upload = { image = image, fields = f, action = action, packets = { bytes }, size = #bytes, reply = reply }
   else
-    self:transmit(bytes, image)
+    self:transmit(bytes, image, reply)
     if action == 'T' then self:place(image, f) end
   end
 end
@@ -248,17 +281,19 @@ local function clipped(p, view, line, cw, ch)
   -- line/topline 是一基 buffer 行；col/leftcol 是零基单元格列。
   -- 先在视图像素中求交集，再按缩放比例映射到源图的 x/y/w/h 裁剪区域。
   -- 返回 row/col 为宿主 CUP 的一基坐标，X/Y 为目标单元格内像素偏移。
-  local source_w = number(p.fields, 'w', p.image.width or p.cols * cw)
-  local source_h = number(p.fields, 'h', p.image.height or p.rows * ch)
+  local source_w = number(p.fields, 'w', 0)
+  local source_h = number(p.fields, 'h', 0)
+  if source_w <= 0 then source_w = math.max(1, (p.image.width or p.cols * cw) - number(p.fields, 'x', 0)) end
+  if source_h <= 0 then source_h = math.max(1, (p.image.height or p.rows * ch) - number(p.fields, 'y', 0)) end
   local x = (p.col - view.leftcol) * cw + number(p.fields, 'X', 0)
   local y = (line - view.topline) * ch + number(p.fields, 'Y', 0)
-  local width, height = p.cols * cw, p.rows * ch
+  local width, height = p.pixel_width or p.cols * cw, p.pixel_height or p.rows * ch
   local left, top = math.max(0, x), math.max(0, y)
   local right, bottom = math.min(view.cols * cw, x + width), math.min(view.rows * ch, y + height)
   if right <= left or bottom <= top then return end
   local sx = number(p.fields, 'x', 0) + math.floor((left - x) * source_w / width)
   local sy = number(p.fields, 'y', 0) + math.floor((top - y) * source_h / height)
-  return {
+  local result = {
     row = view.row + math.floor(top / ch),
     col = view.col + math.floor(left / cw),
     X = left % cw,
@@ -270,6 +305,12 @@ local function clipped(p, view, line, cw, ch)
     c = math.ceil((right - left + left % cw) / cw),
     r = math.ceil((bottom - top + top % ch) / ch)
   }
+  if left == x and top == y and right == x + width and bottom == y + height then
+    -- 完整可见时保留单轴缩放，让宿主自行按像素比例计算另一轴，避免单元格取整拉伸。
+    if number(p.fields, 'r', 0) <= 0 then result.r = nil end
+    if number(p.fields, 'c', 0) <= 0 then result.c = nil end
+  end
+  return result
 end
 function M:draw(views, force)
   -- 顺序必须为删除 -> 完整上传 -> 放置，且属于同一个 2026 同步刷新事务。
@@ -277,9 +318,14 @@ function M:draw(views, force)
   local packets = self.removals
   self.removals = {}
   for _, upload in ipairs(self.uploads) do
-    -- An uppercase delete can free a just-uploaded image before the next
-    -- presentation frame. Do not resurrect that resource on the host.
-    if self.images[upload.image.key] == upload.image then packets[#packets + 1] = upload.bytes end
+    local image = upload.image
+    if self.images[image.key] == image then
+      packets[#packets + 1] = upload.bytes
+    elseif upload.reply then
+      -- 不再可见的帧仍完成有应答的上传，随后立即释放，不复活它的放置。
+      packets[#packets + 1] = upload.bytes
+      packets[#packets + 1] = wire({ a = 'd', d = 'I', i = image.host, q = 2 })
+    end
   end
   local uploaded = #self.uploads > 0
   self.uploads = {}
@@ -341,9 +387,14 @@ function M.response(seq)
   local owner = owners[host]
   if not owner or owner.term.closed then return false end
   local image = owner.host_images[host]
-  if image.quiet ~= '2' and (image.child_i or image.child_I) then
-    owner.term:send(wire({ i = image.child_i, I = image.child_I, p = image.reply_p }, message))
+  local reply = table.remove(image.replies or {}, 1)
+  if reply and (reply.quiet ~= '1' or message ~= 'OK') and (reply.i or reply.I) then
+    owner.term:send(wire({ i = reply.i, I = reply.I, p = reply.p }, message))
     owner.term.stats.graphics_replies = owner.term.stats.graphics_replies + 1
+  end
+  image.pending_replies = #(image.replies or {})
+  if image.pending_replies == 0 and owner.images[image.key] ~= image then
+    owner.host_images[host], owners[host] = nil, nil
   end
   return true
 end

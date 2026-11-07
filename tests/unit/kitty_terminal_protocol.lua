@@ -251,6 +251,27 @@ T['clipping and host acknowledgments use child coordinates and IDs'] = function(
     check(sent[#sent] == ESC .. '_Gi=7,p=2;OK' .. ST, 'real host acknowledgment maps image and placement IDs')
 end
 
+T['single-axis graphics scaling preserves source pixel aspect ratio'] = function()
+    term.graphics:request('a=t,i=18,s=640,v=480;AAAA')
+    term.graphics:request('a=p,i=18,c=40,C=1')
+    local p=term.graphics.placements['i:18:0']
+    MiniTest.expect.equality({p.cols,p.rows,p.pixel_width,p.pixel_height},{40,15,400,300})
+    local full={row=1,col=1,cols=100,rows=100,leftcol=0,topline=1}
+    local g=G._test.clipped(p,full,3,10,20)
+    MiniTest.expect.equality({g.c,g.r,g.w,g.h},{40,nil,640,480})
+    term.graphics:request('a=p,i=18,r=15,C=1')
+    p=term.graphics.placements['i:18:0']
+    MiniTest.expect.equality({p.cols,p.rows,p.pixel_width,p.pixel_height},{40,15,400,300})
+    g=G._test.clipped(p,full,3,10,20)
+    MiniTest.expect.equality({g.c,g.r},{nil,15})
+    term.graphics:request('a=p,i=18,c=40,r=20,C=1')
+    p=term.graphics.placements['i:18:0']
+    MiniTest.expect.equality({p.pixel_width,p.pixel_height},{400,300})
+    term.graphics:request('a=p,i=18,c=20,w=0,h=0,x=320,y=240,C=1')
+    p=term.graphics.placements['i:18:0']
+    MiniTest.expect.equality({p.pixel_width,p.pixel_height},{200,150})
+end
+
 T['placement deletion preserves siblings and hiding removes host placements'] = function()
     place_image()
     term.graphics:request('a=p,i=7,p=3,C=1,c=2,r=2')
@@ -297,7 +318,7 @@ T['interleaved sessions flush complete uploads independently'] = function()
 end
 
 T['deleted uploads stay retired and rebuilds flush deletion before replacement'] = function()
-    term.graphics:request('a=T,i=12,C=1,c=1,r=1,s=1,v=1;AAAA')
+    term.graphics:request('a=T,i=12,q=2,C=1,c=1,r=1,s=1,v=1;AAAA')
     term.graphics:request('a=d,d=I,i=12')
     local before=#host
     term.graphics:draw({view})
@@ -316,6 +337,55 @@ T['deleted uploads stay retired and rebuilds flush deletion before replacement']
         'explicit deletion precedes replacement upload and placement within one synchronized frame')
     term.graphics:close()
     check(next(term.graphics.images) == nil, 'close releases host images')
+end
+
+T['quiet placement success cannot acknowledge shared memory upload early'] = function()
+    term.graphics:request('a=t,i=6,q=0,s=1,v=1;AAAA')
+    local image = term.graphics.images['i:6']
+    term.graphics:request('a=p,i=6,p=1,q=1,C=1,c=1,r=1')
+    MiniTest.expect.equality(sent,{})
+    term.graphics:draw({view})
+    check(G.response(ESC .. '_Gi=' .. image.host .. ';OK' .. ST), 'host upload reply routed')
+    MiniTest.expect.equality(sent,{ESC .. '_Gi=6;OK' .. ST})
+    term.graphics:request('a=p,i=999,q=1')
+    check(sent[#sent]:find('ENOTSUP',1,true),'q=1 must still report errors')
+    term.graphics:request('a=q,i=33,q=1,f=32')
+    check(not sent[#sent]:find('i=33',1,true),'q=1 suppresses successful query replies')
+end
+
+T['deleted in-flight frame retains upload acknowledgement until completion'] = function()
+    term.graphics:request('a=t,i=6,q=0,s=1,v=1;AAAA')
+    local image = term.graphics.images['i:6']
+    term.graphics:request('a=d,d=I,i=6')
+    term.graphics:draw({view})
+    local bytes = host[#host]
+    check(bytes:find('a=t',1,true) and not bytes:find('a=p',1,true), 'retired upload completes without placement')
+    check(bytes:find('a=t',1,true) < bytes:find('a=d',bytes:find('a=t',1,true),true),
+        'retired resource is freed after its upload')
+    check(G.response(ESC .. '_Gi=' .. image.host .. ';OK' .. ST),'deleted image still has an upload owner')
+    MiniTest.expect.equality(sent,{ESC .. '_Gi=6;OK' .. ST})
+    MiniTest.expect.equality(term.graphics.host_images[image.host],nil)
+    MiniTest.expect.equality(G.response(ESC .. '_Gi=' .. image.host .. ';OK' .. ST),false)
+end
+
+T['each upload keeps its own quiet level and placement reply identity'] = function()
+    term.graphics:request('a=t,i=20,p=1,q=0,s=1,v=1;AAAA')
+    local image=term.graphics.images['i:20']
+    term.graphics:request('a=t,i=20,p=2,q=2,s=1,v=1;BBBB')
+    term.graphics:draw({})
+    G.response(ESC .. '_Gi=' .. image.host .. ';OK' .. ST)
+    MiniTest.expect.equality(sent,{ESC .. '_Gi=20,p=1;OK' .. ST})
+    sent={}
+    term.graphics:request('a=t,i=20,p=3,q=0,s=1,v=1;CCCC')
+    term.graphics:request('a=t,i=20,p=4,q=0,s=1,v=1;DDDD')
+    term.graphics:request('a=t,i=20,p=5,q=1,s=1,v=1;EEEE')
+    term.graphics:request('a=t,i=20,p=6,q=1,s=1,v=1;FFFF')
+    term.graphics:draw({})
+    for _, message in ipairs({'OK','OK','OK','EBADF:fixture'}) do
+        G.response(ESC .. '_Gi=' .. image.host .. ';' .. message .. ST)
+    end
+    MiniTest.expect.equality(sent,{ESC .. '_Gi=20,p=3;OK' .. ST,
+        ESC .. '_Gi=20,p=4;OK' .. ST,ESC .. '_Gi=20,p=6;EBADF:fixture' .. ST})
 end
 
 return T

@@ -25,7 +25,7 @@ end
 T['真实 icat、浏览器动画像素、原生输入及 shell 退出'] = function()
     local process = vim.system({ 'python3', '-u', '-B', 'tests/unit/kitty_terminal_host.py' },
         { text = true }):wait(180000)
-    MiniTest.add_note(process.stdout or '')
+    MiniTest.add_note((process.stdout or '') .. (process.stderr or ''))
     eq(process.code, 0, { context = (process.stdout or '') .. (process.stderr or '') })
     local artifacts = (process.stdout or ''):match('Artifacts: ([^\r\n]+)')
     eq(type(artifacts), 'string')
@@ -37,6 +37,13 @@ T['真实 icat、浏览器动画像素、原生输入及 shell 退出'] = functi
     local samples = vim.json.decode(table.concat(vim.fn.readfile(artifacts .. '/animation-samples.json'), '\n'))
     eq(#samples, 30)
     eq(result.stages.typed.host_graphics.deletes, 0)
+end
+
+T['真实 Kitty 松键编码、双会话切换及隐藏输入窗口清理'] = function()
+    local process = vim.system({ 'python3', '-u', '-B', 'tests/unit/kitty_keyboard_host.py' },
+        { text = true }):wait(60000)
+    MiniTest.add_note((process.stdout or '') .. (process.stderr or ''))
+    eq(process.code, 0, { context = (process.stdout or '') .. (process.stderr or '') })
 end
 
 return T

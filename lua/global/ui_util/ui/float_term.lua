@@ -8,14 +8,10 @@ return function(cmd, opts)
   local col = opts.col or math.floor((vim.o.columns - width) / 2)
   local row = opts.row or math.floor((vim.o.lines - height) / 2)
 
-  -- 创建缓冲区
-  local buf = vim.api.nvim_create_buf(false, true)
-  if buf == 0 then
-    error("Failed to create buffer")
-  end
-
-  -- 创建悬浮窗口
-  local win = vim.api.nvim_open_win(buf, true, {
+  -- Kitty 终端自行创建缓冲区，先打开浮窗以取得正确的视口尺寸。
+  local terminal = require('experimental.kitty_terminal')
+  local colors, color_error = require('experimental.kitty_terminal.colors').read()
+  local win = vim.api.nvim_open_win(0, true, {
     relative = 'editor',
     width = width,
     height = height,
@@ -25,13 +21,19 @@ return function(cmd, opts)
     border = 'rounded',
   })
 
-  local ret = vim.fn.jobstart(cmd, {
-    term = true,
-    on_exit = function()
-      pcall(vim.api.nvim_win_close, win, true)
-    end
+  local ok, term = pcall(terminal.open, { cmd = cmd, colors = colors })
+  if not ok then
+    pcall(vim.api.nvim_win_close, win, true)
+    error(term)
+  end
+  term.color_error = color_error
+  vim.bo[term.buf].bufhidden = 'wipe'
+  -- 等最终输出刷新完成再关闭浮窗；wipe 同时释放 PTY 和图形资源。
+  vim.api.nvim_create_autocmd('TermClose', {
+    buffer = term.buf,
+    once = true,
+    callback = function()
+      vim.schedule(function() pcall(vim.api.nvim_win_close, win, true) end)
+    end,
   })
-
-  if ret < 0 then vim.fn.endechoerr("Failed to start job: " .. cmd) end
-  vim.cmd("startinsert")
 end

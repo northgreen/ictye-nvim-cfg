@@ -1,6 +1,5 @@
 # AGENTS.md
 - 本文档记录助手对本 Neovim 配置仓库所做的操作与相关上下文。
-- 更新策略：只追加的日志，不删除、不改写历史；每条记录包含日期和简明描述。
 
 禁止在此文件记载项目或者决策历史
 
@@ -18,9 +17,13 @@
 
 twc一般是require('util.functions').three_way_compare的缩写而不是一个全局函数
 
-不使用与模块目录同名的lua文件而是使用init.lua
+不使用与模块目录同名的lua文件而是使用`init.lua`
 
 ## 开发命令
+
+### Makefile 入口
+
+`make` 默认显示帮助；`make build` 使用已安装的 Hotpot 和 `.hotpot.fnl` 增量编译缓存，不加载个人配置、不下载依赖。`HOTPOT_PATH` 可覆盖插件目录。`make test` 运行 mini.test，支持 `TEST_FILE`、`MINI_TEST_PATH`；`make test-host` 加入真实 Kitty 集成。`make e2e-setup` 显式安装 E2E 依赖，`make test-e2e` 运行真实配置 E2E。工具路径可通过 `NVIM`、`DENO` 覆盖。无源码目录清理目标，避免删除手写 Lua。
 
 ### 启动 Neovim
 ```bash

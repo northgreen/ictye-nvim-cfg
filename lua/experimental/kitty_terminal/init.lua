@@ -10,6 +10,7 @@ local Protocol = require('experimental.kitty_terminal.protocol')
 local Render = require('experimental.kitty_terminal.render')
 local Input = require('experimental.kitty_terminal.input')
 local Tty = require('experimental.kitty_terminal.tty')
+local HostInput = require('experimental.kitty_terminal.host_input')
 local M, Term = {}, {}
 Term.__index = Term
 local ESC, ST = '\27', '\27\\'
@@ -34,6 +35,9 @@ function Term:send(bytes)
   end
 end
 
+function Term:keyboard_request(flags) HostInput.request(self, flags) end
+function Term:keyboard_query() HostInput.query(self) end
+
 function Term:display(bytes)
   if bytes ~= '' then self.display_pending[#self.display_pending + 1] = bytes end
 end
@@ -48,6 +52,13 @@ end
 function Term:enter()
   if self.closed or self.exited or vim.api.nvim_get_current_buf() ~= self.buf then return end
   vim.cmd('startinsert')
+  -- Terminal-mode 内切换到另一个终端缓冲区时，Nvim 不一定再次触发 TermEnter。
+  if vim.api.nvim_get_mode().mode == 't' then
+    for _, other in pairs(sessions) do
+      other.capture = other == self
+      HostInput.capture(other)
+    end
+  end
 end
 
 function Term:ready()
@@ -117,6 +128,7 @@ end
 function Term:close()
   if self.closed then return end
   self.closed = true
+  HostInput.close(self)
   -- 先标记关闭，使已排队的输入超时与重绘回调失效，再释放宿主资源和通道。
   self.graphics:close()
   for _, owners in pairs(routes) do owners[self] = nil end
@@ -147,6 +159,14 @@ function M.open(options)
   local cw, ch, source = Tty.cell_size()
   cw, ch = options.cell_width or cw or 8, options.cell_height or ch or 16
   local foreground, background = palette_defaults()
+  local colors = options.colors
+  if colors then
+    foreground, background = colors.foreground, colors.background
+    -- 原生终端在创建时读取 buffer 调色板；之后的 SGR 同样使用这份颜色。
+    for index, color in pairs(colors.palette) do
+      if index < 16 then vim.b[buf]['terminal_color_' .. index] = color end
+    end
+  end
   local term = setmetatable({
     buf = buf,
     options = options,
@@ -155,11 +175,12 @@ function M.open(options)
     cell_width = cw,
     cell_height = ch,
     cell_size_source = source,
-    palette = {},
+    palette = colors and vim.deepcopy(colors.palette) or {},
     row_ids = {},
     overlays = {},
     foreground = foreground,
     background = background,
+    cursor_color = colors and colors.cursor or foreground,
     errors = {},
     stats = { input_bytes = 0, output_bytes = 0, host_bytes = 0, graphics_replies = 0 }
   }, Term)
@@ -187,6 +208,7 @@ function M.open(options)
     end
   })
   assert(term.view_channel > 0, 'KittyLuaTerm: failed to create terminal view')
+  if colors then require('experimental.kitty_terminal.colors').apply(win, colors) end
   vim.bo[buf].scrollback = options.scrollback or 2000
   vim.b[buf].kitty_lua_view_channel = term.view_channel
   Render.attach(term)
@@ -229,7 +251,9 @@ function M.open(options)
       term:feed(table.concat(parts, '\n'))
     end,
     on_exit = function(_, code)
-      term.exited, term.exit_code = true, code; term:refresh()
+      term.exited, term.exit_code = true, code
+      HostInput.close(term)
+      term:refresh()
     end,
   })
   if term.job <= 0 then
@@ -297,9 +321,17 @@ function M.setup()
     callback = function(ev)
       local term = sessions[ev.buf]
       if term then
-        term.capture = ev.event == 'TermEnter'; term:refresh()
+        term.capture = ev.event == 'TermEnter'
+        HostInput.capture(term)
+        term:refresh()
       end
     end
+  })
+  vim.api.nvim_create_autocmd({ 'FocusGained', 'FocusLost' }, {
+    group = group,
+    callback = function(ev)
+      for _, term in pairs(sessions) do HostInput.focus(term, ev.event == 'FocusGained') end
+    end,
   })
   local paint_pending = false
   vim.api.nvim_set_decoration_provider(paint_ns, {
@@ -328,6 +360,9 @@ function M.setup()
         cells = { term.screen.cols, term.screen.rows },
         pixels = { term.cell_width, term.cell_height },
         pixel_size_error = term.pixel_size_error,
+        color_error = term.color_error,
+        keyboard_error = term.keyboard_error,
+        keyboard_flags = term.keyboard_flags,
         capture = term.capture,
         errors = term.errors,
         stats = term.stats

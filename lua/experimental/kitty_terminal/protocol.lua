@@ -20,6 +20,10 @@ local function rgb(hex)
 end
 local function hex(s) return (s:gsub('.', function(c) return string.format('%02x', c:byte()) end)) end
 local function unhex(s) return (s:gsub('%x%x', function(c) return string.char(tonumber(c, 16)) end)) end
+local function keyboard(term, flags)
+    if term.keyboard_request then term:keyboard_request(flags)
+    else term.keyboard_flags = bit.band(flags, 25) end
+end
 
 function M.csi(term, body, final)
     local s = term.screen
@@ -40,20 +44,22 @@ function M.csi(term, body, final)
         if response then term:send(ESC .. '[' .. table.concat(response, ';') .. 't'); return true end
     end
     if final == 'u' and body:match('^[?>=<]') then
-        -- 25 = 消歧(1) + 全键报告(8) + 关联文本(16)；不宣称 Nvim 未提供的释放事件。
+        -- 原生输入仅支持 25；释放事件须等真实宿主输入通道就绪后才对外宣称。
         local op, rest = body:sub(1, 1), body:sub(2)
         local flags, mode = rest:match('^(%d*);?(%d*)$')
         flags, mode = tonumber(flags) or 1, tonumber(mode) or 1
         term.keyboard_stack = term.keyboard_stack or {}
-        if op == '?' then term:send(ESC .. '[?' .. (term.keyboard_flags or 0) .. 'u')
+        if op == '?' then
+            if term.keyboard_query then term:keyboard_query()
+            else term:send(ESC .. '[?' .. (term.keyboard_flags or 0) .. 'u') end
         elseif op == '>' then
-            term.keyboard_stack[#term.keyboard_stack + 1] = term.keyboard_flags or 0
-            term.keyboard_flags = bit.band(flags, 25)
+            term.keyboard_stack[#term.keyboard_stack + 1] = term.keyboard_requested or term.keyboard_flags or 0
+            keyboard(term, flags)
         elseif op == '<' then
-            for _ = 1, math.min(flags, #term.keyboard_stack) do term.keyboard_flags = table.remove(term.keyboard_stack) end
-        elseif mode == 1 then term.keyboard_flags = bit.band(flags, 25)
-        elseif mode == 2 then term.keyboard_flags = bit.band(bit.bor(term.keyboard_flags or 0, flags), 25)
-        elseif mode == 3 then term.keyboard_flags = bit.band(term.keyboard_flags or 0, bit.bnot(flags)) end
+            for _ = 1, math.min(flags, #term.keyboard_stack) do keyboard(term, table.remove(term.keyboard_stack)) end
+        elseif mode == 1 then keyboard(term, flags)
+        elseif mode == 2 then keyboard(term, bit.bor(term.keyboard_requested or term.keyboard_flags or 0, flags))
+        elseif mode == 3 then keyboard(term, bit.band(term.keyboard_requested or term.keyboard_flags or 0, bit.bnot(flags))) end
         return true
     end
     if final == 'p' and body:match('^%?%d+%$$') then
@@ -102,6 +108,7 @@ function M.string(term, kind, body, terminator)
     end
     if code == '10' or code == '11' or code == '12' then
         local color = code == '11' and term.background or term.foreground
+        if code == '12' then color = term.cursor_color or color end
         if data == '?' then term:send(ESC .. ']' .. code .. ';' .. rgb(color) .. ST) end
         return
     end
