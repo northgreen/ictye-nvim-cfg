@@ -1,8 +1,7 @@
 {1 "hrsh7th/nvim-cmp"
   :opts (λ [_ opts]
     (set opts.sources (or opts.sources {}))
-    (table.insert opts.sources {:name "lazydev" :group_index 0})
-    (values))
+    (table.insert opts.sources {:name "lazydev" :group_index 0}))
   :events ["BufReadPre"]
   :enabled false
   :lazy true
@@ -31,8 +30,7 @@
               (set formatted-item.kind color_item.abbr))
             formatted-item)}
         :snippet {:expand (fn [args]
-            ((. vim.fn :vsnip#anonymous) args.body)
-            (values))}
+            ((. vim.fn :vsnip#anonymous) args.body))}
         :window {:completion (cmp.config.window.bordered {:zindex 40})
           :documentation (cmp.config.window.bordered {:zindex 40})}
         :mapping
@@ -45,8 +43,7 @@
                       (when (not entry)
                         (cmp.select_next_item {:behavior cmp.SelectBehavior.Select})))
                     (cmp.confirm))
-                  (fallback))
-                (values))
+                  (fallback)))
               ["i" "s" "c"])
             :<C-j> (cmp.mapping.select_next_item ["i" "s" "c"])
             :<C-k> (cmp.mapping.select_prev_item ["i" "s" "c"])})
@@ -62,8 +59,7 @@
       {:mapping (cmp.mapping.preset.cmdline)
         :sources (cmp.config.sources [{:name "path"}]
           [{:name "cmdline"}])
-        :matching {:disallow_symbol_nonprefix_matching false}})
-    (values))
+        :matching {:disallow_symbol_nonprefix_matching false}}))
   :dependencies ["onsails/lspkind.nvim" "hrsh7th/cmp-buffer" "hrsh7th/cmp-path"
     "hrsh7th/cmp-nvim-lua"
     {1 "hrsh7th/cmp-nvim-lsp" :events ["BufReadPre"]}

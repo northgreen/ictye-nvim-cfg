@@ -1,5 +1,5 @@
 ; setup lazy
-{:setup (fn []
+{:setup (λ []
     (let [lazy (require :lazy)
         plugin_config (require "plugins.config.init")]
       (plugin_config.setup)
@@ -18,5 +18,5 @@
             (require :plugins.require.lite_require)
             (require :plugins.require))
           :ui {:border :rounded
-            :tittle "Plugin Manager"
+            :title "Plugin Manager"
             :tittle_pos :center}})))}

@@ -15,6 +15,5 @@
       (set dap.listeners.before.event_terminated.dapui_config
         (λ [] (dapui.close)))
       (set dap.listeners.before.event_exited.dapui_config
-        (λ [] (dapui.close))))
-    (values))
+        (λ [] (dapui.close)))))
   :dependencies ["mfussenegger/nvim-dap" "nvim-neotest/nvim-nio"]}

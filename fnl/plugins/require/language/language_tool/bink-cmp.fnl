@@ -22,7 +22,7 @@
       :menu {:border "single"
         :draw {:columns [["kind_icon"] {1 "label" :gap 1}]
           :components {:label {:width {:fill true :max 60}
-              :text (fn [ctx]
+              :text (λ [ctx]
                 (let [highlights_info ((. (require :colorful-menu) :blink_highlights) ctx)]
                   (if (not= highlights_info nil)
                     highlights_info.label
