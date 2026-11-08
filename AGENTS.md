@@ -19,6 +19,13 @@ twc一般是require('util.functions').three_way_compare的缩写而不是一个�
 
 不使用与模块目录同名的lua文件而是使用`init.lua`
 
+## 风格指南
+
+### fennel
+
+- 匿名函数使用`λ`代替`fn`
+- 模块的写法往往采用在最后直接表达列表而不是像lua那样先定义M再返回
+
 ## 开发命令
 
 ### Makefile 入口
