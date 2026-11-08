@@ -15,7 +15,7 @@
               :/lazy-rocks)
             :server "https://lumen-oss.github.io/rocks-binaries/"}
           :spec (if vim.g.lite_mode
-            (require :plugin.require.lite_require)
+            (require :plugins.require.lite_require)
             (require :plugins.require))
           :ui {:border :rounded
             :tittle "Plugin Manager"

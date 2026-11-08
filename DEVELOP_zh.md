@@ -75,14 +75,15 @@ Neovim 运行后可用的常用命令：
 |-------|---------|
 | `lua/core/` | 核心设置 — LSP 激活、键位映射、自动命令、高亮、主题配置 |
 | `lua/options/` | Neovim 选项 — 编辑器行为、外观和运行时设置 |
-| `lua/plugin/` | 插件规范（lazy.nvim）和插件加载编排 |
+| `fnl/plugins/` | Fennel 插件规范（lazy.nvim）和插件加载编排 |
+| `fnl/configs/` | 独立插件配置与语言/DAP 初始化 |
 | `lua/global/` | 全局工具 — 共享 LSP 功能、UI 辅助函数和常量 |
 | `lua/util/` | 工具函数 — 键位映射助手、模块加载工具、缓冲区操作、快捷菜单 |
 | `lsp/` | 每种语言的 LSP 服务器配置（放在 lua/ 外部以保持清晰） |
 
 ### 插件加载
 
-插件按类别组织在 `lua/plugin/require/require.lua` 中。每个类别将相关插件分组在一起：
+完整模式插件在 `fnl/plugins/require/init.fnl` 中汇总，精简模式使用 `fnl/plugins/require/lite_require.fnl`。每个类别将相关插件分组在一起：
 
 | 类别 | 内容 |
 |----------|----------|
@@ -184,17 +185,17 @@ Neovim 运行后可用的常用命令：
 
 ### 添加新插件
 
-1. **定义插件规范**：在 `lua/plugin/init.lua` 中定义。使用 lazy.nvim 的规范格式来声明仓库、依赖、延迟加载条件和任何构建步骤。
+1. **定义插件规范**：在 `fnl/plugins/require/` 下创建 Fennel 模块。使用 lazy.nvim 的规范格式来声明仓库、依赖、延迟加载条件和任何构建步骤。
 
-2. **创建配置文件**：在 `lua/plugin/require/` 下的相应子目录中创建：
+2. **选择对应分类**：使用 `fnl/plugins/require/` 下的相应子目录：
    - UI 插件放在 `ui/`
    - 工具和集成放在 `tool/`
    - 编辑器增强放在 `editor/`
    - 语言特定插件放在 `language/`
 
-3. **注册插件**：在 `lua/plugin/require/require.lua` 中对应类别部分添加 `require` 调用。这确保插件初始化时加载配置文件。
+3. **注册插件**：在 `fnl/plugins/require/init.fnl` 中对应类别部分添加 `require` 调用；精简模式使用 `lite_require.fnl`。运行 `make build` 编译配置。
 
-> **提示**：如果插件没有自定义配置（默认设置已足够），可以跳过第 2 步，只需在 `init.lua` 中添加规范即可。
+> **提示**：仅使用默认配置的插件可以在 Fennel 模块中写为 `["owner/repository"]`。
 
 ### 添加新 LSP 服务器
 

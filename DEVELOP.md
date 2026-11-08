@@ -75,14 +75,15 @@ Each layer has a single responsibility, reducing coupling between configuration 
 |-------|---------|
 | `lua/core/` | Core settings — LSP activation, keymaps, autocommands, highlights, theme configuration |
 | `lua/options/` | Neovim options — editor behavior, appearance, and runtime settings |
-| `lua/plugin/` | Plugin specifications (lazy.nvim) and plugin loading orchestration |
+| `fnl/plugins/` | Fennel plugin specifications (lazy.nvim) and plugin loading orchestration |
+| `fnl/configs/` | Independent plugin configuration and language/DAP initialization |
 | `lua/global/` | Global utilities — shared LSP capabilities, UI helper functions, and constants |
 | `lua/util/` | Utility functions — keymap helpers, module loading utilities, buffer operations, quickmenu |
 | `lsp/` | Per-language LSP server configurations (external to lua/ for clarity) |
 
 ### Plugin Loading
 
-Plugins are organized by category in `lua/plugin/require/require.lua`. Each category groups related plugins together:
+Full-mode plugins are collected in `fnl/plugins/require/init.fnl`; Lite uses `fnl/plugins/require/lite_require.fnl`. Each category groups related plugins together:
 
 | Category | Contents |
 |----------|----------|
@@ -184,17 +185,17 @@ This section walks through common extension tasks with practical guidance.
 
 ### Add a New Plugin
 
-1. **Define the plugin spec** in `lua/plugin/init.lua`. Use lazy.nvim's specification format to declare the repository, dependencies, lazy-loading conditions, and any build steps.
+1. **Define the plugin spec** in a Fennel module under `fnl/plugins/require/`. Use lazy.nvim's specification format to declare the repository, dependencies, lazy-loading conditions, and any build steps.
 
-2. **Create a config file** in the appropriate subdirectory under `lua/plugin/require/`:
+2. **Choose the matching category** under `fnl/plugins/require/`:
    - UI plugins go in `ui/`
    - Tools and integrations go in `tool/`
    - Editor enhancements go in `editor/`
    - Language-specific plugins go in `language/`
 
-3. **Register the plugin** by adding a `require` call in `lua/plugin/require/require.lua` under the matching category section. This ensures the config file is loaded when the plugin is initialized.
+3. **Register the plugin** by adding a `require` call in `fnl/plugins/require/init.fnl` under the matching category section. Use `lite_require.fnl` for Lite-mode plugins, then run `make build` to compile the configuration.
 
-> **Tip**: If the plugin has no custom config (defaults are sufficient), you can skip step 2 and just add the spec in `init.lua`.
+> **Tip**: A plugin using only defaults can be described as `["owner/repository"]` in its Fennel module.
 
 ### Add a New LSP Server
 

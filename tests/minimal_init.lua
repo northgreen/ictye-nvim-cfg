@@ -20,6 +20,7 @@ require('mini.test').setup({
                 'tests/unit/kitty_passthrough.lua',
                 'tests/unit/meow_yarn.lua',
                 'tests/unit/performance.lua',
+                'tests/unit/plugin_specs.lua',
                 'tests/unit/llm_modules.lua',
                 'tests/unit/llm_modules_pi.lua',
             }

@@ -1,0 +1,1 @@
+{:command :opencode :args [:acp]}

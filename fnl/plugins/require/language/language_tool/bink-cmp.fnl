@@ -1,0 +1,38 @@
+{1 "saghen/blink.cmp"
+  :dependencies ["rafamadriz/friendly-snippets"
+    "xzbdmw/colorful-menu.nvim"
+    "Kaiser-Yang/blink-cmp-avante"
+    "PaterJason/cmp-conjure"
+    {1 "L3MON4D3/LuaSnip" :version "v2.*"}
+    {1 "saghen/blink.compat" :version "2.*" :lazy true :opts {}}]
+  :version "1.*"
+  :event ["BufReadPost" "BufNewFile"]
+  :opts {:signature {:enabled true}
+    :keymap {:preset "default"
+      :<C-j> ["select_next" "fallback"]
+      :<C-k> ["select_prev" "fallback"]}
+    :appearance {:nerd_font_variant "mono"}
+    :sources {:default ["conjure" "nvlime" "avante" "snippets" "lsp" "path" "buffer"]
+      :providers {:avante {:module "blink-cmp-avante" :name "Avante" :opts {}}
+        :nvlime {:name "nvlime" :module "nvlime.blink"}
+        :conjure {:name "conjure" :module "blink.compat.source"}}}
+    :fuzzy {:implementation "prefer_rust_with_warning"}
+    :snippets {:preset "luasnip"}
+    :completion {:documentation {:window {:border "single"} :auto_show true}
+      :menu {:border "single"
+        :draw {:columns [["kind_icon"] {1 "label" :gap 1}]
+          :components {:label {:width {:fill true :max 60}
+              :text (fn [ctx]
+                (let [highlights_info ((. (require :colorful-menu) :blink_highlights) ctx)]
+                  (if (not= highlights_info nil)
+                    highlights_info.label
+                    ctx.label)))
+              :highlight (fn [ctx]
+                (var highlights {})
+                (local highlights_info ((. (require :colorful-menu) :blink_highlights) ctx))
+                (when (not= highlights_info nil)
+                  (set highlights highlights_info.highlights))
+                (each [_ idx (ipairs ctx.label_matched_indices)]
+                  (table.insert highlights {1 idx 2 (+ idx 1) :group "BlinkCmpLabelMatch"}))
+                highlights)}}}}}}
+  :opts_extend ["sources.default"]}

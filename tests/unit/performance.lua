@@ -14,7 +14,11 @@ T['语言工具只初始化一次，重绘合并且到期刷新'] = function()
         local setup_calls = 0
         package.loaded.dapui = { setup = function() setup_calls = setup_calls + 1 end }
         package.loaded['configs.language_cfg.toolchain.toolchain_init'] = {}
-        dofile('lua/configs/language_cfg/init.lua')
+        local hotpot = vim.env.HOTPOT_PATH
+        if not hotpot or hotpot == '' then hotpot = vim.fn.stdpath('data') .. '/lazy/hotpot.nvim' end
+        vim.opt.runtimepath:prepend(hotpot)
+        require('hotpot')
+        require('fennel').dofile('fnl/configs/language_cfg/init.fnl')
         for _ = 1, 100 do
             vim.api.nvim_exec_autocmds('BufRead', { buffer = 0, modeline = false })
         end

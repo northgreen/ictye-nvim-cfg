@@ -78,7 +78,8 @@ cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 |----|------|
 | `lua/core/` | 设置、LSP、键位映射、自动命令 |
 | `lua/options/` | Neovim 选项配置 |
-| `lua/plugin/` | 插件规格（lazy.nvim） |
+| `fnl/plugins/` | Fennel 插件规格、lazy.nvim 初始化与预加载配置 |
+| `fnl/configs/` | Fennel 独立插件配置与语言/DAP 初始化 |
 | `lua/global/` | LSP 能力配置、界面工具 |
 | `lua/util/` | 共享工具（键位、函数） |
 | `lsp/*.lua` | 按语言划分的 LSP 服务器配置 |
@@ -86,7 +87,7 @@ cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 | `tests/e2e/` | 端到端测试框架（denops testutil + 真实用户配置） |
 
 ### 插件加载
-插件在 `lua/plugin/require/require.lua` 中声明，按类别组织：
+插件在 `fnl/plugins/require/init.fnl` 中汇总，Lite 模式使用 `fnl/plugins/require/lite_require.fnl`。规格与内嵌回调均使用 Fennel，按类别组织：
 - `ui/` - 主题、状态栏、bufferline、edgy
 - `tool/` - telescope、git、overseer、AI 工具（avante、opencode、claude）
 - `editor/` - surround、pairs、trouble、which-key
@@ -99,9 +100,9 @@ cd tests/e2e && deno test -A --config deno.jsonc scenarios/
 ## 添加新功能
 
 ### 添加新插件
-1. 在 `lua/plugin/init.lua` 中添加插件规格
-2. 在合适的 `lua/plugin/require/` 子目录中创建配置文件
-3. 在 `lua/plugin/require/require.lua` 中添加 require
+1. 在合适的 `fnl/plugins/require/` 子目录中创建 Fennel 插件规格
+2. 在 `fnl/plugins/require/init.fnl` 中添加 require，Lite 专属入口为 `lite_require.fnl`
+3. 运行 `make build` 编译并检查 Hotpot 缓存
 
 ### 添加新 LSP 服务器
 1. 通过 Mason 安装：`:MasonInstall <server>`
