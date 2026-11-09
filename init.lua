@@ -35,6 +35,11 @@ if not ok then
   print('Error loading env_init,this config may not work properly: ' .. err)
 end
 
+-- 导出器只在显式提供路径时加载；未启用时不安装 hook。
+if (vim.g.keymap_export and vim.g.keymap_export ~= '')
+    or (vim.env.NVIM_KEYMAP_EXPORT and vim.env.NVIM_KEYMAP_EXPORT ~= '') then
+  require('util.keymap_export').setup()
+end
 
 ploadmodule 'core.vimpreconfig'
 

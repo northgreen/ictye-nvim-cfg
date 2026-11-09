@@ -43,6 +43,10 @@ nvim --cmd "let g:lite_mode=v:true"  # Lite 模式（最小化）
 nvim --headless -c "lua vim.health ~= nil and vim.health.check() or vim.cmd('checkhealth')" -c "q" 2>&1
 ```
 
+### 导出运行时键位
+
+`NVIM_KEYMAP_EXPORT=/tmp/nvim-keymaps.csv nvim` 或启动前设置 `g:keymap_export` 为路径，启用 `fnl/util/keymap_export/init.fnl` 的快照 hook。未设置时不加载模块；手动刷新命令 `:KeymapExport` 只在启用时存在。导出全局与现存 buffer-local 映射，不记录删除历史或强制加载插件；CSV 用 RFC 4180 引号转义、同目录临时文件原子替换。`python3 scripts/keymap_viewer.py INPUT.csv OUTPUT.html` 生成离线键盘浏览器。单元回归 `TEST_FILE=tests/unit/keymap_export.lua make test`，网页生成器回归 `python3 tests/unit/keymap_viewer.py`。
+
 ### 运行 Lua 单元回归（mini.test）
 
 ```bash

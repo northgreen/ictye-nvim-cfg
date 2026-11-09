@@ -22,6 +22,7 @@ require('mini.test').setup({
                 'tests/unit/performance.lua',
                 'tests/unit/plugin_specs.lua',
                 'tests/unit/neoghidra.lua',
+                'tests/unit/keymap_export.lua',
                 'tests/unit/llm_modules.lua',
                 'tests/unit/llm_modules_pi.lua',
             }

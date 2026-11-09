@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Keymap Atlas · Neovim</title>
+<style>@@STYLE@@</style>
+</head>
+<body>
+<main>
+<header><div><p class="eyebrow">NEOVIM / RUNTIME SNAPSHOT</p><h1>Keymap <em>Atlas</em><span class="status-dot" aria-hidden="true"></span></h1></div><p class="edition">OFFLINE INSTRUMENT<br><span id="total"></span> mappings · US ANSI</p></header>
+<section class="filters" aria-label="Mapping filters">
+<label class="search-label">Search the snapshot<input id="search" type="search" placeholder="Description, command, source, callback…" autocomplete="off"></label>
+<label>Mode<select id="mode"><option value="">All modes</option></select></label>
+<label>Scope<select id="scope"><option value="">All scopes</option><option value="global">Global</option><option value="buffer">Buffer-local</option></select></label>
+<label>Buffer<select id="buffer"><option value="">All buffers</option></select></label>
+</section>
+<section class="instrument" aria-labelledby="keyboard-title">
+<div class="section-heading"><h2 id="keyboard-title"><span>01</span> Explore the keyboard</h2><span class="legend">● next key <span class="selected-legend">● selected sequence</span></span></div>
+<div class="sequence-toolbar"><nav id="breadcrumbs" aria-label="Sequence prefix"></nav><div><button id="back" type="button">← Back</button><button id="reset" type="button">Reset prefix</button></div></div>
+<div id="modifiers" class="modifiers" role="group" aria-label="Keyboard modifiers"></div>
+<div class="keyboard-scroll"><div id="keyboard" aria-label="US ANSI keyboard"></div></div>
+<p class="hint">Click a key to filter the register by sequence prefix. Modifier switches affect the next key only. Amber keys have matching continuations; blue keys trace the selected mapping. Use the token buttons for nonphysical keys.</p>
+<div id="continuations" class="chips" role="group" aria-label="All next sequence tokens"></div>
+<p id="prefix-status" class="hint" aria-live="polite"></p>
+</section>
+<section class="mapping-section" aria-labelledby="mapping-title">
+<div class="section-heading"><h2 id="mapping-title"><span>02</span> Mapping register</h2><output id="count" aria-live="polite"></output></div>
+<p class="hint">The register combines the keyboard prefix with search, mode, scope, and buffer filters. Reset prefix to explore all sequences. Select a mapping to inspect its complete data without changing the prefix or visible rows.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Mode</th><th scope="col">Sequence</th><th scope="col">Description / action</th><th scope="col">Scope</th><th scope="col">Source</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p id="empty" hidden>No mappings match these filters. Reset the prefix, clear the search, or choose another mode, scope, or buffer.</p>
+<div class="pagination"><button id="previous" type="button">← Previous</button><span id="page"></span><button id="next" type="button">Next →</button></div>
+<aside id="detail" aria-labelledby="detail-title" hidden><h3 id="detail-title">Mapping detail</h3><dl id="fields"></dl></aside>
+</section>
+<footer>KEYMAP ATLAS <span>Local data. No network. No hidden mappings.</span></footer>
+</main>
+<script id="mapping-data" type="application/json">@@DATA@@</script>
+<script>@@TOKENS@@
+@@APP@@</script>
+</body>
+</html>

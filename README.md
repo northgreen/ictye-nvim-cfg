@@ -99,6 +99,31 @@ Use `\?` to see all buffer-local keymaps.
 | `<C-a>` | OpenCode AI chat |
 | `<leader>oC` | Toggle OpenCode panel |
 
+### Offline keyboard map
+
+1. Start a recording session: `NVIM_KEYMAP_EXPORT=/tmp/nvim-keymaps.csv nvim`
+2. Open the file types and plugin panels whose mappings you want to inspect, then quit Neovim
+3. Generate the page from this repository: `python3 scripts/keymap_viewer.py /tmp/nvim-keymaps.csv /tmp/nvim-keymaps.html`
+4. Open `/tmp/nvim-keymaps.html` in your browser; use the keyboard to explore sequences and the table filters to search mappings
+
+The HTML works offline without a server or external assets. Python 3.10+ is required
+only for generation. Windows users can enable export before startup with
+`nvim --cmd "let g:keymap_export='C:/Temp/nvim-keymaps.csv'"`; the global variable
+also works on Linux/macOS and takes precedence over `NVIM_KEYMAP_EXPORT`.
+
+The CSV is a **current runtime snapshot**, refreshed after startup, plugin/buffer
+events, at safe idle points, and synchronously before exit. `:KeymapExport`
+refreshes it manually during an enabled session. No hooks are installed unless an
+output path is supplied. The output file is replaced, so choose a dedicated path.
+
+It includes global and buffer-local mappings for all existing buffers, not built-in
+Vim commands or mappings inside plugins that have never loaded. Deleted mappings
+and wiped buffers are absent from subsequent snapshots. Global mappings and local
+overrides are separate records; the page does not simulate Neovim's resolution
+priority. Lua callbacks are identified by source and line, not exported as executable
+functions. The keyboard uses US ANSI; nonphysical tokens and other keys remain
+available as sequence buttons and searchable table entries.
+
 ## Lite Mode
 
 The lite mode provides a minimal Neovim experience with faster startup times:
