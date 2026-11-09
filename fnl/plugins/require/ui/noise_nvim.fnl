@@ -2,40 +2,40 @@
 ;; Check vim.env.WT_SESSION against nil when detecting Windows Terminal.
 (local twc (. (require :util.functions) :three_way_compare))
 {;; :enabled (and (not vim.g.started_by_firenvim) _G.options.ui.ui_options.noise)
- ;; :enabled false
- 1 :folke/noice.nvim
- :event :VeryLazy
- :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
-                        :vim.lsp.util.stylize_markdown true
-                        :cmp.entry.get_documentation true}
-              :documentation {:view :hover
-                              :opts {:lang :markdown :replace true :render :plain
-                                     :format ["{message}"]
-                                     :win_options {:concealcursor :n :conceallevel 3}}}}
-        :notify {:enabled false
-                 :view :mini
-                 ;; :view :notify_send
-                 ;; :view :cmdline
-                 }
-        :cmdline {:view :cmdline}
-        :messages {:enabled true
-                   :view :mini
-                   ;; :view :hover
-                   ;; :view :notify_send
-                   ;; :view :cmdline
-                   }
-        :presets {:bottom_search false :command_palette false
-                  :long_message_to_split true :inc_rename false :lsp_doc_border true}
-        :popupmenu {:enabled true :backend :nui :kind_icons {}}
-        :redirect {:view :popup :filter {:event :msg_show}}
-        :views {:notify {:render :wrapped-compact :timeout 500 :top_down false
-                         :stages (twc (= _G.options.env.term :WINTERM) :static :slide)
-                         :animate false}
-                :cmdline_popup {:position {:row -3 :col -1}}}
-        :health {:checker false} ; Conflicts with snacks.
-        :commands {}
-        :routes [{:filter {:event :msg_show :kind "" :find :written}
-                  :opts {:skip true}}
-                 {:filter {:event :msg_show :kind :search_count}
-                  :opts {:skip true}}]}
- :dependencies [:MunifTanjim/nui.nvim :rcarriga/nvim-notify]}
+  ;; :enabled false
+  1 :folke/noice.nvim
+  :event :VeryLazy
+  :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
+        :vim.lsp.util.stylize_markdown true
+        :cmp.entry.get_documentation true}
+      :documentation {:view :hover
+        :opts {:lang :markdown :replace true :render :plain
+          :format ["{message}"]
+          :win_options {:concealcursor :n :conceallevel 3}}}}
+    :notify {:enabled false
+      :view :mini
+      ;; :view :notify_send
+      ;; :view :cmdline
+    }
+    :cmdline {:view :cmdline}
+    :messages {:enabled true
+      :view :mini
+      ;; :view :hover
+      ;; :view :notify_send
+      ;; :view :cmdline
+    }
+    :presets {:bottom_search false :command_palette false
+      :long_message_to_split true :inc_rename false :lsp_doc_border true}
+    :popupmenu {:enabled true :backend :nui :kind_icons {}}
+    :redirect {:view :popup :filter {:event :msg_show}}
+    :views {:notify {:render :wrapped-compact :timeout 500 :top_down false
+        :stages (twc (= _G.options.env.term :WINTERM) :static :slide)
+        :animate false}
+      :cmdline_popup {:position {:row -3 :col -1}}}
+    :health {:checker false} ; Conflicts with snacks.
+    :commands {}
+    :routes [{:filter {:event :msg_show :kind "" :find :written}
+        :opts {:skip true}}
+      {:filter {:event :msg_show :kind :search_count}
+        :opts {:skip true}}]}
+  :dependencies [:MunifTanjim/nui.nvim :rcarriga/nvim-notify]}

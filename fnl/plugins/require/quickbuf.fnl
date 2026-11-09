@@ -1,5 +1,4 @@
-{
-  1 "tjgao/quickbuf.nvim"
+{1 "tjgao/quickbuf.nvim"
   :opts {
     :fuzzy_key "f"
     :fuzzy_backend "mini"}

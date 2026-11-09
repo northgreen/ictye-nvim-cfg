@@ -1,5 +1,4 @@
-{
-  1 "nvim-treesitter/nvim-treesitter-textobjects"
+{1 "nvim-treesitter/nvim-treesitter-textobjects"
   :branch "main"
   :opts {
     :textobjects {
@@ -10,7 +9,6 @@
           "@parameter.outer" "v"
           "@function.outer" "V"
           "@class.outer" "<c-v>"}
-
         :include_surrounding_whitespace true}}
     :move {
       :set_jump true}}}

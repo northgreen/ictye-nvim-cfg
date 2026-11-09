@@ -1,4 +1,3 @@
 {1 :wom/wombient
- :config (fn []
-           ((. (require :wombient) :setup) {:enabled false})
-           (values))}
+  :config (fn []
+    ((. (require :wombient) :setup) {:enabled false}))}
