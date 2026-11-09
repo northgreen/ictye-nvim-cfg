@@ -8,3 +8,4 @@ native_sources/rust/target/*
 .envrc
 .claude/worktrees/
 tests/e2e/vendor/
+__pycache__/

@@ -1,9 +1,13 @@
-{
-  1 "B00TK1D/neoghidra"
+{1 "B00TK1D/neoghidra"
+  :config (fn [_ opts]
+            ((. (require :plugins.config.neoghidra) :setup))
+            ((. (require :neoghidra) :setup) opts)
+            nil)
   :opts {
     :ghidra_path "/opt/ghidra"
     :auto_analyze true
     :default_view "decompiler"
+    :project_dir (.. (vim.uv.os_homedir) "/GhidraProj")
     :keymaps {
       :toggle_view "<leader>gt"
       :goto_definition "gd"
