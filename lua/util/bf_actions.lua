@@ -1,6 +1,6 @@
 local M = {}
 
---- set the q key for quit currect buffer
+--- set the q key for quit current buffer
 function M.q_exit()
     vim.keymap.set("n", "q", "<Cmd>quit<CR>", { buffer = true})
     vim.keymap.set("n", "<Esc>", "<Cmd>quit<CR>", { buffer = true })
