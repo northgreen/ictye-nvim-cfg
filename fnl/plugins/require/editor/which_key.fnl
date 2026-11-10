@@ -1,4 +1,4 @@
 {1 "folke/which-key.nvim"
- :event "VeryLazy"
- :keys (. (require :core.keymap) :which_key)
- :opts {:preset "helix" :win {:title false}}}
+  :event "VeryLazy"
+  :keys (. (require :core.keymap) :which_key)
+  :opts {:preset "helix" :win {:title false}}}

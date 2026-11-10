@@ -1,9 +1,9 @@
 local validate = vim.validate
 local api = vim.api
 local lsp = vim.lsp
-local nvim_eleven = vim.fn.has 'nvim-0.11' == 1
+local nvim_eleven = vim.fn.has("nvim-0.11") == 1
 
-local iswin = vim.uv.os_uname().version:match 'Windows'
+local iswin = vim.uv.os_uname().version:match("Windows")
 
 local M = { path = {} }
 
@@ -21,19 +21,19 @@ M.default_config = {
 M.on_setup = nil
 
 local function escape_wildcards(path)
-  return path:gsub('([%[%]%?%*])', '\\%1')
+  return path:gsub("([%[%]%?%*])", "\\%1")
 end
 
 --- Returns a function which matches a filepath against the given glob/wildcard patterns.
 ---
 --- Also works with zipfile:/tarfile: buffers (via `strip_archive_subpath`).
 function M.root_pattern(...)
-  local patterns = M.tbl_flatten { ... }
+  local patterns = M.tbl_flatten({ ... })
   return function(startpath)
     startpath = M.strip_archive_subpath(startpath)
     for _, pattern in ipairs(patterns) do
       local match = M.search_ancestors(startpath, function(path)
-        for _, p in ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, '/'), true, true)) do
+        for _, p in ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, "/"), true, true)) do
           if vim.uv.fs_stat(p) then
             return path
           end
@@ -59,32 +59,32 @@ end
 --- @param fname string Full path of the current buffer name to start searching upwards from.
 --- @param match_mode? 'all' | 'any' Match mode - all or any field passed as `field`
 function M.root_markers_with_field(root_files, new_names, field, fname, match_mode)
-  local path = vim.fn.fnamemodify(fname, ':h')
-  local found = vim.fs.find(new_names, { path = path, upward = true, type = 'file' })
-  local fields = type(field) == 'string' and { field } or field
+  local path = vim.fn.fnamemodify(fname, ":h")
+  local found = vim.fs.find(new_names, { path = path, upward = true, type = "file" })
+  local fields = type(field) == "string" and { field } or field
   local to_find = vim.deepcopy(fields)
-  local matcher = (match_mode or 'any') == 'any'
+  local matcher = (match_mode or "any") == "any"
       and function(line)
         return vim.iter(fields):any(function(s)
           return line:find(s)
         end)
       end
-      or function(line)
-        to_find = vim
-            .iter(to_find)
-            :filter(function(s)
-              return not line:find(s)
-            end)
-            :totable()
-        if #to_find == 0 then
-          to_find = vim.deepcopy(files)
-          return true
-        end
-        return false
+    or function(line)
+      to_find = vim
+        .iter(to_find)
+        :filter(function(s)
+          return not line:find(s)
+        end)
+        :totable()
+      if #to_find == 0 then
+        to_find = vim.deepcopy(files)
+        return true
       end
+      return false
+    end
   for _, f in ipairs(found or {}) do
     -- Match the given `field`.
-    local file = assert(io.open(f, 'r'))
+    local file = assert(io.open(f, "r"))
     for line in file:lines() do
       if matcher(line) then
         root_files[#root_files + 1] = vim.fs.basename(f)
@@ -98,28 +98,28 @@ function M.root_markers_with_field(root_files, new_names, field, fname, match_mo
 end
 
 function M.insert_package_json(root_files, field, fname)
-  return M.root_markers_with_field(root_files, { 'package.json', 'package.json5' }, field, fname)
+  return M.root_markers_with_field(root_files, { "package.json", "package.json5" }, field, fname)
 end
 
 -- For zipfile: or tarfile: virtual paths, returns the path to the archive.
 -- Other paths are returned unaltered.
 function M.strip_archive_subpath(path)
   -- Matches regex from zip.vim / tar.vim
-  path = vim.fn.substitute(path, 'zipfile://\\(.\\{-}\\)::[^\\\\].*$', '\\1', '')
-  path = vim.fn.substitute(path, 'tarfile:\\(.\\{-}\\)::.*$', '\\1', '')
+  path = vim.fn.substitute(path, "zipfile://\\(.\\{-}\\)::[^\\\\].*$", "\\1", "")
+  path = vim.fn.substitute(path, "tarfile:\\(.\\{-}\\)::.*$", "\\1", "")
   return path
 end
 
 function M.get_typescript_server_path(root_dir)
-  local project_roots = vim.fs.find('node_modules', { path = root_dir, upward = true, limit = math.huge })
+  local project_roots = vim.fs.find("node_modules", { path = root_dir, upward = true, limit = math.huge })
   for _, project_root in ipairs(project_roots) do
-    local typescript_path = project_root .. '/typescript'
+    local typescript_path = project_root .. "/typescript"
     local stat = vim.loop.fs_stat(typescript_path)
-    if stat and stat.type == 'directory' then
-      return typescript_path .. '/lib'
+    if stat and stat.type == "directory" then
+      return typescript_path .. "/lib"
     end
   end
-  return ''
+  return ""
 end
 
 ---
@@ -133,7 +133,7 @@ end
 --- Deprecated in Nvim 0.11
 function M.search_ancestors(startpath, func)
   if nvim_eleven then
-    validate('func', func, 'function')
+    validate("func", func, "function")
   end
   if func(startpath) then
     return startpath
@@ -155,9 +155,9 @@ end
 --- Deprecated in Nvim 0.11
 local function is_fs_root(path)
   if iswin then
-    return path:match '^%a:$'
+    return path:match("^%a:$")
   else
-    return path == '/'
+    return path == "/"
   end
 end
 
@@ -212,7 +212,7 @@ end
 --- @param path string
 --- @return boolean
 function M.path.is_file(path)
-  return (vim.uv.fs_stat(path) or {}).type == 'file'
+  return (vim.uv.fs_stat(path) or {}).type == "file"
 end
 
 --- @deprecated use `vim.fs.dirname` instead
@@ -231,33 +231,33 @@ end
 
 --- @deprecated use `table.concat({"path1", "path2"})` or regular string concatenation instead
 function M.path.join(...)
-  return table.concat({ ... }, '/')
+  return table.concat({ ... }, "/")
 end
 
 --- @deprecated use `vim.fn.has('win32') == 1 and ';' or ':'` instead
-M.path.path_separator = vim.fn.has('win32') == 1 and ';' or ':'
+M.path.path_separator = vim.fn.has("win32") == 1 and ";" or ":"
 
 --- @deprecated use `vim.fs.parents(path)` instead
 M.path.iterate_parents = vim.fs.parents
 
 --- @deprecated use `vim.fs.dirname(vim.fs.find('.hg', { path = startpath, upward = true })[1])` instead
 function M.find_mercurial_ancestor(startpath)
-  return vim.fs.dirname(vim.fs.find('.hg', { path = startpath, upward = true })[1])
+  return vim.fs.dirname(vim.fs.find(".hg", { path = startpath, upward = true })[1])
 end
 
 --- @deprecated use `vim.fs.dirname(vim.fs.find('node_modules', { path = startpath, upward = true })[1])` instead
 function M.find_node_modules_ancestor(startpath)
-  return vim.fs.dirname(vim.fs.find('node_modules', { path = startpath, upward = true })[1])
+  return vim.fs.dirname(vim.fs.find("node_modules", { path = startpath, upward = true })[1])
 end
 
 --- @deprecated use `vim.fs.dirname(vim.fs.find('package.json', { path = startpath, upward = true })[1])` instead
 function M.find_package_json_ancestor(startpath)
-  return vim.fs.dirname(vim.fs.find('package.json', { path = startpath, upward = true })[1])
+  return vim.fs.dirname(vim.fs.find("package.json", { path = startpath, upward = true })[1])
 end
 
 --- @deprecated use `vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])` instead
 function M.find_git_ancestor(startpath)
-  return vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])
+  return vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1])
 end
 
 --- @deprecated Will be removed. Do not use.
@@ -315,7 +315,7 @@ end
 
 -- Maps lspconfig-style command options to nvim_create_user_command (i.e. |command-attributes|) option names.
 local opts_aliases = {
-  ['description'] = 'desc',
+  ["description"] = "desc",
 }
 
 --- @deprecated Will be removed. Do not use.
@@ -324,15 +324,15 @@ function M._parse_user_command_options(command_definition)
   ---@type table<string, string | boolean | number>
   local opts = {}
   for k, v in pairs(command_definition) do
-    if type(k) == 'string' then
-      local attribute = k.gsub(k, '^%-+', '')
+    if type(k) == "string" then
+      local attribute = k.gsub(k, "^%-+", "")
       opts[opts_aliases[attribute] or attribute] = v
-    elseif type(k) == 'number' and type(v) == 'string' and v:match '^%-' then
+    elseif type(k) == "number" and type(v) == "string" and v:match("^%-") then
       -- Splits strings like "-nargs=* -complete=customlist,v:lua.something" into { "-nargs=*", "-complete=customlist,v:lua.something" }
-      for _, command_attribute in ipairs(vim.split(v, '%s')) do
+      for _, command_attribute in ipairs(vim.split(v, "%s")) do
         -- Splits attribute into a key-value pair, like "-nargs=*" to { "-nargs", "*" }
-        local attribute, value = unpack(vim.split(command_attribute, '=', { plain = true }))
-        attribute = attribute.gsub(attribute, '^%-+', '')
+        local attribute, value = unpack(vim.split(command_attribute, "=", { plain = true }))
+        attribute = attribute.gsub(attribute, "^%-+", "")
         opts[opts_aliases[attribute] or attribute] = value or true
       end
     end
@@ -343,10 +343,10 @@ end
 --- @deprecated Will be removed. Do not use.
 function M.create_module_commands(module_name, commands)
   for command_name, def in pairs(commands) do
-    if type(def) ~= 'function' then
+    if type(def) ~= "function" then
       local opts = M._parse_user_command_options(def)
       api.nvim_create_user_command(command_name, function(info)
-        require('lspconfig')[module_name].commands[command_name][1](unpack(info.fargs))
+        require("lspconfig")[module_name].commands[command_name][1](unpack(info.fargs))
       end, opts)
     end
   end
@@ -357,7 +357,7 @@ end
 --- https://github.com/neovim/neovim/blob/28e819018520a2300eaeeec6794ffcd614b25dd2/runtime/lua/vim/lsp/health.lua#L186
 --- @deprecated Will be removed. Do not use.
 function M.get_managed_clients()
-  local configs = require 'lspconfig.configs'
+  local configs = require("lspconfig.configs")
   local clients = {}
   for _, config in pairs(configs) do
     if config.manager then
@@ -369,7 +369,12 @@ end
 
 --- @deprecated Will be removed. Do not use.
 function M.bufname_valid(bufname)
-  if bufname:match '^/' or bufname:match '^[a-zA-Z]:' or bufname:match '^zipfile://' or bufname:match '^tarfile:' then
+  if
+    bufname:match("^/")
+    or bufname:match("^[a-zA-Z]:")
+    or bufname:match("^zipfile://")
+    or bufname:match("^tarfile:")
+  then
     return true
   end
   return false
@@ -380,7 +385,7 @@ function M.lsp_restart()
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
 
   if #clients == 0 then
-    vim.notify('No LSP server attached to current buffer', vim.log.levels.WARN)
+    vim.notify("No LSP server attached to current buffer", vim.log.levels.WARN)
     return
   end
 
@@ -391,7 +396,7 @@ function M.lsp_restart()
     local ok, err = pcall(function()
       local config = client.config or vim.lsp.config[client.name]
       if not config then
-        table.insert(failed, string.format('%s (no config)', client.name))
+        table.insert(failed, string.format("%s (no config)", client.name))
         return
       end
 
@@ -407,28 +412,27 @@ function M.lsp_restart()
     end)
 
     if not ok then
-      table.insert(failed, string.format('%s (%s)', client.name, tostring(err)))
+      table.insert(failed, string.format("%s (%s)", client.name, tostring(err)))
     end
   end
 
   -- Report results with appropriate log level
   if #restarted > 0 and #failed > 0 then
-    vim.notify(string.format('Restarted: %s\nFailed: %s',
-        table.concat(restarted, ', '), table.concat(failed, ', ')),
-      vim.log.levels.WARN)
+    vim.notify(
+      string.format("Restarted: %s\nFailed: %s", table.concat(restarted, ", "), table.concat(failed, ", ")),
+      vim.log.levels.WARN
+    )
   elseif #failed > 0 then
-    vim.notify(string.format('Failed: %s', table.concat(failed, ', ')),
-      vim.log.levels.ERROR)
+    vim.notify(string.format("Failed: %s", table.concat(failed, ", ")), vim.log.levels.ERROR)
   else
-    vim.notify(string.format('Restarted LSP servers: %s', table.concat(restarted, ', ')),
-      vim.log.levels.INFO)
+    vim.notify(string.format("Restarted LSP servers: %s", table.concat(restarted, ", ")), vim.log.levels.INFO)
   end
 end
 
 --- @deprecated Will be removed. Do not use.
 function M.validate_bufnr(bufnr)
   if nvim_eleven then
-    validate('bufnr', bufnr, 'number')
+    validate("bufnr", bufnr, "number")
   end
   return bufnr == 0 and api.nvim_get_current_buf() or bufnr
 end

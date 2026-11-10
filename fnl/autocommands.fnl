@@ -1,5 +1,4 @@
-{:setup (λ []
-    (let [Autocmd vim.api.nvim_create_autocmd]
+{:setup (λ [] (let [Autocmd vim.api.nvim_create_autocmd]
       ; deleat sda file 
       (Autocmd :VimLeave
         {:callback (fn []

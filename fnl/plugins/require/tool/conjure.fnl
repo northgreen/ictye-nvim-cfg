@@ -1,4 +1,4 @@
 {1 "Olical/conjure"
- :ft ["clojure" "fennel" "common-lisp" "scheme" "javascript" "typescript" "lua"]
- ;; :enabled false
- }
+  :ft ["clojure" "fennel" "common-lisp" "scheme" "javascript" "typescript" "lua"]
+  ;; :enabled false
+}

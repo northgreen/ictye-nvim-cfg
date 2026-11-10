@@ -4,13 +4,7 @@
 import { assert } from "@std/assert";
 import { Neovim } from "/denops-private/host/nvim.ts";
 import { withConfigNeovim } from "../with_config.ts";
-import {
-  lua,
-  measureEdit,
-  measureLspAttach,
-  measureLspRequest,
-  waitForPlugins,
-} from "../util.ts";
+import { lua, measureEdit, measureLspAttach, measureLspRequest, waitForPlugins } from "../util.ts";
 
 const FIXTURE = new URL("../fixtures/lua/test.lua", import.meta.url).pathname;
 

@@ -4,7 +4,7 @@
 import { assert } from "@std/assert";
 import { Neovim } from "/denops-private/host/nvim.ts";
 import { withConfigNeovim } from "../with_config.ts";
-import { lua, waitForPlugins, waitFor } from "../util.ts";
+import { lua, waitFor, waitForPlugins } from "../util.ts";
 
 Deno.test({
   name: "lsp: Lua LSP attaches and responds to documentSymbol",
@@ -16,7 +16,11 @@ Deno.test({
 
         // Open a Lua file (lua_ls + null-ls attach here; .luarc.json pins the
         // workspace root to fixtures/lua so lua_ls does not scan the whole repo)
-        await lua(host, "vim.api.nvim_command('edit " + new URL("../fixtures/lua/test.lua", import.meta.url).pathname + "')");
+        await lua(
+          host,
+          "vim.api.nvim_command('edit " +
+            new URL("../fixtures/lua/test.lua", import.meta.url).pathname + "')",
+        );
 
         // Wait for at least one LSP client
         await waitFor(host, async () => {
@@ -47,7 +51,9 @@ Deno.test({
           `documentSymbol returned ${symbols} symbols (expected > 0)`,
         );
 
-        console.log(`  verified: LSP clients=${clients.map((c) => c.name).join(",")}, symbols=${symbols}`);
+        console.log(
+          `  verified: LSP clients=${clients.map((c) => c.name).join(",")}, symbols=${symbols}`,
+        );
       },
     });
   },

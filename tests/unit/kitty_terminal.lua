@@ -1,13 +1,14 @@
 -- 原始 PTY 与原生 terminal 的集成用例各自运行在独立 Neovim，避免事件/窗口串扰。
-local MiniTest = require('mini.test')
+local MiniTest = require("mini.test")
 local child = MiniTest.new_child_neovim()
 local resultfile
-local T = MiniTest.new_set({ hooks = {
+local T = MiniTest.new_set({
+  hooks = {
     pre_case = function()
-        child.restart({ '-u', 'tests/minimal_init.lua' })
-        resultfile = vim.fn.tempname()
-        child.lua('resultfile = ...', {resultfile})
-        child.lua([[
+      child.restart({ "-u", "tests/minimal_init.lua" })
+      resultfile = vim.fn.tempname()
+      child.lua("resultfile = ...", { resultfile })
+      child.lua([[
             Terminal = require('experimental.kitty_terminal')
             Render = require('experimental.kitty_terminal.render')
             Screen = require('experimental.kitty_terminal.screen')
@@ -17,13 +18,15 @@ local T = MiniTest.new_set({ hooks = {
         ]])
     end,
     post_case = function()
-        child.stop()
-        vim.fn.delete(resultfile); vim.fn.delete(resultfile..'.tmp')
+      child.stop()
+      vim.fn.delete(resultfile)
+      vim.fn.delete(resultfile .. ".tmp")
     end,
-} })
+  },
+})
 
-T['RIS 重置后仍镜像原生显示'] = function()
-    child.lua([[
+T["RIS 重置后仍镜像原生显示"] = function()
+  child.lua([[
         local mirrored = {}
         local term = {screen=Screen.new(10,3),display=function(_,s) mirrored[#mirrored+1]=s end}
         Render.attach(term)
@@ -32,8 +35,8 @@ T['RIS 重置后仍镜像原生显示'] = function()
     ]])
 end
 
-T['真实键盘通道保留按下重复松开与分片并清空挂起按键'] = function()
-    child.lua([[
+T["真实键盘通道保留按下重复松开与分片并清空挂起按键"] = function()
+  child.lua([[
         local Input = require('experimental.kitty_terminal.input')
         local term = {}
         local bytes = '\27[1;1A\27[122;1;122u\27[122;1:2;122u\27[57441;2u'
@@ -51,8 +54,8 @@ T['真实键盘通道保留按下重复松开与分片并清空挂起按键'] = 
     ]])
 end
 
-T['真实键盘 flags3 保留普通文本 UTF8 与控制字节'] = function()
-    child.lua([[
+T["真实键盘 flags3 保留普通文本 UTF8 与控制字节"] = function()
+  child.lua([[
         local Input = require('experimental.kitty_terminal.input')
         local term = {keyboard_flags=3}
         local bytes = 'xé中\t\r\3'
@@ -63,8 +66,8 @@ T['真实键盘 flags3 保留普通文本 UTF8 与控制字节'] = function()
     ]])
 end
 
-T['真实键盘粘贴不解析伪按键与退出组合且保留分片边界'] = function()
-    child.lua([[
+T["真实键盘粘贴不解析伪按键与退出组合且保留分片边界"] = function()
+  child.lua([[
         local Input = require('experimental.kitty_terminal.input')
         local bytes = '\27[200~xé中\27[A\27[92;5u\27[110;5u\28\14\27[201~'
         for _, fragmented in ipairs({false,true}) do
@@ -82,8 +85,8 @@ T['真实键盘粘贴不解析伪按键与退出组合且保留分片边界'] = 
     ]])
 end
 
-T['未修饰 Up 原样转发且失焦释放'] = function()
-    child.lua([[
+T["未修饰 Up 原样转发且失焦释放"] = function()
+  child.lua([[
         local Input = require('experimental.kitty_terminal.input')
         local HostInput = require('experimental.kitty_terminal.host_input')
         local sent = {}
@@ -95,8 +98,8 @@ T['未修饰 Up 原样转发且失焦释放'] = function()
     ]])
 end
 
-T['通道 EOF 关闭先释放按键再降级且销毁时仅清空状态'] = function()
-    child.lua([[
+T["通道 EOF 关闭先释放按键再降级且销毁时仅清空状态"] = function()
+  child.lua([[
         local Input = require('experimental.kitty_terminal.input')
         local HostInput = require('experimental.kitty_terminal.host_input')
         for _, lifecycle in ipairs({'active','closed','exited'}) do
@@ -121,8 +124,8 @@ T['通道 EOF 关闭先释放按键再降级且销毁时仅清空状态'] = func
     ]])
 end
 
-T['缺少真实通道时不能宣称支持松键且协议栈恢复请求值'] = function()
-    child.lua([[
+T["缺少真实通道时不能宣称支持松键且协议栈恢复请求值"] = function()
+  child.lua([[
         local term = Terminal.open({cmd={'/bin/sh','-c','read line'},capture=false,host_send=function() end})
         local replies = {}
         term.send = function(_,s) replies[#replies+1] = s end
@@ -138,8 +141,8 @@ T['缺少真实通道时不能宣称支持松键且协议栈恢复请求值'] = 
     ]])
 end
 
-T['宿主图形原点与原生窗口内容坐标一致'] = function()
-    child.lua([[
+T["宿主图形原点与原生窗口内容坐标一致"] = function()
+  child.lua([[
         local buf = vim.api.nvim_create_buf(false,true)
         vim.api.nvim_set_current_buf(buf)
         vim.api.nvim_buf_set_lines(buf,0,-1,false,{'origin'})
@@ -164,8 +167,8 @@ T['宿主图形原点与原生窗口内容坐标一致'] = function()
     ]])
 end
 
-T['宿主配色读取固定窗口并拒绝错误或不完整的响应'] = function()
-    child.lua([[
+T["宿主配色读取固定窗口并拒绝错误或不完整的响应"] = function()
+  child.lua([[
         local Colors = require('experimental.kitty_terminal.colors')
         MiniTest.expect.equality(Colors.read(),nil)
         vim.env.KITTY_LISTEN_ON, vim.env.KITTY_WINDOW_ID = 'unix:/test-kitty','42'
@@ -191,8 +194,8 @@ T['宿主配色读取固定窗口并拒绝错误或不完整的响应'] = functi
     ]])
 end
 
-T['宿主配色应用于局部显示与子进程查询且不修改全局主题'] = function()
-    child.lua([[
+T["宿主配色应用于局部显示与子进程查询且不修改全局主题"] = function()
+  child.lua([[
         local normal = vim.api.nvim_get_hl(0,{name='Normal',link=false})
         local colors = {foreground='#abcdef',background='#123456',cursor='#fedcba',palette={[1]='#654321'}}
         local term = Terminal.open({cmd={vim.o.shell,'-c','read reply'},capture=false,colors=colors,
@@ -220,8 +223,8 @@ T['宿主配色应用于局部显示与子进程查询且不修改全局主题']
     ]])
 end
 
-T['原点模式下图形光标落在正确原生单元格'] = function()
-    child.lua([[
+T["原点模式下图形光标落在正确原生单元格"] = function()
+  child.lua([[
         local buf = vim.api.nvim_create_buf(false,true)
         vim.api.nvim_set_current_buf(buf)
         local channel = vim.api.nvim_open_term(buf,{})
@@ -238,8 +241,8 @@ T['原点模式下图形光标落在正确原生单元格'] = function()
     ]])
 end
 
-T['真实 PTY 同步回复查询并保留原生终端生命周期'] = function()
-    child.lua([==[
+T["真实 PTY 同步回复查询并保留原生终端生命周期"] = function()
+  child.lua([==[
         local original_paste = vim.paste
         local opened, closed = {}, {}
         vim.api.nvim_create_autocmd('TermOpen',{callback=function(ev) opened[ev.buf]=true end})
@@ -301,8 +304,8 @@ T['真实 PTY 同步回复查询并保留原生终端生命周期'] = function()
     ]==])
 end
 
-T['浮动终端使用 Kitty PTY 并在命令退出后关闭'] = function()
-    child.lua([[
+T["浮动终端使用 Kitty PTY 并在命令退出后关闭"] = function()
+  child.lua([[
         local original_win = vim.api.nvim_get_current_win()
         require('global.ui_util.ui.float_term')('printf FLOAT_READY; read reply; printf "%s" "$reply"',
             {width=40,height=8,col=3,row=2})
@@ -332,8 +335,8 @@ T['浮动终端使用 Kitty PTY 并在命令退出后关闭'] = function()
     ]])
 end
 
-T['手动关闭浮动终端会释放 Kitty 会话和子进程'] = function()
-    child.lua([[
+T["手动关闭浮动终端会释放 Kitty 会话和子进程"] = function()
+  child.lua([[
         require('global.ui_util.ui.float_term')({vim.o.shell,'-c','read reply'}, {width=40,height=8})
         local term = Terminal.current()
         vim.api.nvim_win_close(0,true)

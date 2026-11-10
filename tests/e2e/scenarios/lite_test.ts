@@ -37,7 +37,9 @@ Deno.test({
           host,
           "vim.g.colors_name",
         );
-        console.log(`  verified: lite_mode=${lite}, plugins=${plugins.length}, colorscheme=${colors}`);
+        console.log(
+          `  verified: lite_mode=${lite}, plugins=${plugins.length}, colorscheme=${colors}`,
+        );
       },
     });
   },

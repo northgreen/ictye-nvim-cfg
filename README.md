@@ -11,15 +11,16 @@
 |______/ \_______/   \___/   \____  $$ \_______/  
                              /$$  | $$           
                             |  $$$$$$/           
-                             \______/            
+                             \______/
 ```
 
-This repository contains my personal Neovim configuration.
-Copyright (c) 2026 Ictye, All Rights Reserved
+This repository contains my personal Neovim configuration. Copyright (c) 2026 Ictye, All Rights
+Reserved
 
 If you want to use this configuration, I recommend you fork it or lock to a specific version.
 
 ## Table of Contents
+
 - [Known Issues](#known-issues)
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
@@ -31,97 +32,110 @@ If you want to use this configuration, I recommend you fork it or lock to a spec
 - [See Also](#see-also)
 
 ## Known Issues
-- **Extended Startup Time**: This configuration prioritizes feature completeness over startup speed, resulting in longer initialization compared to minimal setups.
-- **Configuration Complexity**: The comprehensive nature of this configuration may require a learning curve for users transitioning from basic editors.
 
-> **Platform-Specific Note**: Windows users may experience significantly slower startup times due to platform-specific performance limitations. While a lite mode is available to mitigate this issue, optimal performance is currently achieved on Unix-like systems (Linux/macOS).
+- **Extended Startup Time**: This configuration prioritizes feature completeness over startup speed,
+  resulting in longer initialization compared to minimal setups.
+- **Configuration Complexity**: The comprehensive nature of this configuration may require a
+  learning curve for users transitioning from basic editors.
+
+> **Platform-Specific Note**: Windows users may experience significantly slower startup times due to
+> platform-specific performance limitations. While a lite mode is available to mitigate this issue,
+> optimal performance is currently achieved on Unix-like systems (Linux/macOS).
 
 ## Installation
 
 ### Prerequisites
+
 - Neovim 0.9+ (recommended 0.10+)
 - Git (required), LazyGit (optional but recommended)
 - Ripgrep (rg) for search
-- Tree-sitter compilers: on Windows install Clang or MSVC Build Tools; on Linux/macOS install gcc/clang and make
+- Tree-sitter compilers: on Windows install Clang or MSVC Build Tools; on Linux/macOS install
+  gcc/clang and make
 - Node.js (required)
 - Language toolchains as needed: rustup for Rust, MSVC/LLVM for C/C++, GHCup + HLS for Haskell, etc.
 
 ### Windows Installation
-1) Backup existing config (if any): move `%LOCALAPPDATA%\nvim` to a backup folder.
-2) Clone this repository into your Neovim config directory:
+
+1. Backup existing config (if any): move `%LOCALAPPDATA%\nvim` to a backup folder.
+2. Clone this repository into your Neovim config directory:
    - Fork this repository
    - `git clone <your-repo-url> "%LOCALAPPDATA%/nvim"`
-   - If you don't have SSH keys set up, edit `lua/options/gitpull_cfg.lua` and set `use_ssh=false` before first run to use HTTPS for plugin clones.
-3) First run
+   - If you don't have SSH keys set up, edit `lua/options/gitpull_cfg.lua` and set `use_ssh=false`
+     before first run to use HTTPS for plugin clones.
+3. First run
    - Start Neovim: `nvim`
    - lazy.nvim will bootstrap automatically and install plugins.
-   - If Tree-sitter parsers fail to compile, ensure you have a working C/C++ compiler toolchain (MSVC or LLVM/Clang) in PATH.
-4) Optional: Lite mode for faster startup
+   - If Tree-sitter parsers fail to compile, ensure you have a working C/C++ compiler toolchain
+     (MSVC or LLVM/Clang) in PATH.
+4. Optional: Lite mode for faster startup
    - `nvim --cmd "let g:lite_mode=v:true"`
-5) Install external tools via Mason when needed
+5. Install external tools via Mason when needed
    - `:Mason` to open the UI and install language servers, formatters and DAP adapters.
    - On Windows, this config auto-adds Mason's bin to PATH for this Neovim session.
-6) Fonts and icons
-   - Install a Nerd Font (e.g. FiraCode Nerd Font) and configure your terminal to use it, for proper icons in UI plugins.
+6. Fonts and icons
+   - Install a Nerd Font (e.g. FiraCode Nerd Font) and configure your terminal to use it, for proper
+     icons in UI plugins.
 
 ### Linux/macOS Installation
-1) Clone into your config directory:
+
+1. Clone into your config directory:
    - `git clone <your-repo-url> ~/.config/nvim`
-2) Ensure build tools are installed:
+2. Ensure build tools are installed:
    - gcc/clang and make for Tree-sitter; ripgrep for search.
-3) First run
+3. First run
    - `nvim`
    - If parsers or native deps fail to compile, install required toolchains and retry `:TSUpdate`.
-4) Optional: Lite mode
+4. Optional: Lite mode
    - `nvim --cmd "let g:lite_mode=v:true"`
 
 ## Quick Keymaps
 
 Use `\?` to see all buffer-local keymaps.
 
-| Shortcut | Description |
-|----------|-------------|
-| `<C-x>f` | Pick a file (mini.files) |
-| `<C-x><C-f>` | Open file |
-| `<C-x>a` | Show LSP actions menu |
-| `<C-x>t` | Show test menu |
-| `<C-x>q` | Open QuickMenu |
-| `<F9>` | DAP Continue |
-| `<F10>` | DAP Step Over |
-| `<F11>` | DAP Step Into |
-| `<F12>` | DAP Step Out |
-| `<leader>lg` | Open LazyGit |
-| `s` | Flash jump |
-| `jj` | Exit insert mode |
-| `<leader>q` | Close current buffer |
-| `<leader>t` + j/k | Buffer prev/next |
-| `zR` / `zM` | Open/Close all folds |
-| `<C-a>` | OpenCode AI chat |
-| `<leader>oC` | Toggle OpenCode panel |
+| Shortcut          | Description              |
+| ----------------- | ------------------------ |
+| `<C-x>f`          | Pick a file (mini.files) |
+| `<C-x><C-f>`      | Open file                |
+| `<C-x>a`          | Show LSP actions menu    |
+| `<C-x>t`          | Show test menu           |
+| `<C-x>q`          | Open QuickMenu           |
+| `<F9>`            | DAP Continue             |
+| `<F10>`           | DAP Step Over            |
+| `<F11>`           | DAP Step Into            |
+| `<F12>`           | DAP Step Out             |
+| `<leader>lg`      | Open LazyGit             |
+| `s`               | Flash jump               |
+| `jj`              | Exit insert mode         |
+| `<leader>q`       | Close current buffer     |
+| `<leader>t` + j/k | Buffer prev/next         |
+| `zR` / `zM`       | Open/Close all folds     |
+| `<C-a>`           | OpenCode AI chat         |
+| `<leader>oC`      | Toggle OpenCode panel    |
 
 ### Offline keyboard map
 
 1. Start a recording session: `NVIM_KEYMAP_EXPORT=/tmp/nvim-keymaps.csv nvim`
 2. Open the file types and plugin panels whose mappings you want to inspect, then quit Neovim
-3. Generate the page from this repository: `python3 scripts/keymap_viewer.py /tmp/nvim-keymaps.csv /tmp/nvim-keymaps.html`
-4. Open `/tmp/nvim-keymaps.html` in your browser; use the keyboard to explore sequences and the table filters to search mappings
+3. Generate the page from this repository:
+   `python3 scripts/keymap_viewer.py /tmp/nvim-keymaps.csv /tmp/nvim-keymaps.html`
+4. Open `/tmp/nvim-keymaps.html` in your browser; use the keyboard to explore sequences and the
+   table filters to search mappings
 
-The HTML works offline without a server or external assets. Python 3.10+ is required
-only for generation. Windows users can enable export before startup with
-`nvim --cmd "let g:keymap_export='C:/Temp/nvim-keymaps.csv'"`; the global variable
-also works on Linux/macOS and takes precedence over `NVIM_KEYMAP_EXPORT`.
+The HTML works offline without a server or external assets. Python 3.10+ is required only for
+generation. Windows users can enable export before startup with
+`nvim --cmd "let g:keymap_export='C:/Temp/nvim-keymaps.csv'"`; the global variable also works on
+Linux/macOS and takes precedence over `NVIM_KEYMAP_EXPORT`.
 
-The CSV is a **current runtime snapshot**, refreshed after startup, plugin/buffer
-events, at safe idle points, and synchronously before exit. `:KeymapExport`
-refreshes it manually during an enabled session. No hooks are installed unless an
-output path is supplied. The output file is replaced, so choose a dedicated path.
+The CSV is a **current runtime snapshot**, refreshed after startup, plugin/buffer events, at safe
+idle points, and synchronously before exit. `:KeymapExport` refreshes it manually during an enabled
+session. No hooks are installed unless an output path is supplied. The output file is replaced, so
+choose a dedicated path.
 
-It includes global and buffer-local mappings for all existing buffers, not built-in
-Vim commands or mappings inside plugins that have never loaded. Deleted mappings
-and wiped buffers are absent from subsequent snapshots. Global mappings and local
-overrides are separate records; the page does not simulate Neovim's resolution
-priority. Lua callbacks are identified by source and line, not exported as executable
-functions. The keyboard uses US ANSI; nonphysical tokens and other keys remain
+It includes global and buffer-local mappings for all existing buffers, not built-in Vim commands or
+mappings inside plugins that have never loaded. Deleted mappings and wiped buffers are absent from
+subsequent snapshots. Global mappings and local overrides are separate records; the page does not
+simulate Neovim's resolution priority. Lua callbacks are identified by source and line, not exported
+as executable functions. The keyboard uses US ANSI; nonphysical tokens and other keys remain
 available as sequence buttons and searchable table entries.
 
 ## Lite Mode
@@ -129,11 +143,13 @@ available as sequence buttons and searchable table entries.
 The lite mode provides a minimal Neovim experience with faster startup times:
 
 ### How to Use
+
 ```bash
 nvim --cmd "let g:lite_mode=v:true"
 ```
 
 ### What's Disabled in Lite Mode
+
 - Most UI plugins (lualine, which-key, etc.)
 - AI integration features
 - Advanced debugging tools
@@ -141,6 +157,7 @@ nvim --cmd "let g:lite_mode=v:true"
 - Some language-specific enhancements
 
 ### What Remains Available
+
 - Basic LSP functionality
 - Tree-sitter syntax highlighting
 - Core navigation and editing features
@@ -151,11 +168,13 @@ nvim --cmd "let g:lite_mode=v:true"
 ### Common Issues
 
 #### LSP Server Not Starting
+
 - Install language servers via Mason: `:Mason`
 - Check LSP status with `:LspInfo`
 - Ensure language servers are in your PATH
 
 #### Plugin Installation Issues
+
 - Delete the `pack` directory and restart Neovim
 - Check your internet connection
 - Verify git is properly configured

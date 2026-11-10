@@ -1,5 +1,5 @@
 // Scenario: the user config loads cleanly in full mode.
-import { assertEquals, assert } from "@std/assert";
+import { assert, assertEquals } from "@std/assert";
 import { Neovim } from "/denops-private/host/nvim.ts";
 import { withConfigNeovim } from "../with_config.ts";
 import { lua, waitForPlugins } from "../util.ts";

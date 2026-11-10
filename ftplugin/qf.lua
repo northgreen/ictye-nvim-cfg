@@ -1,5 +1,5 @@
 if vim.g.lite_mode then
-    return
+  return
 end
 
 vim.keymap.set("n", "q", "<Cmd>quit<CR>", { buffer = true, desc = "Close Quickfix" })

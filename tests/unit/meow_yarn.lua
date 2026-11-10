@@ -1,10 +1,10 @@
-local MiniTest = require('mini.test')
+local MiniTest = require("mini.test")
 local child = MiniTest.new_child_neovim()
 local T = MiniTest.new_set({
-    hooks = {
-        pre_case = function()
-            child.restart({ '-u', 'tests/minimal_init.lua' })
-            child.lua([[
+  hooks = {
+    pre_case = function()
+      child.restart({ "-u", "tests/minimal_init.lua" })
+      child.lua([[
                 local lazy = vim.fn.stdpath('data') .. '/lazy/'
                 for _, dependency in ipairs({ 'nui.nvim', 'meow.yarn.nvim' }) do
                     local path = lazy .. dependency
@@ -22,13 +22,13 @@ local T = MiniTest.new_set({
                     vim.api.nvim_exec_autocmds('User', { pattern = 'LazyLoad', data = 'meow.yarn.nvim' })
                 end
             ]])
-        end,
-        post_case = child.stop,
-    },
+    end,
+    post_case = child.stop,
+  },
 })
 
 local function mount_hierarchy()
-    child.lua([[
+  child.lua([[
         load_patch()
         start_plugin()
         local range = { start = { line = 0, character = 0 }, ['end'] = { line = 0, character = 1 } }
@@ -54,8 +54,8 @@ local function mount_hierarchy()
     ]])
 end
 
-T['patch preserves lazy loading and repeated installation is idempotent'] = function()
-    child.lua([[
+T["patch preserves lazy loading and repeated installation is idempotent"] = function()
+  child.lua([[
         load_patch()
         assert(not package.loaded['meow.yarn.hierarchy'], 'patch must not eagerly load the plugin')
         start_plugin()
@@ -67,9 +67,9 @@ T['patch preserves lazy loading and repeated installation is idempotent'] = func
     ]])
 end
 
-T['duplicate and suffixed IDs preserve call sites and reservations stay per tree'] = function()
-    mount_hierarchy()
-    child.lua([[
+T["duplicate and suffixed IDs preserve call sites and reservations stay per tree"] = function()
+  mount_hierarchy()
+  child.lua([[
         local util = require('meow.yarn.util')
         assert(#children == 2 and children[1]:get_id() ~= children[2]:get_id(), 'duplicate siblings need distinct IDs')
         assert(children[1].lsp_item == first and children[2].lsp_item == second, 'call-site data must be preserved')
@@ -86,9 +86,9 @@ T['duplicate and suffixed IDs preserve call sites and reservations stay per tree
     ]])
 end
 
-T['delayed preview survives closing the popup while explicit ID lookup remains available'] = function()
-    mount_hierarchy()
-    child.lua([[
+T["delayed preview survives closing the popup while explicit ID lookup remains available"] = function()
+  mount_hierarchy()
+  child.lua([[
         -- Enqueue the real debounce callback, then close before it executes.
         local scheduled, schedule = {}, vim.schedule
         vim.schedule = function(callback) scheduled[#scheduled + 1] = callback end

@@ -21,7 +21,11 @@ def entry_address(program):
     if fallback is not None:
         return fallback
     functions = manager.getFunctions(True)
-    return functions.next().getEntryPoint() if functions.hasNext() else program.getMinAddress()
+    return (
+        functions.next().getEntryPoint()
+        if functions.hasNext()
+        else program.getMinAddress()
+    )
 
 
 def disassembly(program, address):

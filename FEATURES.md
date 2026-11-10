@@ -1,8 +1,10 @@
 # Features
 
-> This document provides a comprehensive overview of all features, language support, and special capabilities included in this Neovim configuration.
+> This document provides a comprehensive overview of all features, language support, and special
+> capabilities included in this Neovim configuration.
 
 ## Table of Contents
+
 - [Core Features](#core-features)
   - [AI-Enhanced Development](#ai-enhanced-development)
   - [Development Tools](#development-tools)
@@ -34,10 +36,13 @@
 
 ## Core Features
 
-This configuration is designed to provide a complete, production-ready development environment. Below are the key feature categories that make this possible.
+This configuration is designed to provide a complete, production-ready development environment.
+Below are the key feature categories that make this possible.
 
 ### AI-Enhanced Development
-- **Multiple AI Providers**: Avante supports OpenAI, GitHub Models, SiliconFlow, and custom endpoints
+
+- **Multiple AI Providers**: Avante supports OpenAI, GitHub Models, SiliconFlow, and custom
+  endpoints
 - **Inline AI Chat**: OpenCode integration with `<C-a>` for ask and `<C-x>` for code actions
 - **AI Operator**: `go` / `goo` operators to feed code directly to OpenCode
 - **MCP Hub**: Model Context Protocol support for file and tool integration (`mcphub.nvim`)
@@ -46,7 +51,9 @@ This configuration is designed to provide a complete, production-ready developme
 - **Minuet AI**: Additional AI assistant for quick queries
 
 ### Development Tools
-- **Git Integration**: Gitsigns for inline diff, LazyGit for TUI Git client, Jujutsu (jj) VCS support
+
+- **Git Integration**: Gitsigns for inline diff, LazyGit for TUI Git client, Jujutsu (jj) VCS
+  support
 - **Debugger (DAP)**: Full Debug Adapter Protocol support with UI, virtual text, and break points
 - **Test Runner**: Integrated test execution via `nvim-test` and `<C-x>t` menu
 - **Code Refactoring**: Automated refactoring tools for safe code transformations
@@ -57,6 +64,7 @@ This configuration is designed to provide a complete, production-ready developme
 - **WakaTime**: Automatic time tracking and productivity metrics
 
 ### Modern UI/UX
+
 - **Status Line**: Lualine with customizable, information-rich status bar
 - **Buffer Line**: Tab-style buffer navigation with indicators
 - **File Explorers**: Neo-tree, Nvim-tree, Oil.nvim, and Yazi for different file browsing needs
@@ -77,6 +85,7 @@ This configuration is designed to provide a complete, production-ready developme
 - **Play-One**: Animation playback support
 
 ### Performance & Productivity
+
 - **Dual Mode System**: Full mode (default) vs Lite mode (`g:lite_mode`) for faster startup
 - **Tree-sitter**: Advanced syntax highlighting and code parsing for 50+ languages
 - **LSP Integration**: 20+ language servers with auto-configuration via Mason
@@ -89,6 +98,7 @@ This configuration is designed to provide a complete, production-ready developme
 - **Undo Tree**: Visual undo history navigation
 
 ### Search & Navigation
+
 - **Telescope**: Powerful fuzzy finder with FZF backend for files, buffers, grep, and more
 - **Flash**: Lightning-fast jump to any visible text
 - **Ripgrep Substitute**: Quick find-and-replace across project
@@ -99,6 +109,7 @@ This configuration is designed to provide a complete, production-ready developme
 - **Screenkey**: Display recent keystrokes for presentations
 
 ### Task & Terminal Management
+
 - **Overseer**: Task runner with persistent tasks, dependencies, and output viewing
 - **Floaterm**: Floating terminal windows for quick command execution
 - **LuaPad**: Real-time Lua code execution sandbox
@@ -108,33 +119,40 @@ This configuration is designed to provide a complete, production-ready developme
 
 ## Language Support
 
-This configuration provides comprehensive support for over 20 programming languages, with dedicated LSP servers, debugging adapters, and language-specific tooling. Each language benefits from intelligent code completion, diagnostics, and refactoring capabilities.
+This configuration provides comprehensive support for over 20 programming languages, with dedicated
+LSP servers, debugging adapters, and language-specific tooling. Each language benefits from
+intelligent code completion, diagnostics, and refactoring capabilities.
 
 ### Rust
+
 - **Plugin**: `rustaceanvim` (replaces obsolete rust-tools.nvim)
 - **LSP**: `rust-analyzer` via rustaceanvim
 - **Features**: Inlay hints, cargo integration, crate graph, runnables, hover actions
 - **Debugging**: LLDB via nvim-dap
 
 ### Python
+
 - **LSP**: `pyright` (type checking), `ruff` (linting & formatting)
 - **Features**: Type inference, auto-import, diagnostic codes, quick fix
 - **Debugging**: Debugpy via nvim-dap
 - **Testing**: pytest integration
 
 ### Haskell
+
 - **Plugin**: `haskell.nvim` with `haskell-tool`
 - **LSP**: `haskell-language-server` (HLS)
 - **Features**: Type signatures, go-to-definition, hoogle search, cabal/stack integration
 - **Special**: GHCup toolchain support
 
 ### C/C++
+
 - **LSP**: `clangd` with project-aware configuration
 - **Features**: Cross-references, include management, code actions, semantic highlighting
 - **Debugging**: GDB/LLDB via nvim-dap
 - **Build**: CMake integration via `cmake-tools`
 
 ### C#
+
 - **LSP**: `csharp-ls`, `omnisharp`, `roslyn`
 - **Features**: IntelliSense, navigate-to, rename, extract method
 - **DAP**: netcoredbg for .NET debugging
@@ -142,6 +160,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **Unity**: Unity engine integration
 
 ### TypeScript/JavaScript
+
 - **LSP**: `vtsls`, `ts_ls`, `volar` (Vue), `vue_ls`
 - **Plugin**: `ts_tool` for TypeScript tooling
 - **Features**: Auto-import, inlay hints (parameter names, types), organize imports
@@ -149,6 +168,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **Emmet**: `emmet_ls` and `emmet-language-server` for HTML/CSS/JSX expansion
 
 ### Shell & Config Files
+
 - **Shell Script**: `bashls` for Bash language server
 - **JSON**: `jsonls` for JSON schema validation and completion
 - **CSS/SCSS**: `cssls` with CSS IntelliSense
@@ -157,6 +177,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **Vim Script**: `vimls` for VimL completion
 
 ### System Programming
+
 - **Assembly**: `asm_lsp` for assembly language support
 - **CMake**: CMake language server for build configuration
 - **Zig**: `zls` for Zig language server
@@ -164,12 +185,14 @@ This configuration provides comprehensive support for over 20 programming langua
 - **PowerShell**: `powershell_es` for PowerShell scripting
 
 ### Game Dev
+
 - **GDScript**: LSP for Godot 4 scripting
 - **GLSL**: `glslls` for shader language
 - **GDShader**: `gdshader_lsp` for Godot shader files
 - **QML**: `qmlls` for Qt Quick/QML
 
 ### Functional & Others
+
 - **F#**: `fsharp_language_server` with `fsautocomplete`
 - **Common Lisp**: `cl-lsp` for Common Lisp
 - **Sonic Pi**: Sonic Pi live coding music integration
@@ -178,6 +201,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **CSpell**: `cspell_ls` for spell checking in code
 
 ### LSP Management
+
 - **Mason**: Universal LSP server, linter, and formatter installer
 - **Mason-LSPConfig**: Automatic LSP configuration for Mason-installed servers
 - **Per-Server Config**: 30+ language-specific configurations in `lsp/*.lua`
@@ -185,6 +209,7 @@ This configuration provides comprehensive support for over 20 programming langua
 - **Auto-Detection**: Automatically enables LSP for detected languages
 
 ### Language-Specific Features
+
 - **Blink.cmp**: Modern completion engine with snippet support
 - **LSP Signature**: Function signature help on hover and parameter entry
 - **Refactoring**: Safe code transformations (extract function, rename, etc.)
@@ -197,30 +222,39 @@ This configuration provides comprehensive support for over 20 programming langua
 
 ## Special Features
 
-Beyond standard editor capabilities, this configuration includes several unique integrations and advanced utilities that enhance the development workflow, provide cross-platform productivity boosts, and enable modern tool integration patterns.
+Beyond standard editor capabilities, this configuration includes several unique integrations and
+advanced utilities that enhance the development workflow, provide cross-platform productivity
+boosts, and enable modern tool integration patterns.
 
 ### AI Integration
 
 #### Multiple AI Providers
-This configuration supports multiple AI backends simultaneously, allowing you to choose the best provider for each task:
+
+This configuration supports multiple AI backends simultaneously, allowing you to choose the best
+provider for each task:
+
 - **OpenAI**: GPT-4 and GPT-4o models via Avante
 - **GitHub Models**: Free access to various LLMs through GitHub's model marketplace
 - **SiliconFlow**: Cost-effective Chinese LLM provider
 - **Custom Endpoints**: Configurable for self-hosted or private models
 
 #### AI Features
-- **Inline Chat**: Ask questions, request code changes, and get explanations without leaving your buffer (`<C-a>`)
+
+- **Inline Chat**: Ask questions, request code changes, and get explanations without leaving your
+  buffer (`<C-a>`)
 - **Code Actions**: Select code and apply AI-suggested refactors, tests, or optimizations (`<C-x>`)
 - **AI Operators**: Use `go` or `goo` to feed visual selections directly to OpenCode
 - **Context Awareness**: AI can see your current buffer, selection, and project structure
 - **Panel Toggle**: `<leader>oC` opens/closes the OpenCode panel for continuous AI sessions
 
 #### MCP (Model Context Protocol)
+
 - **mcphub.nvim**: Runs MCP Hub on port 37373 for tool integration
 - **File Access**: AI agents can read, search, and analyze project files
 - **Extensible**: Add custom MCP servers for any external tool or API
 
 #### OpenCode
+
 - **First-Class Integration**: Native keymaps and operators designed around OpenCode
 - **Operator Mode**: Visual selections automatically prefixed for AI context
 - **Panel Management**: Dedicated toggle for persistent AI workspace
@@ -228,6 +262,7 @@ This configuration supports multiple AI backends simultaneously, allowing you to
 ### Input Method Integration
 
 Seamless input method switching for bilingual typing workflows:
+
 - **im-select**: Automatically switches to the correct IME mode when entering/exiting Insert mode
 - **Fcitx5 Integration**: Full Fcitx5 control and status display
 - **Fcitx5 UI**: Visual indicator showing current input method state
@@ -237,6 +272,7 @@ Seamless input method switching for bilingual typing workflows:
 ### Image Processing
 
 Tools for working with images and visual content:
+
 - **Carbon.now**: Generate beautiful code screenshots via Carbon.sh
 - **NVim Highlight Colors**: Displays actual color swatches for hex color codes in files
 - **Render Markdown**: Rich image rendering within Markdown buffers
@@ -245,6 +281,7 @@ Tools for working with images and visual content:
 ### Performance Monitoring
 
 Built-in performance and productivity tracking:
+
 - **WakaTime**: Automatic time tracking across all languages and projects
 - **Startup Profiling**: Lite mode vs Full mode performance comparison
 - **LSP Diagnostics**: Real-time error, warning, and hint display
@@ -254,6 +291,7 @@ Built-in performance and productivity tracking:
 ### Advanced Utilities
 
 Productivity boosters and quality-of-life improvements:
+
 - **Undotree**: Visualize and navigate the full undo history tree
 - **Hydra**: Multi-key mapping sequences (window sizing, DAP controls)
 - **Snacks**: Swiss-army knife of Neovim utilities (pickers, notifiers, etc.)
@@ -274,4 +312,3 @@ Productivity boosters and quality-of-life improvements:
 
 - [README.md](./README.md) - Installation guide and quick reference
 - [DEVELOP.md](./DEVELOP.md) - Development guide and configuration structure
-

@@ -1,12 +1,13 @@
-local MiniTest = require('mini.test')
+local MiniTest = require("mini.test")
 local child = MiniTest.new_child_neovim()
 local resultfile
-local T = MiniTest.new_set({ hooks = {
+local T = MiniTest.new_set({
+  hooks = {
     pre_case = function()
-        child.restart({ '-u', 'tests/minimal_init.lua' })
-        resultfile = vim.fn.tempname()
-        child.lua('resultfile = ...', {resultfile})
-        child.lua([[
+      child.restart({ "-u", "tests/minimal_init.lua" })
+      resultfile = vim.fn.tempname()
+      child.lua("resultfile = ...", { resultfile })
+      child.lua([[
             ESC, ST = '\27', '\27\\'
             sent, warnings = {}, {}
             vim.api.nvim_ui_send = function(seq) sent[#sent+1]=seq end
@@ -39,13 +40,15 @@ local T = MiniTest.new_set({ hooks = {
         ]])
     end,
     post_case = function()
-        child.stop()
-        vim.fn.delete(resultfile); vim.fn.delete(resultfile..'.tmp')
+      child.stop()
+      vim.fn.delete(resultfile)
+      vim.fn.delete(resultfile .. ".tmp")
     end,
-} })
+  },
+})
 
-T['图形分帧及 tmux 转义保留原始载荷'] = function()
-    child.lua([[
+T["图形分帧及 tmux 转义保留原始载荷"] = function()
+  child.lua([[
         local fields,controls,payload=t.graphics(ESC..'_Ga=t,f=24,m=1;YWJj')
         check(fields.a=='t' and fields.m=='1' and payload=='YWJj','不能截去载荷字节')
         MiniTest.expect.equality(t.packet(controls,payload,{i='123'}),ESC..'_Ga=t,f=24,m=1,i=123;YWJj'..ST)
@@ -54,8 +57,8 @@ T['图形分帧及 tmux 转义保留原始载荷'] = function()
     ]])
 end
 
-T['源分屏定位、分块及 UTF8 字节列转换'] = function()
-    child.lua([[
+T["源分屏定位、分块及 UTF8 字节列转换"] = function()
+  child.lua([[
         source()
         check(pos and pos.row==expected.row and pos.col==expected.col and pos.win==source_win,
             '位置必须跟随含行号和符号栏的源分屏')
@@ -90,8 +93,8 @@ T['源分屏定位、分块及 UTF8 字节列转换'] = function()
     ]])
 end
 
-T['隐藏恢复和按 placement 删除不影响共享图片'] = function()
-    child.lua([[
+T["隐藏恢复和按 placement 删除不影响共享图片"] = function()
+  child.lua([[
         source(); upload(); reset()
         event(buf,ESC..'_Ga=d,d=z,z=3')
         check(#sent==0 and #warnings==1 and placement.visible,'不支持的删除显式失败且不删除图片')
@@ -115,8 +118,8 @@ T['隐藏恢复和按 placement 删除不影响共享图片'] = function()
     ]])
 end
 
-T['OSC 与 DCS 路由、清理及重复安装'] = function()
-    child.lua([[
+T["OSC 与 DCS 路由、清理及重复安装"] = function()
+  child.lua([[
         local buf=vim.api.nvim_create_buf(false,true)
         event(buf,ESC..']99;i=kitty-test;hello',nil,'\7')
         MiniTest.expect.equality(sent,{ESC..']99;i=kitty-test;hello\7'})
@@ -134,8 +137,8 @@ T['OSC 与 DCS 路由、清理及重复安装'] = function()
     ]])
 end
 
-T['真实 PTY 的 TermRequest 与响应 ID 还原'] = function()
-    child.lua([==[
+T["真实 PTY 的 TermRequest 与响应 ID 还原"] = function()
+  child.lua([==[
         vim.cmd('enew')
         local buf=vim.api.nvim_get_current_buf()
         local python=[[import os,tty,time,select,json,sys

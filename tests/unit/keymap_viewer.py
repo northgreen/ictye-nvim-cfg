@@ -342,7 +342,9 @@ class BrowserTests(unittest.TestCase):
         self.modifier("Ctrl")
         self.assertFalse(self.page.locator("#reset").is_disabled())
         self.page.locator("#reset").click()
-        self.assertEqual(self.page.locator('#modifiers [aria-pressed="true"]').count(), 0)
+        self.assertEqual(
+            self.page.locator('#modifiers [aria-pressed="true"]').count(), 0
+        )
         for modifier, key, expected in (
             ("Ctrl", "Ctrl+x", "<C-X>f"),
             ("Shift", "Shift+Tab", "<S-Tab>"),

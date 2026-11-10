@@ -1,4 +1,1 @@
-local function ts()
-    
-end
-
+local function ts() end

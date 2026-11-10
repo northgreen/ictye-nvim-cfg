@@ -16,9 +16,11 @@
 local M = {}
 
 local function config_path()
-  local override = type(options) == 'table' and options.llm_modules and options.llm_modules.pi_config
-  if type(override) == 'string' and override ~= '' then return vim.fn.expand(override) end
-  return vim.fn.expand('~/.pi/agent/models.json')
+  local override = type(options) == "table" and options.llm_modules and options.llm_modules.pi_config
+  if type(override) == "string" and override ~= "" then
+    return vim.fn.expand(override)
+  end
+  return vim.fn.expand("~/.pi/agent/models.json")
 end
 
 --- 把 Pi 的 apiKey 转成密钥来源描述。
@@ -26,29 +28,35 @@ end
 --- @param value string|nil Pi 配置中的 apiKey
 --- @return table|nil 密钥来源描述
 local function key_source(value)
-  if type(value) ~= 'string' or value == '' then return nil end
-  if value:sub(1, 1) == '$' then return { type = 'ENV', value = value:sub(2) } end
-  return { type = 'TEXT', value = value }
+  if type(value) ~= "string" or value == "" then
+    return nil
+  end
+  if value:sub(1, 1) == "$" then
+    return { type = "ENV", value = value:sub(2) }
+  end
+  return { type = "TEXT", value = value }
 end
 
 --- 读取并缓存解析结果；缓存同时供 providers()/modules() 使用一次 JSON 解码。
 --- @return table<string,table> provider 名到原始描述（含私有 `_pi_models`）
 local cache
 function M.load()
-  if cache then return cache end
+  if cache then
+    return cache
+  end
   local providers = {}
   local path = config_path()
-  local file = io.open(path, 'rb')
+  local file = io.open(path, "rb")
   if file then
-    local body = file:read('*a')
+    local body = file:read("*a")
     file:close()
     local ok, decoded = pcall(vim.json.decode, body)
-    local source = ok and type(decoded) == 'table' and decoded.providers or nil
+    local source = ok and type(decoded) == "table" and decoded.providers or nil
     for name, pi in pairs(source or {}) do
       local modules = {}
-      if type(pi) == 'table' and type(pi.models) == 'table' then
+      if type(pi) == "table" and type(pi.models) == "table" then
         for _, model in ipairs(pi.models) do
-          if type(model) == 'table' and type(model.id) == 'string' then
+          if type(model) == "table" and type(model.id) == "string" then
             modules[#modules + 1] = model.id
           end
         end
@@ -56,11 +64,11 @@ function M.load()
       if #modules > 0 then
         providers[name] = {
           -- 与 avante 的 openai 兼容 provider 对齐；接口协议差异交给 avante 处理。
-          api_type = 'openai-completions',
+          api_type = "openai-completions",
           endpoint = pi.baseUrl,
           api_key_get_type = key_source(pi.apiKey),
           timeout = 30000,
-          model = type(pi.defaultModel) == 'string' and pi.defaultModel or nil,
+          model = type(pi.defaultModel) == "string" and pi.defaultModel or nil,
           modules = modules,
           -- 逐模型的 maxTokens：provider 级不设默认，避免把某个模型的上限
           -- 套到同 provider 的其它模型上。
@@ -99,7 +107,7 @@ function M.modules()
   local result = {}
   for _, desc in pairs(M.load()) do
     for _, model in ipairs(desc._pi_models or {}) do
-      local body = { max_completion_tokens = type(model.maxTokens) == 'number' and model.maxTokens or 12000 }
+      local body = { max_completion_tokens = type(model.maxTokens) == "number" and model.maxTokens or 12000 }
       result[model.id] = { extra_request_body = body }
     end
   end

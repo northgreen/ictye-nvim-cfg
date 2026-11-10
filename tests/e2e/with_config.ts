@@ -49,9 +49,9 @@ export function withConfigNeovim<T>(
   const commands = [
     ...(options.prelude ?? []),
     "let g:denops_test_channel = jobstart(" +
-      `  ['${exec}', 'run', '--allow-all', '${script}'],` +
-      `  {'rpc': v:true}` +
-      ")",
+    `  ['${exec}', 'run', '--allow-all', '${script}'],` +
+    `  {'rpc': v:true}` +
+    ")",
     ...(options.postlude ?? []),
   ];
   const args = [

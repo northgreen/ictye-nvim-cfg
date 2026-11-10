@@ -1,7 +1,9 @@
 ; setup lazy
 {:setup (λ []
     (let [lazy (require :lazy)
-        plugin_config (require "plugins.config.init")]
+        plugin_config (require "plugins.config.init")
+        api (require :hotpot.api)
+        context (assert (api.context (vim.fn.stdpath :config)))]
       (plugin_config.setup)
       (lazy.setup
         {:dev {:path "~/Projects"}
@@ -17,6 +19,7 @@
           :spec (if vim.g.lite_mode
             (require :plugins.require.lite_require)
             (require :plugins.require))
+          :performance {:rtp {:paths [(context.locate :destination)]}}
           :ui {:border :rounded
             :title "Plugin Manager"
             :tittle_pos :center}})))}

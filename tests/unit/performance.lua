@@ -1,16 +1,20 @@
 -- mini.test 用例：语言工具单次初始化与 bufferline 重绘合并。
-local MiniTest = require('mini.test')
+local MiniTest = require("mini.test")
 local eq = MiniTest.expect.equality
 local T = MiniTest.new_set()
 
 local child = MiniTest.new_child_neovim()
-T = MiniTest.new_set({ hooks = {
-    pre_case = function() child.restart({ '-u', 'tests/minimal_init.lua' }) end,
+T = MiniTest.new_set({
+  hooks = {
+    pre_case = function()
+      child.restart({ "-u", "tests/minimal_init.lua" })
+    end,
     post_case = child.stop,
-} })
+  },
+})
 
-T['语言工具只初始化一次，重绘合并且到期刷新'] = function()
-    child.lua([[
+T["语言工具只初始化一次，重绘合并且到期刷新"] = function()
+  child.lua([[
         local setup_calls = 0
         package.loaded.dapui = { setup = function() setup_calls = setup_calls + 1 end }
         package.loaded['configs.language_cfg.toolchain.toolchain_init'] = {}

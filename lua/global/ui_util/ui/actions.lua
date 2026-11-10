@@ -12,7 +12,12 @@ local function show_lsp_actions_menu()
     { "7. 签名帮助", vim.lsp.buf.signature_help },
     { "8. 重命名符号", vim.lsp.buf.rename },
     { "9. 代码操作", vim.lsp.buf.code_action },
-    { "10. 格式化文件", function() vim.lsp.buf.format({ async = true }) end },
+    {
+      "10. 格式化文件",
+      function()
+        vim.lsp.buf.format({ async = true })
+      end,
+    },
     { "11. 显示诊断信息", vim.diagnostic.open_float },
     { "12. 工作区符号搜索", vim.lsp.buf.workspace_symbol },
   }

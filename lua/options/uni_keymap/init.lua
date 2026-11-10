@@ -1,3 +1,3 @@
 return {
-    exit = "<leader>c"
+  exit = "<leader>c",
 }

@@ -1,5 +1,5 @@
 if vim.g.lite_mode then
-    return
+  return
 end
 
-require ('util.bf_actions').q_exit()
+require("util.bf_actions").q_exit()

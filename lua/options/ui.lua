@@ -1,4 +1,4 @@
-local bread_nav_options = require 'options.option_util.bread_nev_options'
+local bread_nav_options = require("options.option_util.bread_nev_options")
 
 --- @class IcyueUIOptions
 return {
@@ -6,41 +6,41 @@ return {
   --- bread navigation option,will used to show symbols in statusline
   --- @type function
   bread_nav = bread_nav_options.navic,
-  nav_option = { sparator = ' < ' },
+  nav_option = { sparator = " < " },
   dapui = {
     autoclose = false,
     autoopen = true,
   },
   indent = "indent-blankline",
   symbal_map = {
-    File = ' ',
-    Module = ' ',
-    Namespace = ' ',
-    Package = ' ',
-    Class = ' ',
-    Method = ' ',
-    Property = ' ',
-    Field = ' ',
-    Constructor = ' ',
-    Enum = ' ',
-    Interface = ' ',
-    Function = ' ',
-    Variable = ' ',
-    Constant = ' ',
-    String = ' ',
-    Number = ' ',
-    Boolean = ' ',
-    Array = ' ',
-    Object = ' ',
-    Key = ' ',
-    Null = ' ',
-    EnumMember = ' ',
-    Struct = ' ',
-    Event = ' ',
-    Operator = ' ',
-    TypeParameter = ' '
+    File = " ",
+    Module = " ",
+    Namespace = " ",
+    Package = " ",
+    Class = " ",
+    Method = " ",
+    Property = " ",
+    Field = " ",
+    Constructor = " ",
+    Enum = " ",
+    Interface = " ",
+    Function = " ",
+    Variable = " ",
+    Constant = " ",
+    String = " ",
+    Number = " ",
+    Boolean = " ",
+    Array = " ",
+    Object = " ",
+    Key = " ",
+    Null = " ",
+    EnumMember = " ",
+    Struct = " ",
+    Event = " ",
+    Operator = " ",
+    TypeParameter = " ",
   },
   ui_options = {
-    noise = true
-  }
+    noise = true,
+  },
 }

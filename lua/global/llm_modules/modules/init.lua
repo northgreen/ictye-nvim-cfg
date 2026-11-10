@@ -20,6 +20,6 @@ local M = {
   ["MiniMax-M2.5"] = true,
 }
 
-M = vim.tbl_extend('keep', M, require('global.llm_modules.pi').modules())
+M = vim.tbl_extend("keep", M, require("global.llm_modules.pi").modules())
 
 return M

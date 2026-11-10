@@ -1,8 +1,8 @@
 {1 "B00TK1D/neoghidra"
   :config (fn [_ opts]
-            ((. (require :plugins.config.neoghidra) :setup))
-            ((. (require :neoghidra) :setup) opts)
-            nil)
+    ((. (require :plugins.config.neoghidra) :setup))
+    ((. (require :neoghidra) :setup) opts)
+    nil)
   :opts {
     :ghidra_path "/opt/ghidra"
     :auto_analyze true

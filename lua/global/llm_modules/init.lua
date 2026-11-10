@@ -12,7 +12,9 @@ local M = {}
 --- @param module_desc table|true|nil module 配置
 --- @return table 合并后的请求参数（与入参解耦）
 local function extra_request_body(provider_body, module_desc)
-  if type(module_desc) ~= "table" then return vim.deepcopy(provider_body or {}) end
+  if type(module_desc) ~= "table" then
+    return vim.deepcopy(provider_body or {})
+  end
   return vim.tbl_deep_extend("force", {}, provider_body or {}, module_desc.extra_request_body or {})
 end
 

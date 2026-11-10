@@ -12,7 +12,7 @@ end
 function M.check()
   vim.health.start("Check nvim environment")
   local current = vim.version()
-  local target = vim.version.parse('0.12.0')
+  local target = vim.version.parse("0.12.0")
 
   if current >= target then
     vim.health.ok("nvim version:" .. vim.version():__tostring() .. " is ok")

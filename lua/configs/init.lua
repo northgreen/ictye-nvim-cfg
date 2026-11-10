@@ -1,8 +1,8 @@
-local ploadmodule = require 'util.module_load_utils'.ploadmodule
+local ploadmodule = require("util.module_load_utils").ploadmodule
 
-ploadmodule 'core'
-ploadmodule 'configs.plugin_cfg'
-ploadmodule 'configs.language_cfg'
+ploadmodule("core")
+ploadmodule("configs.plugin_cfg")
+ploadmodule("configs.language_cfg")
 
 if vim.env.PROF then
   -- example for lazy.nvim

@@ -1,48 +1,47 @@
 if vim.g.lite_mode then
-    return
-end
-
-if _G.configed[vim.bo.filetype] then
   return
 end
-_G.configed[vim.bo.filetype] = true
+
+if _G.configured[vim.bo.filetype] then
+  return
+end
+_G.configured[vim.bo.filetype] = true
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local ahk2_configs = {
-    autostart = true,
-    cmd = {
-        "node",
-        vim.fn.expand("$HOME/vscode-autohotkey2-lsp/server/dist/server.js"),
-        "--stdio"
+  autostart = true,
+  cmd = {
+    "node",
+    vim.fn.expand("$HOME/vscode-autohotkey2-lsp/server/dist/server.js"),
+    "--stdio",
+  },
+  filetypes = { "ahk", "autohotkey", "ah2" },
+  init_options = {
+    locale = "zh-cn",
+    InterpreterPath = "C:/Program Files/AutoHotkey/v2/AutoHotkey.exe",
+    AutoLibInclude = "All",
+    CommentTags = "^;;\\s*(?<tag>.+)",
+    FormatOptions = {
+      array_style = "none",
+      break_chained_methods = false,
+      ignore_comment = false,
+      indent_string = "\t",
+      max_preserve_newlines = 2,
+      brace_style = "One True Brace",
+      object_style = "none",
+      preserve_newlines = true,
+      space_after_double_colon = true,
+      space_before_conditional = true,
+      space_in_empty_paren = false,
+      space_in_other = true,
+      space_in_paren = false,
+      wrap_line_length = 0,
     },
-    filetypes = {"ahk", "autohotkey", "ah2"},
-    init_options = {
-        locale = "zh-cn",
-        InterpreterPath = "C:/Program Files/AutoHotkey/v2/AutoHotkey.exe",
-        AutoLibInclude = "All",
-        CommentTags = "^;;\\s*(?<tag>.+)",
-        FormatOptions = {
-            array_style = "none",
-            break_chained_methods = false,
-            ignore_comment = false,
-            indent_string = "\t",
-            max_preserve_newlines = 2,
-            brace_style = "One True Brace",
-            object_style = "none",
-            preserve_newlines = true,
-            space_after_double_colon = true,
-            space_before_conditional = true,
-            space_in_empty_paren = false,
-            space_in_other = true,
-            space_in_paren = false,
-            wrap_line_length = 0
-        },
-	SymbolFoldingFromOpenBrace = true,
-    },
-	single_file_support = true,
-    flags = {debounce_text_changes = 500},
-    capabilities = capabilities,
-    on_attach = require'global.language.attach'.attach
+    SymbolFoldingFromOpenBrace = true,
+  },
+  single_file_support = true,
+  flags = { debounce_text_changes = 500 },
+  capabilities = capabilities,
+  on_attach = require("global.language.attach").attach,
 }
-

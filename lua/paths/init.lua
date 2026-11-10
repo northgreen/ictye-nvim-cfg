@@ -1,2 +1,2 @@
 -- require "paths.async-fix"
-require "paths.ts-locate"
+require("paths.ts-locate")

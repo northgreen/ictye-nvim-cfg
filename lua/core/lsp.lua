@@ -1,27 +1,26 @@
 local Enable = vim.lsp.enable
 local Config = vim.lsp.config
 
-
 -- Enabled Lsp seriver
 
-Enable('autohotkey_lsp')
-Enable('lua_ls')
+Enable("autohotkey_lsp")
+Enable("lua_ls")
 
 Enable("qmlls")
 -- Enable('csharp_ls')
-Enable('powershell_es')
-Enable('ruff')
-Enable('jsonls')
-Enable('solargraph')
+Enable("powershell_es")
+Enable("ruff")
+Enable("jsonls")
+Enable("solargraph")
 -- Enable('cspell_ls')
-Enable('pyright')
-Enable('roslyn')
-Enable('fsautocomplete') -- already enabled by default
+Enable("pyright")
+Enable("roslyn")
+Enable("fsautocomplete") -- already enabled by default
 -- Enable('fsharp_language_server')
-Enable('clangd')
+Enable("clangd")
 Enable("cmake")
-Enable('asm_lsp')
-Enable('bashls')
+Enable("asm_lsp")
+Enable("bashls")
 Enable("lemminx")
 
 Enable("glslls")
@@ -54,8 +53,8 @@ Enable("tcl_lsp")
 
 -- below is the attach setting
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -64,71 +63,64 @@ vim.api.nvim_create_autocmd('LspAttach', {
       client.offset_encoding = "utf-8"
     end
 
-    vim.diagnostic.config {
-      virtual_text = true
-    }
+    vim.diagnostic.config({
+      virtual_text = true,
+    })
 
     local Keymap = vim.keymap.set
 
     if client and client:supports_method(vim.lsp.protocol.Methods.testDocument_inlayHint) then
-      Keymap('n', '<leader>th', function()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-      end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
+      Keymap("n", "<leader>th", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+      end, { buffer = event.buf, desc = "LSP: Toggle Inlay Hints" })
     end
 
-
-    local Telescope = require('telescope.builtin')
-    local themes = require('telescope.themes')
+    local Telescope = require("telescope.builtin")
+    local themes = require("telescope.themes")
     local theme_opt = {
       layout_config = {
         width = 90,
         height = function(_, _, max_lines)
           return math.min(max_lines, 25)
-        end
+        end,
       },
     }
-    Keymap('n', 'gd',
-      function() Telescope.lsp_definitions(themes.get_cursor(theme_opt)) end
-      , { buffer = event.buf, desc = 'LSP: Go To Define' })
+    Keymap("n", "gd", function()
+      Telescope.lsp_definitions(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Go To Define" })
 
-    Keymap('n', 'gO',
-      function() Telescope.lsp_document_symbols(themes.get_cursor(theme_opt)) end,
-      { buffer = event.buf, desc = 'LSP: Show Document Symbols' })
+    Keymap("n", "gO", function()
+      Telescope.lsp_document_symbols(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Show Document Symbols" })
 
-    Keymap('n', 'gD', vim.lsp.buf.declaration,
-      { buffer = event.buf, desc = 'Go to Declaration' })
+    Keymap("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf, desc = "Go to Declaration" })
 
-    Keymap('n', 'gi', vim.lsp.buf.implementation,
-      { buffer = event.buf, desc = 'Go to Implementation' })
+    Keymap("n", "gi", vim.lsp.buf.implementation, { buffer = event.buf, desc = "Go to Implementation" })
 
-    Keymap('n', 'grt',
-      function() Telescope.lsp_type_definitions(themes.get_cursor(theme_opt)) end,
-      { buffer = event.buf, desc = 'LSP: Show Type Definitions' })
+    Keymap("n", "grt", function()
+      Telescope.lsp_type_definitions(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Show Type Definitions" })
 
-    Keymap('n', 'grc',
-      function() Telescope.lsp_incoming_calls(themes.get_cursor(theme_opt)) end,
-      { buffer = event.buf, desc = 'LSP: Show Incoming Calls' })
+    Keymap("n", "grc", function()
+      Telescope.lsp_incoming_calls(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Show Incoming Calls" })
 
-    Keymap('n', 'gra',
-      function() vim.lsp.buf.code_action() end,
-      { buffer = event.buf, desc = 'LSP: Show Incoming Calls' })
+    Keymap("n", "gra", function()
+      vim.lsp.buf.code_action()
+    end, { buffer = event.buf, desc = "LSP: Show Incoming Calls" })
 
-    Keymap('n', 'gro',
-      function() Telescope.lsp_outgoing_calls(themes.get_cursor(theme_opt)) end,
-      { buffer = event.buf, desc = 'LSP: Show Outgoing Calls' })
+    Keymap("n", "gro", function()
+      Telescope.lsp_outgoing_calls(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Show Outgoing Calls" })
 
-    Keymap('n', 'grr',
-      function() Telescope.lsp_references(themes.get_cursor(theme_opt)) end,
-      { buffer = event.buf, desc = 'LSP: Show References' })
+    Keymap("n", "grr", function()
+      Telescope.lsp_references(themes.get_cursor(theme_opt))
+    end, { buffer = event.buf, desc = "LSP: Show References" })
 
-    Keymap('n', 'grf',
-      vim.lsp.buf.format,
-      { buffer = event.buf, desc = 'LSP: Format Buffer' })
+    Keymap("n", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "LSP: Format Buffer" })
 
-    Keymap('n', 'grn',
-      vim.lsp.buf.rename,
-      { buffer = event.buf, desc = 'LSP: Rrename Refrence' })
-  end
+    Keymap("n", "grn", vim.lsp.buf.rename, { buffer = event.buf, desc = "LSP: Rrename Refrence" })
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -136,7 +128,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local bufnr = args.buf
     local ft = vim.bo[bufnr].filetype
     local no_lsp_ft = {
-      "oil"
+      "oil",
     }
     if vim.tbl_contains(no_lsp_ft, ft) then
       return
