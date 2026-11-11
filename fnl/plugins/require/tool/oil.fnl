@@ -10,7 +10,7 @@
         (or (not= (: name :match "^%.") nil)
           (not= (: name :match "(%.uid)$") nil)
           (not= (: name :match "(%.import)$") nil)))}
-    :keymaps {_G.options.keymaps.exit {1 "actions.close" :mode "n"}}}
+    :keymaps {options.keymaps.exit {1 "actions.close" :mode "n"}}}
   ;; Optional alternative: :dependencies [{1 "echasnovski/mini.icons" :opts {}}]
   ;; Use this dependency if you prefer nvim-web-devicons.
   :dependencies ["nvim-tree/nvim-web-devicons"]

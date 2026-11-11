@@ -17,7 +17,7 @@
         :describe "Commit with jujutsu"
         :details "commit with jujutsu"
         :prompt "Use jj diff to view differences and gengrate commit message, then use jj commit to commit changes."}]}
-  :build (twc (= options.env.os.win 1)
+  :build (if (= options.env.os.win 1)
     "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
     :make)
   :dependencies [{1 :ColinKennedy/mega.cmdparse

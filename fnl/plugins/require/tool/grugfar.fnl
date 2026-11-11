@@ -1,3 +1,3 @@
 {1 "MagicDuck/grug-far.nvim"
   :cmd "GrugFar"
-  :opts {:keymaps {:close {:n _G.options.keymaps.exit}}}}
+  :opts {:keymaps {:close {:n options.keymaps.exit}}}}

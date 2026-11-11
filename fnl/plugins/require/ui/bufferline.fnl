@@ -1,7 +1,7 @@
 ;; Use akinsho/bufferline.nvim to show the bufferline in Neovim.
 {1 :akinsho/bufferline.nvim
   :version "*"
-  :enabled (not (or _G.options.env_var.firenvim _G.options.env_var.vscode))
+  :enabled (not (or options.env_var.firenvim options.env_var.vscode))
   ;; :enabled false
   :event :VeryLazy
   :keys (. (require :core.keymap) :bufferline)

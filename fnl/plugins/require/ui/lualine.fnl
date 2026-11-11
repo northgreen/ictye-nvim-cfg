@@ -1,6 +1,6 @@
 ;; UI for information display.
 (fn f-nav []
-  (let [(_fun _cond) (_G.options.ui.bread_nav)]
+  (let [(_fun _cond) (options.ui.bread_nav)]
     {:fun _fun :cond _cond}))
 
 (fn muti-cursor-state []

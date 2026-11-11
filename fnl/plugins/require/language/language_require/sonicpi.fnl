@@ -1,5 +1,5 @@
 {1 "magicmonty/sonicpi.nvim"
-  :opts {:server_dir (twc (= _G.options.env.os.win 1)
+  :opts {:server_dir (if (= options.env.os.win 1)
       "C:\\Program Files\\Sonic Pi\\app\\server"
       "/opt/sonic-pi/app/server ")}
   :event "VeryLazy"

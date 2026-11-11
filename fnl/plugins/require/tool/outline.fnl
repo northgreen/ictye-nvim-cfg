@@ -1,4 +1,4 @@
-(local opsympal _G.options.ui.symbal_map)
+(local opsympal options.ui.symbal_map)
 
 {1 "hedyhli/outline.nvim"
   :cmd ["Outline" "OutlineOpen" "OutlineClose" "OutlineFocus"

@@ -19,7 +19,7 @@
             (set formatted-item
               ((lspkind.cmp_format
                   {:mode "symbol_text"
-                    :symbol_map _G.options.ui.symbal_map
+                    :symbol_map options.ui.symbal_map
                     :before (fn [rentry vim_item]
                       (set vim_item.menu
                         (.. "[" (string.upper rentry.source.name) "]"))

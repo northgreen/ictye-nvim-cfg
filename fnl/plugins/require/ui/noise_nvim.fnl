@@ -1,4 +1,3 @@
-(print _G.options.env.term)
 ;; Check vim.env.WT_SESSION against nil when detecting Windows Terminal.
 {;; :enabled (and (not vim.g.started_by_firenvim) _G.options.ui.ui_options.noise)
   ;; :enabled false
@@ -28,7 +27,7 @@
     :popupmenu {:enabled true :backend :nui :kind_icons {}}
     :redirect {:view :popup :filter {:event :msg_show}}
     :views {:notify {:render :wrapped-compact :timeout 500 :top_down false
-        :stages (twc (= _G.options.env.term :WINTERM) :static :slide)
+        :stages (if (= options.env.term :WINTERM) :static :slide)
         :animate false}
       :cmdline_popup {:position {:row -3 :col -1}}}
     :health {:checker false} ; Conflicts with snacks.

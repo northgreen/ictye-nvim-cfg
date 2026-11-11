@@ -3,5 +3,5 @@
   :lua-version "lua5.1"
   :libraries {
     :nvim true}
-  :extra-globals ["twc" "ploadmodule"]
+  :extra-globals "twc ploadmodule options"
   :lints {}}
