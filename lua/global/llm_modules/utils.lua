@@ -1,4 +1,5 @@
 local M = {}
+local twc = require("util.functions").three_way_compare
 
 M.name_to_avante = {
   ["openai-completions"] = "openai",

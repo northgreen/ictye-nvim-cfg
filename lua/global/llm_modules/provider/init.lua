@@ -1,4 +1,5 @@
 -- provider 级配置：连接信息、密钥来源、默认模型和基础请求参数。
+local twc = require("util.functions").three_way_compare
 
 -- 密钥来源描述。
 --- @class llm.KeySource

@@ -1,4 +1,4 @@
--- 固定迁移前快照；只模拟外部边界，不启动插件或执行安装命令。
+-- 固定迁移前快照并显式记录后续配置决策；只模拟外部边界，不启动插件或执行安装命令。
 local MiniTest = require("mini.test")
 local T = MiniTest.new_set()
 local eq = MiniTest.expect.equality
@@ -364,12 +364,91 @@ end
 
 local baseline = vim.json.decode(table.concat(vim.fn.readfile(fixture), "\n"))
 assert(baseline.version == 1, "不支持的 plugin_specs 快照版本")
+-- 保留历史 fixture，但不再为已删除且无引用的补全规格生成迁移测试。
+local retired = "fnl/plugins/require/tool/ai/bink-mcp-avante.fnl"
+for index, item in ipairs(baseline.modules) do
+  if item.path == retired then
+    table.remove(baseline.modules, index)
+    break
+  end
+end
+
+-- 禁用只改变加载策略，原有 opts、回调及其副作用仍须通过快照检查。
+local disabled = {
+  ["editor/auto_pairs.fnl"] = true,
+  ["editor/neorg.fnl"] = true,
+  ["editor/orgmode.fnl"] = true,
+  ["editor/unity.fnl"] = true,
+  ["language/language_tool/nvim_treesitter.fnl"] = true,
+  ["language/language_tool/playground.fnl"] = true,
+  ["tool/carbon-now.fnl"] = true,
+  ["tool/cppinsights.fnl"] = true,
+  ["tool/floaterm.fnl"] = true,
+  ["tool/nvim_rip_substitute.fnl"] = true,
+  ["ui/codewindow.fnl"] = true,
+  ["ui/neoscrool.fnl"] = true,
+}
+
+local function set_snapshot_field(value, name, replacement)
+  for index, entry in ipairs(value.entries) do
+    if entry[1] == name then
+      table.remove(value.entries, index)
+      break
+    end
+  end
+  if replacement == nil then
+    return
+  end
+  value.entries[#value.entries + 1] = { name, replacement }
+  table.sort(value.entries, function(a, b)
+    return type(a[1]) == type(b[1]) and a[1] < b[1] or type(a[1]) < type(b[1])
+  end)
+end
+
+local function expected_snapshot(item, scenario)
+  local expected = vim.deepcopy(item.scenarios[scenario.name])
+  local path = item.path:gsub("^fnl/plugins/require/", "")
+  if disabled[path] then
+    set_snapshot_field(expected.value, "enabled", false)
+  elseif path == "editor/fcitx5.fnl" then
+    set_snapshot_field(expected.value, "enabled", nil)
+  elseif path == "tool/ai/pi2.fnl" then
+    set_snapshot_field(expected.value, "enabled", scenario.llm == "pi2")
+  elseif path == "lite_require.fnl" then
+    -- Lite 不再导入已禁用的旧 Treesitter 规格。
+    table.remove(expected.value.entries, 3)
+    expected.value.entries[3][1] = 3
+    table.remove(expected.calls, 3)
+  elseif path == "tool/ai/avante.fnl" then
+    -- 平台/提供商判断已内联，不再加载 util.functions。
+    table.remove(expected.calls, 1)
+  elseif path == "language/language_require/sonicpi.fnl" or path == "ui/noise_nvim.fnl" then
+    -- 内联平台判断；Noice 同时移除了启动时的调试输出。
+    expected.calls = {}
+  end
+  return expected
+end
+
 for _, item in ipairs(baseline.modules) do
   for _, scenario in ipairs(scenarios) do
     T[item.path .. " [" .. scenario.name .. "]"] = function()
-      eq(snapshot(root .. "/" .. item.path, scenario, true), item.scenarios[scenario.name])
+      eq(snapshot(root .. "/" .. item.path, scenario, true), expected_snapshot(item, scenario))
     end
   end
+end
+
+T["AI 规格仅为选定的提供商启用"] = function()
+  for _, provider in ipairs({ "avante", "pi2", "opencode", "none" }) do
+    local scenario = vim.tbl_extend("force", scenarios[1], { llm = provider })
+    for _, plugin in ipairs({ "avante", "pi2" }) do
+      local spec = evaluate(root .. "/fnl/plugins/require/tool/ai/" .. plugin .. ".fnl", scenario, true)
+      eq(spec.enabled, provider == plugin)
+    end
+  end
+end
+
+T["旧 Avante 补全规格已移除"] = function()
+  eq(vim.fn.filereadable(root .. "/" .. retired), 0)
 end
 
 T["所有 plugins Fennel 文件均能编译，原 Lua 模块没有残留"] = function()

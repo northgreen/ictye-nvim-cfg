@@ -8,27 +8,12 @@ local function load_spec(path, dependency)
   local code = fennel.compileString(table.concat(vim.fn.readfile(path), "\n"), { filename = path })
   return setfenv(assert(loadstring(code)), setmetatable({ require = dependency }, { __index = _G }))()
 end
-T["Blink defers Minuet access until options are evaluated"] = function()
-  local calls = 0
-  local mapping = { "minuet_complete" }
-  local spec = load_spec("fnl/plugins/require/tool/ai/bink-mcp-avante.fnl", function(name)
-    eq(name, "minuet")
-    calls = calls + 1
-    return {
-      make_blink_map = function()
-        return mapping
-      end,
-    }
+T["Blink specification can be parsed without loading completion plugins"] = function()
+  local spec = load_spec("fnl/plugins/require/language/language_tool/bink-cmp.fnl", function(name)
+    error("spec parsing must not load " .. name)
   end)
-  eq(calls, 0)
-  eq(vim.tbl_contains(spec.dependencies, "milanglacier/minuet-ai.nvim"), true)
-  local opts = spec.opts({}, { signature = { enabled = true }, keymap = { preset = "default" } })
-  eq(calls, 1)
-  eq(opts.keymap["<A-y>"], mapping)
-  eq(opts.keymap.preset, "default")
-  eq(opts.signature.enabled, true)
-  eq(vim.tbl_contains(opts.sources.default, "luasnip"), false)
-  eq(vim.tbl_contains(opts.sources.default, "snippets"), true)
+  eq(spec[1], "saghen/blink.cmp")
+  eq(vim.tbl_contains(spec.opts.sources.default, "snippets"), true)
 end
 T["hawtkeys dependencies are a list of repository names"] = function()
   local spec = load_spec("fnl/plugins/require/ui/hawtkeys.fnl", function(name)
