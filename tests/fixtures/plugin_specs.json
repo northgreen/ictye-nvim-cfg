@@ -14297,7 +14297,7 @@
                     ["acp_providers", { "mock": "require:global.agents.lists" }],
                     ["custom_tools", { "kind": "function" }],
                     ["provider", "pi"],
-                    ["providers", { "mock": "require:global.llm_modules.get_avnate()" }],
+                    ["providers", { "mock": "require:global.llm_modules.get_avante()" }],
                     [
                       "shortcuts",
                       {
@@ -14331,7 +14331,7 @@
           "calls": [
             ["require", { "entries": [[1, "util.functions"], ["n", 1]] }],
             ["require", { "entries": [[1, "global.llm_modules"], ["n", 1]] }],
-            ["require:global.llm_modules.get_avnate", { "entries": [["n", 0]] }],
+            ["require:global.llm_modules.get_avante", { "entries": [["n", 0]] }],
             ["require", { "entries": [[1, "global.agents"], ["n", 1]] }]
           ],
           "globals": {
@@ -14431,7 +14431,7 @@
                     ["acp_providers", { "mock": "require:global.agents.lists" }],
                     ["custom_tools", { "kind": "function" }],
                     ["provider", "pi"],
-                    ["providers", { "mock": "require:global.llm_modules.get_avnate()" }],
+                    ["providers", { "mock": "require:global.llm_modules.get_avante()" }],
                     [
                       "shortcuts",
                       {
@@ -14465,7 +14465,7 @@
           "calls": [
             ["require", { "entries": [[1, "util.functions"], ["n", 1]] }],
             ["require", { "entries": [[1, "global.llm_modules"], ["n", 1]] }],
-            ["require:global.llm_modules.get_avnate", { "entries": [["n", 0]] }],
+            ["require:global.llm_modules.get_avante", { "entries": [["n", 0]] }],
             ["require", { "entries": [[1, "global.agents"], ["n", 1]] }]
           ],
           "globals": {
@@ -14565,7 +14565,7 @@
                     ["acp_providers", { "mock": "require:global.agents.lists" }],
                     ["custom_tools", { "kind": "function" }],
                     ["provider", "pi"],
-                    ["providers", { "mock": "require:global.llm_modules.get_avnate()" }],
+                    ["providers", { "mock": "require:global.llm_modules.get_avante()" }],
                     [
                       "shortcuts",
                       {
@@ -14599,7 +14599,7 @@
           "calls": [
             ["require", { "entries": [[1, "util.functions"], ["n", 1]] }],
             ["require", { "entries": [[1, "global.llm_modules"], ["n", 1]] }],
-            ["require:global.llm_modules.get_avnate", { "entries": [["n", 0]] }],
+            ["require:global.llm_modules.get_avante", { "entries": [["n", 0]] }],
             ["require", { "entries": [[1, "global.agents"], ["n", 1]] }]
           ],
           "globals": {
@@ -14699,7 +14699,7 @@
                     ["acp_providers", { "mock": "require:global.agents.lists" }],
                     ["custom_tools", { "kind": "function" }],
                     ["provider", "pi"],
-                    ["providers", { "mock": "require:global.llm_modules.get_avnate()" }],
+                    ["providers", { "mock": "require:global.llm_modules.get_avante()" }],
                     [
                       "shortcuts",
                       {
@@ -14733,7 +14733,7 @@
           "calls": [
             ["require", { "entries": [[1, "util.functions"], ["n", 1]] }],
             ["require", { "entries": [[1, "global.llm_modules"], ["n", 1]] }],
-            ["require:global.llm_modules.get_avnate", { "entries": [["n", 0]] }],
+            ["require:global.llm_modules.get_avante", { "entries": [["n", 0]] }],
             ["require", { "entries": [[1, "global.agents"], ["n", 1]] }]
           ],
           "globals": {

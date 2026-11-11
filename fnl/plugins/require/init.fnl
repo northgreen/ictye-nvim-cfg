@@ -1,3 +1,4 @@
+(print "use other way")
 [
   ;- dependencies of configs
   (require :plugins.require.ui.colortheme.catppuccin) ; Catppuccin主题: 柔和 pastel 配色的 Neovim 主题

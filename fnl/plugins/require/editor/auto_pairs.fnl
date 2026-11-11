@@ -1,1 +1,1 @@
-{1 "jiangmiao/auto-pairs" :event "BufReadPre"}
+{1 "jiangmiao/auto-pairs" :enabled false :event "BufReadPre"}

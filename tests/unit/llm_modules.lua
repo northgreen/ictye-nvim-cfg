@@ -10,8 +10,8 @@ local function build(providers, modules, pi_providers, pi_modules)
     ["global.llm_modules.provider"] = providers,
     ["global.llm_modules.modules"] = modules,
     ["global.llm_modules.utils"] = {
-      name_to_avnate = { ["openai-completions"] = "openai" },
-      get_avnate_key = function(desc)
+      name_to_avante = { ["openai-completions"] = "openai" },
+      get_avante_key = function(desc)
         return "key:" .. tostring(desc.value or desc)
       end,
     },
@@ -23,7 +23,7 @@ local function build(providers, modules, pi_providers, pi_modules)
   saved["global.llm_modules"] = package.loaded["global.llm_modules"]
   package.loaded["global.llm_modules"] = nil
   local ok, result = pcall(function()
-    return require("global.llm_modules").get_avnate()
+    return require("global.llm_modules").get_avante()
   end)
   for name, value in pairs(saved) do
     package.loaded[name] = value

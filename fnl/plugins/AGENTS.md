@@ -11,8 +11,21 @@
 - `config/`：预加载全局选项与规格 `config` 回调调用的本地兼容模块；`config/init.fnl`
   只汇总预加载部分
 
+`plugins.get_spec()` 扫描 `fnl/plugins/require/` 的 `.fnl` 文件，返回按模块名排序的 Lazy
+`import` 规格，不在扫描阶段执行插件模块；排除根 `init.fnl` 和 `lite_require.fnl` 汇总入口。
+当前 `init.fnl` 的 Full 分支使用扫描结果，Lite 分支使用手写清单。
+扫描回归：`TEST_FILE=tests/unit/file_util.lua make test`。
+
+禁用插件在各自规格中设置 `:enabled false`，不使用集中禁用清单，也不依赖汇总文件中的注释来排除。
+仅作为依赖引入的禁用项使用同名插件规格覆盖，避免全目录扫描重新启用。
+禁用回归：`TEST_FILE=tests/unit/plugin_disable.lua make test`，使用真实 Lazy 规格合并器验证，不安装插件。
+
 规格模块使用 `plugins.require.*` 命名空间。与目录同名的模块使用目录内的 `init.fnl`。插件自己的 Lua
 模块名（例如 `require :bufferline`）不受配置文件语言影响。
+
+规格解析时不要直接 require 尚未加载的插件；依赖模块调用放在 `opts`/`config` 回调，
+并声明对应 `dependencies`。Fennel 的依赖列表使用 `[]`，不能用 `{}` 交替形成键值表。
+加载时序回归：`TEST_FILE=tests/unit/plugin_loading.lua make test`。
 
 ## 独立配置边界
 

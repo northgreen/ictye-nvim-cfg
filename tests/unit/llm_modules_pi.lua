@@ -74,10 +74,10 @@ T["$VAR 形式的密钥按环境变量读取"] = function()
             _G.__key_check = (function()
                 vim.env.MY_TEST_KEY = 'from-env'
                 local utils = require('global.llm_modules.utils')
-                local text = utils.get_avnate_key({ type = 'TEXT', value = 'sk-secret' })
-                return { utils.get_avnate_key('$MY_TEST_KEY'), utils.get_avnate_key('literal'),
-                    utils.get_avnate_key({ type = 'CMD', value = 'pass show x' }),
-                    text, vim.env[text], text == utils.get_avnate_key({ type = 'TEXT', value = 'sk-secret' }) }
+                local text = utils.get_avante_key({ type = 'TEXT', value = 'sk-secret' })
+                return { utils.get_avante_key('$MY_TEST_KEY'), utils.get_avante_key('literal'),
+                    utils.get_avante_key({ type = 'CMD', value = 'pass show x' }),
+                    text, vim.env[text], text == utils.get_avante_key({ type = 'TEXT', value = 'sk-secret' }) }
             end)()
         ]])
     local got = child.lua_get("_G.__key_check")
@@ -132,7 +132,7 @@ end
 T["真实 Pi 配置可用，且不泄露到 avante 配置的私有字段"] = function()
   options = { env = { os = { win = 0 } }, llm_modules = { pi_config = vim.fn.expand("~/.pi/agent/models.json") } }
   package.loaded["global.llm_modules.pi"] = nil
-  local all = require("global.llm_modules").get_avnate()
+  local all = require("global.llm_modules").get_avante()
   local count, leaked = 0, false
   for _, desc in pairs(all) do
     count = count + 1

@@ -231,7 +231,7 @@ local function sandbox(win)
       record("capabilities", overrides)
       return vim.tbl_deep_extend("force", { fixtureCapability = true }, overrides or {})
     end,
-    ["blink-cmp"] = {
+      ["blink.cmp"] = {
       get_lsp_capabilities = effect(
         "blink.capabilities",
         { textDocument = { completion = { fixture = true } }, fixtureCapability = true }
@@ -599,6 +599,19 @@ local ignored_returns = {
 
 local function observable_contract(snapshot)
   local result = vim.deepcopy(snapshot)
+  -- The original Lua oracle used the misspelled module name; retain its
+  -- capability expectations while explicitly accounting for this correction.
+  for _, calls in ipairs({ result.load or {}, result.trace }) do
+    for _, call in ipairs(calls) do
+      if call[1] == "require" then
+        for _, entry in ipairs(call[2].entries) do
+          if entry[1] == 1 and entry[2] == "blink-cmp" then
+            entry[2] = "blink.cmp"
+          end
+        end
+      end
+    end
+  end
   for _, call in ipairs(result.trace) do
     if ignored_returns[call[1]] then
       call[2] = { kind = "ignored-return" }

@@ -1,4 +1,5 @@
 {1 "nvim-neorg/neorg"
+  :enabled false
   :version "*"
   :config (fn []
     ((. (require :neorg) :setup)

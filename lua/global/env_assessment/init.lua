@@ -1,5 +1,3 @@
-local twc = require("util.functions").three_way_compare
-
 local ret = {}
 
 ret.os = {

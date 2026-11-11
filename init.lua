@@ -14,12 +14,12 @@ if os.getenv("NVPROFILE") then
 	})
 end
 
-local ploadmodule = require("util.module_load_utils").ploadmodule
-
 -- exit when ori mod
 if vim.g.ori_mode then
 	return
 end
+
+require("global")
 
 ploadmodule("paths")
 ploadmodule("options")
@@ -29,12 +29,8 @@ if not options.env.required:check() then
 end
 
 -- init environment
-local ok, err = pcall(require, "env_init")
-if not ok then
-	print("Error loading env_init,this config may not work properly: " .. err)
-end
+ploadmodule("env_init","this config may not work properly")
 
--- 导出器只在显式提供路径时加载；未启用时不安装 hook。
 if
 	(vim.g.keymap_export and vim.g.keymap_export ~= "")
 	or (vim.env.NVIM_KEYMAP_EXPORT and vim.env.NVIM_KEYMAP_EXPORT ~= "")

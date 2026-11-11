@@ -11,10 +11,10 @@ end
 vim.opt.runtimepath:append(hotpot)
 local fennel = require("hotpot.fennel")
 local scenarios = {
-  { name = "linux", win = 0, term = "KITTY", llm = "avnate" },
+  { name = "linux", win = 0, term = "KITTY", llm = "avante" },
   { name = "windows", win = 1, term = "WINTERM", llm = "opencode" },
   { name = "embedded", win = 0, term = "KITTY", embedded = true, llm = "none" },
-  { name = "gui-lite", win = 0, term = "KITTY", gui = true, lite = true, llm = "avnate" },
+  { name = "gui-lite", win = 0, term = "KITTY", gui = true, lite = true, llm = "avante" },
 }
 
 local function module_name(name)

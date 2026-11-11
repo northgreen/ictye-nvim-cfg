@@ -1,8 +1,6 @@
-local twc = require("util.functions").three_way_compare
-
 local M = {}
 
-M.name_to_avnate = {
+M.name_to_avante = {
   ["openai-completions"] = "openai",
 }
 
@@ -40,7 +38,7 @@ end
 ---
 --- @param key_desc string|table 密钥描述
 --- @return string|nil api_key_name；环境变量未设置时返回空串
-M.get_avnate_key = function(key_desc)
+M.get_avante_key = function(key_desc)
   if type(key_desc) == "string" then
     if key_desc:sub(1, 1) == "$" then
       return vim.env[key_desc:sub(2)] or ""

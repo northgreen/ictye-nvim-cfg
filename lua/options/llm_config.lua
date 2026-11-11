@@ -1,3 +1,3 @@
 return {
-  use_plugin = "avnate",
+  use_plugin = "avante",
 }

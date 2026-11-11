@@ -1,5 +1,6 @@
 {1 "northgreen/treesitter-playground"
   :event "BufEnter"
+  :enabled false
   :opt {:playground {:enable true
       :disable {}
       :updatetime 25

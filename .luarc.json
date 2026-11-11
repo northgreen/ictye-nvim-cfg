@@ -5,6 +5,9 @@
   "runtime.version": "LuaJIT",
   "diagnostics.workspaceDelay": 10000000,
   "diagnostics.workspaceEvent": "OnSave",
+  "runtime.special": {
+    "ploadmodule": "require"
+  },
   "workspace": {
     "maxPreload": 1120,
     "preloadFileSize": 500,

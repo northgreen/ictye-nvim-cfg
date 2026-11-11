@@ -1,4 +1,5 @@
 {1 "nvim-orgmode/orgmode"
+  :enabled false
   :event "VeryLazy"
   :config (fn []
     ((. (require :orgmode) :setup)

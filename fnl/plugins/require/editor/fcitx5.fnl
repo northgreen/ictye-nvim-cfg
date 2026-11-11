@@ -1,6 +1,6 @@
 {1 "pysan3/fcitx5.nvim"
   :event "UIEnter"
-  :enabled false
+  ; :enabled false
   :config (fn []
     (let [en "keyboard-us"
         ja "rime"]

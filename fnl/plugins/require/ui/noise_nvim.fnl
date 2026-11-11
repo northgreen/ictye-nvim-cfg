@@ -1,6 +1,5 @@
 (print _G.options.env.term)
 ;; Check vim.env.WT_SESSION against nil when detecting Windows Terminal.
-(local twc (. (require :util.functions) :three_way_compare))
 {;; :enabled (and (not vim.g.started_by_firenvim) _G.options.ui.ui_options.noise)
   ;; :enabled false
   1 :folke/noice.nvim

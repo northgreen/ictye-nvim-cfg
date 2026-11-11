@@ -17,6 +17,6 @@
       (?on_dir (or ((util.root_pattern "*.sln") fname)
           ((util.root_pattern "*.slnx") fname)
           ((util.root_pattern "*.csproj") fname)))))
-  :capabilities ((. (require "blink-cmp") :get_lsp_capabilities))
+  :capabilities ((. (require "blink.cmp") :get_lsp_capabilities))
   :filetypes ["cs"]
   :init_options {:AutomaticWorkspaceInit true}}

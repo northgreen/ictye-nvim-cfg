@@ -1,6 +1,7 @@
 {1 "nvim-treesitter/nvim-treesitter"
   :build ":TSUpdate"
   :event "BufReadPre"
+  :enabled false
   :opt {
     :ensure_installed ["c" "lua" "vim" "vimdoc" "markdown" "json" "c_sharp" "fsharp" "xml"]
     :sync_install false

@@ -1,3 +1,11 @@
+(λ get_spec []
+  (let [scan (. (require :util.file_util) :scan_dir_for_module)
+      directory (vim.fs.joinpath (vim.fn.stdpath :config) "fnl" "plugins" "require")]
+    ;; 汇总入口不能再次导入；单个规格交给 Lazy 加载，不在扫描时执行。
+    (icollect [_ module (ipairs (scan directory "plugins.require" ".fnl"))]
+      (when (and (not= module "plugins.require")
+          (not= module "plugins.require.lite_require"))
+        {:import module}))))
 ; setup lazy
 {:setup (λ []
     (let [lazy (require :lazy)
@@ -17,9 +25,10 @@
               :/lazy-rocks)
             :server "https://lumen-oss.github.io/rocks-binaries/"}
           :spec (if vim.g.lite_mode
-            (require :plugins.require.lite_require)
-            (require :plugins.require))
+            (require :plugins.require)
+            (get_spec))
           :performance {:rtp {:paths [(context.locate :destination)]}}
           :ui {:border :rounded
             :title "Plugin Manager"
-            :tittle_pos :center}})))}
+            :tittle_pos :center}})))
+  :get_spec get_spec}

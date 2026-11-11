@@ -27,7 +27,7 @@
   :log_level "WARN"
 
   ; 覆盖 LSP 服务器的能力，防止 blink.cmp 错误
-  :capabilities (vim.tbl_extend "force" ((. (require "blink-cmp") :get_lsp_capabilities))
+  :capabilities (vim.tbl_extend "force" ((. (require "blink.cmp") :get_lsp_capabilities))
     {:textDocument {:semanticTokens nil}}) ; 完全禁用语义令牌
 
   ; 关键配置：在 on_attach 中只禁用语义令牌，保留其他功能

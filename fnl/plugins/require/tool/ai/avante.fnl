@@ -1,9 +1,7 @@
-(local twc (. (require :util.functions) :three_way_compare))
-
 {1 :yetone/avante.nvim
   :event :VeryLazy
   :version false
-  :enabled (= _G.options.llm_config.use_plugin :avnate)
+  :enabled (= options.llm_config.use_plugin :avante)
   :opts {;; provider = "opencode"
     :provider :pi
     ;; provider = "deepseek"
@@ -13,13 +11,13 @@
     :custom_tools (fn []
       [((. (require :mcphub.extensions.avante) :mcp_tool))])
     :web_search_engine {:provider :searchapi}
-    :providers ((. (require :global.llm_modules) :get_avnate))
+    :providers ((. (require :global.llm_modules) :get_avante))
     :acp_providers (. (require :global.agents) :lists)
     :shortcuts [{:name :jci
         :describe "Commit with jujutsu"
         :details "commit with jujutsu"
         :prompt "Use jj diff to view differences and gengrate commit message, then use jj commit to commit changes."}]}
-  :build (twc (= _G.options.env.os.win 1)
+  :build (twc (= options.env.os.win 1)
     "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
     :make)
   :dependencies [{1 :ColinKennedy/mega.cmdparse

@@ -1,4 +1,3 @@
-local twc = require("util.functions").three_way_compare
 return function(cmd, opts)
   cmd = cmd or twc(options.env.os.linux + options.env.os.mac > 0, "zsh", "pwsh")
   opts = opts or {}
